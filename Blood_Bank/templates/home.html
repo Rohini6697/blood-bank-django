@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Bank Management</title>
+  <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header>
+    <nav class="navbar">
+      <div class="logo"><h1>LifeLink</h1></div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#about-us">About</a></li>
+        <li><a href="{% url 'signup' %}">Sign in/Sign up</a></li>
+        <li><a href="#contact-us">Contact</a></li>
+      </ul>
+      <div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Donate Blood, Save Lives</h1>
+      <p>Join our network of lifesavers and make a difference today.</p>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section class="about">
+    <div class="about-text">
+      <h2>Why Donate Blood?</h2>
+      <p>
+        Every two seconds, someone needs blood. Donating blood can save up to three lives
+        at a time. Your contribution ensures a steady supply for hospitals and patients in need.
+      </p>
+      <a href="{% url 'learnmore' %}"><button class="learn-more">Learn More</button></a>
+    </div>
+    <div class="about-image">
+      <img src="https://thumbs.dreamstime.com/b/blood-transfusion-girl-donor-flat-female-volunteer-nurse-isolated-hospital-procedure-female-treatment-blood-transfusion-183280014.jpg" alt="Donate blood">
+    </div>
+  </section>
+
+  <!-- ===== OUR SERVICES ===== -->
+  <section class="features">
+  <h2 class="section-title">Our Services</h2>
+  <div class="feature-cards">
+    <div class="card">
+      <i class="fas fa-tint fa-4x service-icon"></i>
+      <h3>Donate Blood</h3>
+      <p>Register as a donor and help hospitals maintain sufficient blood supply.</p>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-search-location fa-4x service-icon"></i>
+      <h3>Find Donors</h3>
+      <p>Use our smart search to locate nearby donors based on blood group and city.</p>
+    </div>
+
+    <div class="card">
+      <i class="fas fa-hand-holding-medical fa-4x service-icon"></i>
+      <h3>Request Blood</h3>
+      <p>Need blood urgently? Post your requirement and get quick responses.</p>
+    </div>
+  </div>
+</section>
+
+  <!-- ===== ABOUT US ===== -->
+  <section class="about-us" id="about-us">
+    <h2>About Us</h2>
+    <p>
+      LifeLink is dedicated to connecting blood donors with those in need. Our mission is to
+      ensure that every patient requiring blood receives it in time. We work with hospitals,
+      donors, and volunteers to create a reliable and efficient network for saving lives.
+    </p>
+  </section>
+
+  <!-- ===== CONTACT US ===== -->
+  <section class="contact-us" id="contact-us">
+    <h2>Contact Us</h2>
+    <p>We’d love to hear from you! Reach out to us for queries, donations, or volunteering opportunities.</p>
+    <div class="contact-info">
+      <p><strong>Email:</strong> info@lifelink.com</p>
+      <p><strong>Phone:</strong> +91 9876543210</p>
+      <p><strong>Address:</strong> 123, Lifeline Street, City, State, India</p>
+    </div>
+
+    <!-- Optional Contact Form -->
+    <form class="contact-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea placeholder="Your Message" rows="5" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>&copy; 2025 LifeLink | Designed with ❤️ by Rohini</p>
+  </footer>
+
+</body>
+</html>

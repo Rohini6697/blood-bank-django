@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why Donate Blood</title>
+  <link rel="stylesheet" href="{% static 'css/learnmore.css' %}" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav>
+    <div class="logo"><h1>LifeLink</h1></div>
+    <ul>
+      <li><a href="{% url 'home' %}">Go Back</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h1>Why Donate Blood?</h1>
+      <p>Every drop you give is a step toward saving a life.</p>
+    </div>
+  </section>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <section class="content">
+    <h2>The Power of One Donation</h2>
+    <p>
+      Donating blood is one of the simplest yet most powerful acts of kindness.
+      Every unit of blood you donate can help save up to <strong>three lives</strong>.
+      From accident victims to patients undergoing surgery or cancer treatment,
+      your donation gives them a second chance at life.
+    </p>
+
+    <div class="image-section">
+      <img src="https://media.gettyimages.com/id/1320470408/vector/world-blood-donor-day.jpg?s=612x612&w=0&k=20&c=B-jcyid_5PnIj4sAgc9CRwILaZyR1blpTJDEUI2ZrRE=" alt="Donating Blood">
+      <div class="quote-box">
+        <h3>"The blood you donate gives someone another chance at life."</h3>
+        <p>— Anonymous Donor</p>
+      </div>
+    </div>
+
+    <h2>Why the World Needs More Donors</h2>
+    <ul>
+      <li>Blood cannot be manufactured; it can only come from generous donors.</li>
+      <li>Every two seconds, someone in the world needs blood.</li>
+      <li>Regular donors ensure a stable and safe blood supply for emergencies.</li>
+      <li>Donating blood also benefits your own health by promoting new cell production.</li>
+    </ul>
+
+    <div class="facts">
+      <div class="fact">
+        <h3>1 in 3</h3>
+        <p>People will need blood at least once in their lifetime.</p>
+      </div>
+      <div class="fact">
+        <h3>15 mins</h3>
+        <p>That’s all it takes to save up to 3 lives.</p>
+      </div>
+      <div class="fact">
+        <h3>100%</h3>
+        <p>Safe, simple, and rewarding process.</p>
+      </div>
+    </div>
+
+    <div class="cta">
+      <h2>Be the reason someone lives today.</h2>
+      <button>Become a Donor</button>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    &copy;| Designed with ❤️ by Rohini
+  </footer>
+
+  <script src="learnmore.js"></script>
+</body>
+</html>
