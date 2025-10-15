@@ -1,11 +1,79 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donor Dashboard | LifeLink</title>
+  <link rel="stylesheet" href="{% static 'css/donor_dashboard.css' %}">
 </head>
 <body>
-    <h1>donor dashboard</h1>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>LifeLink</h2>
+      <ul>
+        <li><a href="#">🏠 Dashboard</a></li>
+        <li><a href="#">🩸 Update Personal Details</a></li>
+        <li><a href="#">📜 Donation History</a></li>
+        <li><a href="#">✅ Check Eligibility</a></li>
+        <li><a href="#">📅 Request Appointment</a></li>
+        <li><a href="#">🔔 Notifications</a></li>
+        <li><a href="#">🚪 Logout</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <header>
+        <h1>Welcome, Donor!</h1>
+      </header>
+
+      <section class="card">
+        <h2>Update Personal Details</h2>
+        <form>
+          <input type="text" placeholder="Full Name" required>
+          <input type="text" placeholder="Blood Group" required>
+          <input type="number" placeholder="Age" required>
+          <input type="text" placeholder="Health Condition" required>
+          <button type="submit">Update</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Donation History</h2>
+        <table>
+          <tr><th>Date</th><th>Hospital</th><th>Blood Group</th><th>Status</th></tr>
+          <tr><td>12 July 2025</td><td>City Hospital</td><td>O+</td><td>Completed</td></tr>
+          <tr><td>10 May 2025</td><td>Green Cross</td><td>O+</td><td>Completed</td></tr>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Check Eligibility</h2>
+        <form>
+          <input type="number" placeholder="Age">
+          <input type="text" placeholder="Last Donation Date (YYYY-MM-DD)">
+          <input type="text" placeholder="Health Condition">
+          <button type="submit">Check</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Request Appointment</h2>
+        <form>
+          <input type="text" placeholder="Preferred Date">
+          <input type="text" placeholder="Preferred Hospital">
+          <button type="submit">Request Appointment</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Notifications</h2>
+        <ul>
+          <li>🩸 Blood Camp at City Hall on 25 Oct</li>
+          <li>📢 New request for O+ donors</li>
+        </ul>
+      </section>
+    </main>
+  </div>
 </body>
 </html>

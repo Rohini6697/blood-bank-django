@@ -1,5 +1,6 @@
+from .models import Profile
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login as auth_login
 
 from .forms import UserForm
 
@@ -16,26 +17,40 @@ def register(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+
+            Profile.objects.create(user=user,role = form.cleaned_data['role'])
+
+
+
+
+
+
+            # form.save()
+
+            # Profile.objects.create()
+
             return redirect('signin')
     else:
         form = UserForm()
     return render(request,'signup.html',{'form' : form})
 
 #-----------------Sign In Page-----------------
-def login(request):
+def signin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request,username=username,password=password)
         if user is not None:
-            login(request,user)
+            auth_login(request,user)
             if user.is_superuser:
                 return redirect('admindashboard')
             else:
                 role = user.profile.role
                 if role == 'patient':
-                    return redirect('pateintdashboard')
+                    return redirect('patientdashboard')
                 elif role == 'hospital':
                     return redirect('hospitaldashboard')
                 else:
