@@ -74,6 +74,9 @@ def patient_dashboard(request):
 def search_blood(request):
     return render(request,'patient_dashboard/search_blood.html')
 
+def request_blood(request):
+    return render(request,'patient_dashboard/request_blood.html')
+
 #-----------------hospital dashboard Page-----------------
 def hospitaldashboard(request):
     return render(request,'hospital_dashboard.html')

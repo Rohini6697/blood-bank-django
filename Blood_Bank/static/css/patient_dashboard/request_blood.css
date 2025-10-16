@@ -1,0 +1,93 @@
+/* Sidebar styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+
+.sidebar {
+    width: 220px;
+    background-color: #2c3e50;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    padding-top: 20px;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin-bottom: 5px;
+}
+
+.sidebar li a {
+    display: block;
+    padding: 12px 20px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.sidebar li a:hover, .sidebar li a.active {
+    background-color: #34495e;
+}
+
+/* Content styling */
+.content {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+/* Form styling */
+.request-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.request-form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.request-form input, .request-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.request-form button {
+    padding: 10px 20px;
+    background-color: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.request-form button:hover {
+    background-color: #34495e;
+}
+
+/* Confirmation message */
+.confirmation {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #2ecc71;
+    color: #fff;
+    display: none;
+}

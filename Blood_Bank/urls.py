@@ -16,5 +16,6 @@ urlpatterns = [
     path('request_appointment/',views.request_appoinment,name='request_appointment'),
     path('donor_notification/',views.donor_notification,name='donor_notification'),
     path('patient_dashboard/',views.patient_dashboard,name='patient_dashboard'),
-    path('search_blood/',views.search_blood,name='search_blood')
+    path('search_blood/',views.search_blood,name='search_blood'),
+    path('request_blood/',views.request_blood,name='request_blood')
 ]
