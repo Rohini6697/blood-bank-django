@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check Eligibility | LifeLink</title>
+  <link rel="stylesheet" href="{% static 'css/donor_dashboard/donor_eligibility.css' %}">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>LifeLink</h2>
+      <ul>
+        <li><a href="{% url 'donordashboard' %}">🏠 Dashboard</a></li>
+        <li><a href="{% url 'update_donor' %}">🩸 Update Personal Details</a></li>
+        <li><a href="{% url 'donation_history' %}">📜 Donation History</a></li>
+        <li><a href="{% url 'donor_eligibility' %}">✅ Check Eligibility</a></li>
+        <li><a href="{% url 'request_appointment' %}">📅 Request Appointment</a></li>
+        <li><a href="#">🔔 Notifications</a></li>
+        <li><a href="#">🚪 Logout</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <header>
+        <h1>Check Your Eligibility</h1>
+      </header>
+
+      <section class="card">
+        <form id="eligibility-form">
+          <label for="age">Age:</label>
+          <input type="number" id="age" placeholder="Enter your age" required>
+
+          <label for="weight">Weight (kg):</label>
+          <input type="number" id="weight" placeholder="Enter your weight" required>
+          <div class="form-group">
+            <label for="health">Do you have any health issues?</label>
+            <select id="health" name="health" required>
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+          </div>
+
+
+          <label for="lastDonation">Last Donation Date:</label>
+          <input type="date" id="lastDonation" required>
+
+          <button type="submit">Check Eligibility</button>
+        </form>
+
+        <div id="result"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="{% static 'js/donor_dashboard/donor_eligibility.js' %}"></script>
+</body>
+</html>

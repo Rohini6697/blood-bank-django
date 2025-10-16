@@ -10,5 +10,9 @@ urlpatterns = [
     path('admindashboard/',views.admindashboard,name='admindashboard'),
     path('patientdashboard/',views.patientdashboard,name='patientdashboard'),
     path('hospitaldashboard/',views.hospitaldashboard,name='hospitaldashboard'),
-    path('donordashboard/',views.donordashboard,name='donordashboard')
+    path('donordashboard/<int:id>',views.donordashboard,name='donordashboard'),
+    path('update_donor/<int:id>',views.update_donor,name='update_donor'),
+    path('donation_history/',views.donation_history,name='donation_history'),
+    path('donor_eligibility/',views.donor_eligibility,name='donor_eligibility'),
+    path('request_appointment/',views.request_appoinment,name='request_appointment')
 ]

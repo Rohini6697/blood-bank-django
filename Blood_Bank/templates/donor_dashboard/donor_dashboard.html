@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donor Dashboard | LifeLink</title>
+  <link rel="stylesheet" href="{% static 'css/donor_dashboard/donor_dashboard.css' %}">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>LifeLink</h2>
+      <ul>
+        <li><a href="{% url 'donordashboard'  %}">🏠 Dashboard</a></li>
+        <li><a href="{% url 'update_donor' donor.id %}">🩸 Update Personal Details</a></li>
+        <li><a href="{% url 'donation_history' %}">📜 Donation History</a></li>
+        <li><a href="{% url 'donor_eligibility' %}">✅ Check Eligibility</a></li>
+        <li><a href="{% url 'request_appointment' %}">📅 Request Appointment</a></li>
+        <li><a href="#">🔔 Notifications</a></li>
+        <li><a href="#">🚪 Logout</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <header>
+        <h1>Welcome, Donor!</h1>
+      </header>
+
+      <div class="card-container">
+        <section class="card">
+          <h2>Donation History</h2>
+          
+        </section>
+
+        <section class="card">
+          <h2>new notificatios</h2>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

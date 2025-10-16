@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Personal Details | LifeLink</title>
+  <link rel="stylesheet" href="{% static 'css/donor_dashboard/update_donor.css' %}">
+</head>
+<body>
+  <div class="container">
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar">
+      <h2>LifeLink</h2>
+      <ul>
+        <li><a href="{% url 'donordashboard' %}">🏠 Dashboard</a></li>
+        <li><a href="{% url 'update_donor' %}">🩸 Update Personal Details</a></li>
+        <li><a href="{% url 'donation_history' %}">📜 Donation History</a></li>
+        <li><a href="{% url 'donor_eligibility' %}">✅ Check Eligibility</a></li>
+        <li><a href="{% url 'request_appointment' %}">📅 Request Appointment</a></li>
+        <li><a href="#">🔔 Notifications</a></li>
+        <li><a href="#">🚪 Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- ===== Main Content ===== -->
+    <main class="main-content">
+      <header>
+        <h1>Update Your Personal Details</h1>
+        <p>Keep your profile information up to date for a smoother donation process.</p>
+      </header>
+
+      <section class="update-card">
+        <form action="#" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" name="fullname" value="{{donor.username}}" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" value="{{donor.email}}" placeholder="Enter your email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
+          </div>
+
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" placeholder="Enter your age" required>
+          </div>
+
+          <div class="form-group">
+            <label for="bloodgroup">Blood Group</label>
+            <select id="bloodgroup" name="bloodgroup" required>
+              <option value="">Select your blood group</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Address</label>
+            <textarea id="address" name="address" rows="3" placeholder="Enter your address" required></textarea>
+          </div>
+
+          <div class="form-group btn-area">
+            <button type="submit" class="btn">Update Details</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

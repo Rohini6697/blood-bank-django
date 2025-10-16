@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donation History | LifeLink</title>
+  <link rel="stylesheet" href="{% static 'css/donor_dashboard/donation_history.css' %}">
+</head>
+<body>
+  <div class="container">
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar">
+      <h2>LifeLink</h2>
+      <ul>
+        <li><a href="{% url 'donordashboard' %}">🏠 Dashboard</a></li>
+        <li><a href="{% url 'update_donor' %}">🩸 Update Personal Details</a></li>
+        <li><a href="{% url 'donation_history' %}">📜 Donation History</a></li>
+        <li><a href="{% url 'donor_eligibility' %}">✅ Check Eligibility</a></li>
+        <li><a href="{% url 'request_appointment' %}">📅 Request Appointment</a></li>
+        <li><a href="#">🔔 Notifications</a></li>
+        <li><a href="#">🚪 Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- ===== Main Content ===== -->
+    <main class="main-content">
+      <header>
+        <h1>Your Donation History</h1>
+        <p>Track your past donations and their status.</p>
+      </header>
+
+      <section class="history-card">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Location</th>
+              <th>Blood Type</th>
+              <th>Units Donated</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>15 Sep 2025</td>
+              <td>City Hospital</td>
+              <td>O+</td>
+              <td>1 Unit</td>
+              <td><span class="status success">Completed</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>10 Jun 2025</td>
+              <td>Red Cross Center</td>
+              <td>O+</td>
+              <td>1 Unit</td>
+              <td><span class="status success">Completed</span></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>05 Feb 2025</td>
+              <td>Global Blood Bank</td>
+              <td>O+</td>
+              <td>1 Unit</td>
+              <td><span class="status pending">Pending Verification</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

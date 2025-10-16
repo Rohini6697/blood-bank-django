@@ -1,5 +1,5 @@
 from .models import Profile
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 
 from .forms import UserForm
@@ -65,7 +65,8 @@ def learnmore(request):
 
 #-----------------admin dashboard Page-----------------
 def admindashboard(request):
-    return render(request,'admin_dashboard.html')
+    donor = Profile.objects.all() 
+    return render(request,'admin_dashboard.html',{'donor':donor})
 
 #-----------------patient dashboard Page-----------------
 def patientdashboard(request):
@@ -77,4 +78,17 @@ def hospitaldashboard(request):
 
 #-----------------donor dashboard Page-----------------
 def donordashboard(request):
-    return render(request,'donor_dashboard.html')
+    return render(request,'donor_dashboard/donor_dashboard.html')
+
+def update_donor(request):
+    donor = get_object_or_404(Profile,id=id)
+    return render(request,'donor_dashboard/update_donor.html',{'donor':donor})
+
+def donation_history(request):
+    return render(request,'donor_dashboard/donation _history.html')
+
+def donor_eligibility(request):
+    return render(request,'donor_dashboard/donor_eligibility.html')
+
+def request_appoinment(request):
+    return render(request,'donor_dashboard/request_appointment.html')
