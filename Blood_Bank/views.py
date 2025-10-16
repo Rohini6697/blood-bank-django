@@ -50,7 +50,7 @@ def signin(request):
             else:
                 role = user.profile.role
                 if role == 'patient':
-                    return redirect('patientdashboard')
+                    return redirect('patient_dashboard')
                 elif role == 'hospital':
                     return redirect('hospitaldashboard')
                 else:
@@ -68,8 +68,8 @@ def admindashboard(request):
     return render(request,'admin_dashboard.html')
 
 #-----------------patient dashboard Page-----------------
-def patientdashboard(request):
-    return render(request,'patient_dashboard.html')
+def patient_dashboard(request):
+    return render(request,'patient_dashboard/patient_dashboard.html')
 
 #-----------------hospital dashboard Page-----------------
 def hospitaldashboard(request):
@@ -80,8 +80,24 @@ def donordashboard(request):
     return render(request,'donor_dashboard/donor_dashboard.html')
 
 def update_donor(request):
-    
-    return render(request,'donor_dashboard/update_donor.html')
+    donor = request.user
+    profile = donor.profile
+
+    if request.method == 'post':
+        donor.username = request.POST.get('fullname')
+        donor.email = request.POST.get('email')
+        donor.save()
+
+        profile.phonenumber = request.POST.get('phone')
+        profile.age = request.POST.get('age')
+        profile.blood_group = request.POST.get('bloodgroup')
+        profile.address = request.POST.get('address')
+
+        return redirect('donor_dashboard')
+
+
+
+    return render(request,'donor_dashboard/update_donor.html',{'donor':donor,'profile':profile})
 
 def donation_history(request):
     return render(request,'donor_dashboard/donation _history.html')
@@ -91,3 +107,7 @@ def donor_eligibility(request):
 
 def request_appoinment(request):
     return render(request,'donor_dashboard/request_appointment.html')
+
+def donor_notification(request):
+    return render(request,'donor_dashboard/donor_notification.html')
+

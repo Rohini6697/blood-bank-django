@@ -37,6 +37,7 @@ body {
   list-style: none;
   padding: 0;
   width: 100%;
+  /* border: 2px solid darkblue; */
 }
 
 .sidebar ul li {
@@ -55,6 +56,12 @@ body {
 
 .sidebar ul li a:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Highlight active menu */
+.sidebar ul li a.active {
+  background-color: rgba(255, 255, 255, 0.3);
+  font-weight: bold;
 }
 
 /* ===== Main Content ===== */
@@ -90,7 +97,12 @@ header h1 {
   color: #c0392b;
 }
 
-/* ===== Donation History Section ===== */
+.card-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* ===== Tables (for donation history) ===== */
 .card table {
   width: 100%;
   border-collapse: collapse;
@@ -107,9 +119,41 @@ header h1 {
   background-color: #f2f2f2;
   color: #c0392b;
 }
-.card-container{
+
+/* ===== Form Styles (Check Eligibility form) ===== */
+form {
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
+  max-width: 400px;
+}
+
+form label {
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+form input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.btn {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background-color: #a93226;
 }
 
 /* ===== Notifications Section ===== */
@@ -131,7 +175,7 @@ header h1 {
   background-color: #f1f1f1;
 }
 
-/* ===== Responsive ===== */
+/* ===== Responsive Design ===== */
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -148,5 +192,9 @@ header h1 {
 
   .card {
     padding: 20px;
+  }
+
+  form {
+    width: 100%;
   }
 }

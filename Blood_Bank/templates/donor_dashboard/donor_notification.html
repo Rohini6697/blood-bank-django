@@ -4,15 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Donor Dashboard | LifeLink</title>
-  <link rel="stylesheet" href="{% static 'css/donor_dashboard/donor_dashboard.css' %}">
+  <title>Notifications | LifeLink</title>
+  <link rel="stylesheet" href="{% static 'css/donor_dashboard/donor_notification.css' %}">
 </head>
 <body>
   <div class="container">
+    <!-- Sidebar -->
     <aside class="sidebar">
       <h2>LifeLink</h2>
       <ul>
-        <li><a href="{% url 'donordashboard'  %}">🏠 Dashboard</a></li>
+        <li><a href="{% url 'donordashboard' %}">🏠 Dashboard</a></li>
         <li><a href="{% url 'update_donor' %}">🩸 Update Personal Details</a></li>
         <li><a href="{% url 'donation_history' %}">📜 Donation History</a></li>
         <li><a href="{% url 'donor_eligibility' %}">✅ Check Eligibility</a></li>
@@ -22,21 +23,25 @@
       </ul>
     </aside>
 
+    <!-- Main Content -->
     <main class="main-content">
       <header>
-        <h1>Welcome, Donor!</h1>
+        <h1>Notifications</h1>
       </header>
 
-      <div class="card-container">
-        <section class="card">
-          <h2>Donation History</h2>
-          
-        </section>
+      <section class="notifications">
+        <div class="notification">
+          <h3>🩸 Blood Donation Camp</h3>
+          <p>A blood donation camp will be held at City Hall on 20th October. Join us and save lives!</p>
+          <span class="date">16 Oct 2025</span>
+        </div>
 
-        <section class="card">
-          <h2>new notificatios</h2>
-        </section>
-      </div>
+        <div class="notification">
+          <h3>❤️ Thank You!</h3>
+          <p>We appreciate your last donation on 12th August. You can donate again after 12th November.</p>
+          <span class="date">10 Oct 2025</span>
+        </div>
+      </section>
     </main>
   </div>
 </body>
