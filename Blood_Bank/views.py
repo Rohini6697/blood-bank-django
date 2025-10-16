@@ -65,8 +65,7 @@ def learnmore(request):
 
 #-----------------admin dashboard Page-----------------
 def admindashboard(request):
-    donor = Profile.objects.all() 
-    return render(request,'admin_dashboard.html',{'donor':donor})
+    return render(request,'admin_dashboard.html')
 
 #-----------------patient dashboard Page-----------------
 def patientdashboard(request):
@@ -81,8 +80,8 @@ def donordashboard(request):
     return render(request,'donor_dashboard/donor_dashboard.html')
 
 def update_donor(request):
-    donor = get_object_or_404(Profile,id=id)
-    return render(request,'donor_dashboard/update_donor.html',{'donor':donor})
+    
+    return render(request,'donor_dashboard/update_donor.html')
 
 def donation_history(request):
     return render(request,'donor_dashboard/donation _history.html')
