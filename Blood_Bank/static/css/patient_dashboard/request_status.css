@@ -1,0 +1,84 @@
+/* Sidebar styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+
+.sidebar {
+    width: 220px;
+    background-color: #2c3e50;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    padding-top: 20px;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin-bottom: 5px;
+}
+
+.sidebar li a {
+    display: block;
+    padding: 12px 20px;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.sidebar li a:hover, .sidebar li a.active {
+    background-color: #34495e;
+}
+
+/* Content styling */
+.content {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+/* Table styling */
+.status-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.status-table th, .status-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.status-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.status-approved {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.status-pending {
+    color: #f39c12;
+    font-weight: bold;
+}
+
+.status-rejected {
+    color: #e74c3c;
+    font-weight: bold;
+}

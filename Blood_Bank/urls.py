@@ -17,5 +17,7 @@ urlpatterns = [
     path('donor_notification/',views.donor_notification,name='donor_notification'),
     path('patient_dashboard/',views.patient_dashboard,name='patient_dashboard'),
     path('search_blood/',views.search_blood,name='search_blood'),
-    path('request_blood/',views.request_blood,name='request_blood')
+    path('request_blood/',views.request_blood,name='request_blood'),
+    path('request_status/',views.request_status,name='request_status'),
+    path('received_history/',views.received_history,name='received_history')
 ]
