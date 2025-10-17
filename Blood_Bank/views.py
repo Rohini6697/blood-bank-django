@@ -1,6 +1,7 @@
 from .models import Profile
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.decorators import login_required
 
 from .forms import UserForm
 
@@ -54,7 +55,7 @@ def signin(request):
                 elif role == 'hospital':
                     return redirect('hospitaldashboard')
                 else:
-                    return redirect('donordashboard')
+                    return redirect('update_donor')
         else:
             return render(request,'signin.html',{'error':'Invalid username or password'})
     return render(request,'signin.html')
@@ -91,11 +92,12 @@ def hospitaldashboard(request):
 def donordashboard(request):
     return render(request,'donor_dashboard/donor_dashboard.html')
 
+@login_required
 def update_donor(request):
     donor = request.user
     profile = donor.profile
 
-    if request.method == 'post':
+    if request.method == 'POST':
         donor.username = request.POST.get('fullname')
         donor.email = request.POST.get('email')
         donor.save()
@@ -104,8 +106,9 @@ def update_donor(request):
         profile.age = request.POST.get('age')
         profile.blood_group = request.POST.get('bloodgroup')
         profile.address = request.POST.get('address')
+        profile.save()
 
-        return redirect('donor_dashboard')
+        return redirect('donordashboard')
 
 
 
