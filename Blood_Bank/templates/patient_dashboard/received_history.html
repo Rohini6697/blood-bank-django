@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Received History | LifeLink</title>
+    <link rel="stylesheet" href="{% static 'css/patient_dashboard/received_history.css' %}">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>LifeLink</h2>
+        <ul>
+            <li><a href="{% url 'patient_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'search_blood' %}">Search Blood</a></li>
+            <li><a href="{% url 'request_blood' %}">Request Blood</a></li>
+            <li><a href="{% url 'request_status' %}">Request Status</a></li>
+            <li><a href="{% url 'received_history' %}">Received History</a></li>
+            <li><a href="{% url 'patient_notification' %}">Notifications</a></li>
+            <li><a href="{% url 'home' %}">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h1>Received Blood History</h1>
+
+        <div class="card">
+            <h3>History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Blood Group</th>
+                        <th>Units Received</th>
+                        <th>Donor Name</th>
+                        <th>Hospital</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-10-15</td>
+                        <td>O+</td>
+                        <td>2</td>
+                        <td>John Doe</td>
+                        <td>City Hospital</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-28</td>
+                        <td>A+</td>
+                        <td>1</td>
+                        <td>Jane Smith</td>
+                        <td>LifeCare Hospital</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-10</td>
+                        <td>B-</td>
+                        <td>3</td>
+                        <td>Mike Johnson</td>
+                        <td>General Hospital</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

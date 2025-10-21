@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Personal Details | LifeLink</title>
+  <link rel="stylesheet" href="{% static 'css/donor_dashboard/update_donor.css' %}">
+</head>
+<body>
+  <div class="container">
+
+    <!-- ===== Main Content ===== -->
+    <main class="main-content">
+      <header>
+        <h1>Enter Your Personal Details</h1>
+        <p>Keep your profile information up to date for a smoother donation process.</p>
+      </header>
+
+      <section class="update-card">
+        <form action="{% url 'donor_details' profile.id %}" method="post" id="eligibility-form">
+    {% csrf_token %}
+
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
+          </div>
+
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" placeholder="Enter your age" required><br/>
+            <p id="age_message"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="bloodgroup">Blood Group</label>
+            <select id="bloodgroup" name="bloodgroup" required>
+              <option value="">Select your blood group</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Address</label>
+            <textarea id="address" name="address"  rows="3" placeholder="Enter your address" required></textarea>
+          </div>
+          <div>
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" name="weight" placeholder="Enter your weight" required><br/>
+            <p id="weight_message"></p>
+          </div>
+          
+          <div class="form-group">
+            <label for="health">Do you have any health issues?</label>
+            <select id="health" name="health" required>
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select><br/>
+            <p id="issue_message"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="heamoglobin">heamoglobin rate</label>
+            <input type="text" id="heamoglobin" name="heamoglobin"  placeholder="Enter your heamoglobin rate" required>
+            <p id="heamoglobin_message"></p>
+          </div>
+          <div class="form-group">
+            <label for="medications">Are you currently taking any medications?</label>
+            <select id="medications" name="medications" required>
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <p id="medications_message"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="tattoo">Have you got a tattoo or piercing in the last 6 months?</label>
+            <select id="tattoo" name="tattoo" required>
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <p id="tattoo_message"></p>
+          </div>
+        
+          <div class="form-group">
+            <label for="pregnancy">Are you currently pregnant or breastfeeding?</label>
+            <select id="pregnancy" name="pregnancy" required>
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <p id="pregnancy_message"></p>
+          </div>    
+
+
+          <div>
+            <label for="lastDonation">Last Donation Date:</label>
+            <input type="date" name="lastDonation" id="lastDonation"><br/>
+            <p id="days_message"></p>
+            <label>I am donating for the first time</label>
+            <input id="first_time" name="first_time" type="checkbox">
+          </div>
+
+          <div class="form-group">
+            <label for="travel">Have you traveled to malaria or epidemic areas recently?</label>
+            <select id="travel" name="travel" required>
+                <option value="">Select</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+            <p id="travel_message"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="systolic">Systolic BP (mmHg)</label>
+            <input type="number" id="systolic" name="systolic" placeholder="e.g., 120" required>
+
+          </div>
+          <div class="form-group">
+            <label for="diastolic">Diastolic BP (mmHg)</label>
+            <input type="number" id="diastolic" name="diastolic" placeholder="e.g., 80" required>
+            <p id="bp_message"></p>
+          </div>
+
+
+          
+          <div class="form-group btn-area">
+            <button type="submit" class="btn">Update Details</button>
+            <p id="message"></p>
+          </div>
+          <!-- <div id="result"></div> -->
+        </form>
+        
+      </section>
+    </main>
+  </div>
+  <script src="{% static 'js/donor_dashboard/update_donor.js' %}"></script>
+</body>
+</html>

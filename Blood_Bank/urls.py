@@ -10,14 +10,17 @@ urlpatterns = [
     path('admindashboard/',views.admindashboard,name='admindashboard'),
     path('hospitaldashboard/',views.hospitaldashboard,name='hospitaldashboard'),
     path('donordashboard/',views.donordashboard,name='donordashboard'),
-    path('update_donor/',views.update_donor,name='update_donor'),
+    path('update_donor/<int:donor_id>/',views.update_donor,name='update_donor'),
     path('donation_history/',views.donation_history,name='donation_history'),
     path('donor_eligibility/',views.donor_eligibility,name='donor_eligibility'),
     path('request_appointment/',views.request_appoinment,name='request_appointment'),
     path('donor_notification/',views.donor_notification,name='donor_notification'),
+    path('donor_details/<int:donor_id>/', views.donor_details, name='donor_details'),
     path('patient_dashboard/',views.patient_dashboard,name='patient_dashboard'),
     path('search_blood/',views.search_blood,name='search_blood'),
     path('request_blood/',views.request_blood,name='request_blood'),
     path('request_status/',views.request_status,name='request_status'),
-    path('received_history/',views.received_history,name='received_history')
+    path('received_history/',views.received_history,name='received_history'),
+    path('patient_notification/',views.patient_notification,name='patient_notification'),
+
 ]

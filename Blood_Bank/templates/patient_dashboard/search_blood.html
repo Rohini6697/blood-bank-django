@@ -13,11 +13,11 @@
         <ul>
             <li><a href="{% url 'patient_dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'search_blood' %}">Search Blood</a></li>
-            <li><a href="#">Request Blood</a></li>
-            <li><a href="#">Request Status</a></li>
-            <li><a href="#">Received History</a></li>
-            <li><a href="#">Notifications</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="{% url 'request_blood' %}">Request Blood</a></li>
+            <li><a href="{% url 'request_status' %}">Request Status</a></li>
+            <li><a href="{% url 'received_history' %}">Received History</a></li>
+            <li><a href="{% url 'patient_notification' %}">Notifications</a></li>
+            <li><a href="{% url 'home' %}">Logout</a></li>
         </ul>
     </div>
 

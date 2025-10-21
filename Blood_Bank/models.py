@@ -13,10 +13,21 @@ class Profile(models.Model):
     )
     role = models.CharField(max_length=10,choices=ROLE_CHOICES,default='donor')
     blood_group = models.CharField(max_length=20,null=True,blank=True)
-    age = models.IntegerField(max_length=3,null=True,blank=True)
+    fullname = models.CharField(max_length=40,null=True,blank=True)
+    age = models.PositiveIntegerField(null=True,blank=True)
     phonenumber = models.CharField(max_length=20,null=True,blank=True)
     address = models.CharField(max_length=50,null=True,blank=True)
-    
+    weight = models.PositiveIntegerField(null=True,blank=True)
+    health = models.CharField(max_length=100,null=True,blank=True)
+    heamoglobin = models.PositiveIntegerField(null=True, blank=True)
+    medications = models.CharField(max_length=10, null=True, blank=True)   
+    tattoo = models.CharField(max_length=10, null=True, blank=True)        
+    pregnancy = models.CharField(max_length=10, null=True, blank=True)     
+    travel = models.CharField(max_length=10, null=True, blank=True)        
+    lastDonation = models.DateField(null=True, blank=True)
+    is_first_time = models.BooleanField(default=False)
+    systolic = models.PositiveIntegerField(null=True, blank=True)
+    diastolic = models.PositiveIntegerField(null=True, blank=True)
     
 
     def __str__(self):

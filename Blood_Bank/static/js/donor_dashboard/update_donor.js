@@ -1,6 +1,8 @@
 document.getElementById("eligibility-form").addEventListener("submit", function(event) {
   event.preventDefault();
 
+  let formValid = true;
+
   const age = parseInt(document.getElementById("age").value);
   const weight = parseInt(document.getElementById("weight").value);
   const health = document.getElementById("health").value; // dropdown now
@@ -16,16 +18,16 @@ document.getElementById("eligibility-form").addEventListener("submit", function(
   
 
   if (age < 18 || age > 60) {
-    message = "❌ You must be between 18 and 60 years old to donate.";
+    message = " You must be between 18 and 60 years old to donate.";
     document.getElementById("age_message").innerText = message;
   } else if (weight < 50) {
-    message = "❌ You must weigh at least 50 kg.";
+    message = " You must weigh at least 50 kg.";
     document.getElementById("weight_message").innerText = message;
   } else if (health === "yes") {
-    message = "❌ You are not eligible due to health issues.";
+    message = " You are not eligible due to health issues.";
     document.getElementById("issue_message").innerText = message;
   } else if (diffDays < 90) {
-    message = `❌ You can donate after ${90 - diffDays} more days.`;
+    message = `You can donate after ${90 - diffDays} more days.`;
     document.getElementById("days_message").innerText = message;
   } 
 
@@ -33,7 +35,7 @@ document.getElementById("eligibility-form").addEventListener("submit", function(
 
   
     if(travel.value == 'yes'){
-        message = "❌ You are temporarily ineligible due to recent travel to malaria/epidemic areas.";
+        message = " You are temporarily ineligible due to recent travel to malaria/epidemic areas.";
         document.getElementById("travel_message").innerText = message;
     }
 
@@ -46,28 +48,33 @@ document.getElementById("eligibility-form").addEventListener("submit", function(
         document.getElementById("tattoo_message").innerText = message;
     }
     if (pregnancy.value == 'yes') {
-        let message = "⚠️ You may be temporarily ineligible if you are currently pregnant or breastfeeding.";
+        let message = " You may be temporarily ineligible if you are currently pregnant or breastfeeding.";
         document.getElementById("pregnancy_message").innerText = message;
     }
-    if (hemoglobin.value < 12.5) {
-        let message = "⚠️ You are temporarily ineligible due to low hemoglobin levels. Please consult a doctor and try again later.";
-        document.getElementById("hemoglobin_message").innerText = message;
+    if (heamoglobin.value < 12.5) {
+        let message = "You are temporarily ineligible due to low hemoglobin levels. Please consult a doctor and try again later.";
+        document.getElementById("heamoglobin_message").innerText = message;
     }
 
 
     if (isNaN(systolic) || isNaN(diastolic)) {
-        document.getElementById("bp_message").innerText = "⚠️ Please enter valid blood pressure values.";
+        let message = "Please enter valid blood pressure values.";
+        document.getElementById("bp_message").innerText = message
+        
     } 
     else if (systolic < 90 || systolic > 180 || diastolic < 50 || diastolic > 100) {
-        document.getElementById("bp_message").innerText = 
-            "⚠️ You may be temporarily ineligible due to abnormal blood pressure levels. Please ensure your BP is within the normal range before donating.";
+
+        let message =" You may be temporarily ineligible due to abnormal blood pressure levels. Please ensure your BP is within the normal range before donating.";
+
+        document.getElementById("bp_message").innerText = message
     } 
 
+    if (formValid) {
+        this.submit(); 
+    }
 
 
 
-
-//   document.getElementById("result").innerText = message;
 });
 
 
