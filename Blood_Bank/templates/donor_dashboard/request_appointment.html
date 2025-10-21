@@ -28,40 +28,16 @@
       </header>
 
       <section class="card">
-        <form id="appointment-form">
-          <div class="form-group">
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" placeholder="Enter your name" required>
-          </div>
-
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" placeholder="Enter your email" required>
-          </div>
-
-          <div class="form-group">
-            <label for="bloodGroup">Blood Group:</label>
-            <select id="bloodGroup" required>
-              <option value="">Select</option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-            </select>
-          </div>
-
+        <form id="appointment-form" method="post">
+          {% csrf_token %}
           <div class="form-group">
             <label for="date">Preferred Date:</label>
-            <input type="date" id="date" required>
+            <input type="date" id="date" name="date" required>
           </div>
 
           <div class="form-group">
             <label for="time">Preferred Time:</label>
-            <input type="time" id="time" required>
+            <input type="time" id="time" name="time" required>
           </div>
 
           <button type="submit">Request Appointment</button>

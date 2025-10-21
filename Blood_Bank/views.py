@@ -1,4 +1,4 @@
-from .models import Profile
+from .models import Profile, Donor
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -98,7 +98,6 @@ def donordashboard(request):
     return render(request,'donor_dashboard/donor_dashboard.html',{'profile': profile})
 
 # @login_required
-@login_required
 def update_donor(request, donor_id):
     # Get the logged-in user and profile to edit
     profile = get_object_or_404(Profile, id=donor_id)
@@ -132,6 +131,13 @@ def donor_eligibility(request):
 
 def request_appoinment(request):
     profile = request.user.profile
+    donor, created = Donor.objects.get_or_create(profile=request.user.profile)
+    
+    if request.method == 'POST':
+        donor.preferred_date = request.POST.get('date')
+        donor.preferred_time = request.POST.get('time')
+        donor.save()
+        return redirect('donordashboard')
     return render(request,'donor_dashboard/request_appointment.html',{'profile': profile})
 
 def donor_notification(request):
@@ -139,35 +145,37 @@ def donor_notification(request):
     return render(request,'donor_dashboard/donor_notification.html',{'profile': profile})
 
 
+
+
 def donor_details(request, donor_id):
     profile = get_object_or_404(Profile, id=donor_id)
+    donor, created = Donor.objects.get_or_create(profile=profile)
 
     if request.method == 'POST':
-        profile.phonenumber = request.POST.get('phone')
-        profile.blood_group = request.POST.get('bloodgroup')
-        profile.address = request.POST.get('address')
-        profile.health = request.POST.get('health')
-        profile.medications = request.POST.get('medications')
-        profile.tattoo = request.POST.get('tattoo')
-        profile.pregnancy = request.POST.get('pregnancy')
-        profile.travel = request.POST.get('travel')
-        profile.fullname = request.POST.get('fullname')
-
-        profile.age = int(request.POST.get('age')) if request.POST.get('age') else None
-        profile.weight = int(request.POST.get('weight')) if request.POST.get('weight') else None
-        profile.heamoglobin = int(request.POST.get('heamoglobin')) if request.POST.get('heamoglobin') else None
-        profile.systolic = int(request.POST.get('systolic')) if request.POST.get('systolic') else None
-        profile.diastolic = int(request.POST.get('diastolic')) if request.POST.get('diastolic') else None
+        donor.fullname = request.POST.get('fullname')
+        donor.age = int(request.POST.get('age')) if request.POST.get('age') else None
+        donor.blood_group = request.POST.get('bloodgroup')
+        donor.phonenumber = request.POST.get('phone')
+        donor.address = request.POST.get('address')
+        donor.weight = int(request.POST.get('weight')) if request.POST.get('weight') else None
+        donor.health = request.POST.get('health')
+        donor.heamoglobin = int(request.POST.get('heamoglobin')) if request.POST.get('heamoglobin') else None
+        donor.medications = request.POST.get('medications')
+        donor.tattoo = request.POST.get('tattoo') == 'on'
+        donor.pregnancy = request.POST.get('pregnancy') == 'on'
+        donor.travel = request.POST.get('travel') == 'on'
+        donor.systolic = int(request.POST.get('systolic')) if request.POST.get('systolic') else None
+        donor.diastolic = int(request.POST.get('diastolic')) if request.POST.get('diastolic') else None
 
         if request.POST.get('first_time') == 'on':
-            profile.is_first_time = True
-            profile.lastDonation = None
+            donor.is_first_time = True
+            donor.lastDonation = None
         else:
-            profile.is_first_time = False
+            donor.is_first_time = False
             last_donation = request.POST.get('lastDonation')
-            profile.lastDonation = datetime.strptime(last_donation, "%Y-%m-%d").date() if last_donation else None
+            donor.lastDonation = datetime.strptime(last_donation, "%Y-%m-%d").date() if last_donation else None
 
-        profile.save()
+        donor.save()
         return redirect('donordashboard')
 
-    return render(request, 'donor_dashboard/donor_details.html', {'profile': profile})
+    return render(request, 'donor_dashboard/donor_details.html', {'profile': profile, 'donor': donor})

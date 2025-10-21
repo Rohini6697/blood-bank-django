@@ -12,6 +12,14 @@ class Profile(models.Model):
         ('hospital','Hospital')
     )
     role = models.CharField(max_length=10,choices=ROLE_CHOICES,default='donor')
+
+    
+
+    def __str__(self):
+        return f"{self.user.username} {self.role}"
+    
+class Donor(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     blood_group = models.CharField(max_length=20,null=True,blank=True)
     fullname = models.CharField(max_length=40,null=True,blank=True)
     age = models.PositiveIntegerField(null=True,blank=True)
@@ -28,7 +36,9 @@ class Profile(models.Model):
     is_first_time = models.BooleanField(default=False)
     systolic = models.PositiveIntegerField(null=True, blank=True)
     diastolic = models.PositiveIntegerField(null=True, blank=True)
-    
 
-    def __str__(self):
-        return f"{self.user.username} {self.role}"
+    preferred_date = models.DateField(null=True,blank=True)
+    preferred_time = models.TimeField(null=True,blank=True)
+
+def __str__(self):
+    return f"{self.fullname} {self.blood_group}"
