@@ -1,10 +1,11 @@
-/* Sidebar styling */
+/* Global page styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     background-color: #f5f5f5;
 }
 
+/* Sidebar styling */
 .sidebar {
     width: 220px;
     background-color: #2c3e50;
@@ -38,30 +39,37 @@ body {
     border-radius: 5px;
 }
 
-.sidebar li a:hover, .sidebar li a.active {
+.sidebar li a:hover,
+.sidebar li a.active {
     background-color: #34495e;
 }
 
-/* Content styling */
+/* Main content styling */
 .content {
     margin-left: 240px;
     padding: 20px;
 }
 
-/* Form styling */
+h1 {
+    margin-bottom: 20px;
+}
+
+/* Request form styling */
 .request-form {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .request-form label {
     display: block;
     margin: 10px 0 5px;
+    font-weight: bold;
 }
 
-.request-form input, .request-form select {
+.request-form input,
+.request-form select {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
@@ -69,20 +77,56 @@ body {
     border: 1px solid #ccc;
 }
 
+/* ✅ Date + Urgent section styling */
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 15px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fafafa;
+    transition: 0.3s ease;
+}
+
+/* Date input */
+#blood_date {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    width: 200px;
+}
+
+/* Checkbox + text formatting */
+.form-group input[type="checkbox"] {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/* ✅ Urgent active effect */
+.form-group.urgent-active {
+    border-color: red;
+    background-color: #ffe6e6;
+}
+
+/* Submit button */
 .request-form button {
+    width: 100%;
     padding: 10px 20px;
     background-color: #2c3e50;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .request-form button:hover {
     background-color: #34495e;
 }
 
-/* Confirmation message */
+/* Confirmation message styling */
 .confirmation {
     margin-top: 20px;
     padding: 15px;

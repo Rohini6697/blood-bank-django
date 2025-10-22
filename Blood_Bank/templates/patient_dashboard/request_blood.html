@@ -41,8 +41,6 @@
                 <option value="AB-">AB-</option>
             </select>
 
-            <label for="hospital">Hospital Name:</label>
-            <input type="text" id="hospital" placeholder="Enter hospital name" required>
 
             <label for="units">Units Required:</label>
             <input type="number" id="units" min="1" placeholder="Enter number of units" required>
@@ -52,6 +50,14 @@
 
             <label for="location">Location:</label>
             <input type="text" id="location" placeholder="Enter city or area" required>
+
+            <div class="form-group">
+                <label for="lastDonation">Needed Date</label>
+                <input type="date" id="blood_date" name="blood_date">
+                <label>
+                    <input type="checkbox" id="urgent" name="urgent">Urgent
+                </label>
+            </div>
 
             <button onclick="submitRequest()">Submit Request</button>
         </div>

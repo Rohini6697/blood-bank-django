@@ -16,7 +16,6 @@
         <li><a href="{% url 'donordashboard'  %}">Dashboard</a></li>
         <li><a href="{% url 'update_donor' profile.id %}">Update Profile</a></li>
         <li><a href="{% url 'donation_history' %}">Donation History</a></li>
-        <li><a href="{% url 'donor_eligibility' %}">Check Eligibility</a></li>
         <li><a href="{% url 'request_appointment' %}">Request Appointment</a></li>
         <li><a href="{% url 'donor_notification' %}">Notifications</a></li>
         <li><a href="{% url 'home' %}">Logout</a></li>
@@ -33,136 +32,130 @@
       <section class="update-card">
         <form action="{% url 'update_donor' profile.id %}" method="post" id="eligibility-form">
           {% csrf_token %}
+
+          <!-- User fields -->
           <div class="form-group">
             <label for="fullname">Full Name</label>
-            <input type="text" id="fullname" name="fullname" value="{{donor.username}}" placeholder="Enter your full name" required>
+            <input type="text" id="fullname" name="fullname" value="{{ user.username }}" placeholder="Enter your full name" required>
           </div>
 
           <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" value="{{donor.email}}" placeholder="Enter your email" required>
+            <input type="email" id="email" name="email" value="{{ user.email }}" placeholder="Enter your email" required>
           </div>
 
+          <!-- Profile fields -->
           <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input type="text" id="phone" name="phone" value="{{profile.phonenumber}}" placeholder="Enter your phone number" required>
+            <input type="text" id="phone" name="phone" value="{{ donor.phonenumber }}" placeholder="Enter your phone number" required>
           </div>
 
           <div class="form-group">
             <label for="age">Age</label>
-            <input type="number" id="age" name="age" value="{{profile.age}}" placeholder="Enter your age" required><br/>
-            <p id="age_message"></p>
+            <input type="number" id="age" name="age" value="{{ donor.age }}" placeholder="Enter your age" required>
           </div>
 
           <div class="form-group">
             <label for="bloodgroup">Blood Group</label>
             <select id="bloodgroup" name="bloodgroup" required>
               <option value="">Select your blood group</option>
-              <option value="A+" {% if profile.blood_group == "A+" %}selected{% endif %}>A+</option>
-              <option value="A-" {% if profile.blood_group == "A-" %}selected{% endif %}>A-</option>
-              <option value="B+" {% if profile.blood_group == "B+" %}selected{% endif %}>B+</option>
-              <option value="B-" {% if profile.blood_group == "B-" %}selected{% endif %}>B-</option>
-              <option value="O+" {% if profile.blood_group == "O+" %}selected{% endif %}>O+</option>
-              <option value="O-" {% if profile.blood_group == "O-" %}selected{% endif %}>O-</option>
-              <option value="AB+" {% if profile.blood_group == "AB+" %}selected{% endif %}>AB+</option>
-              <option value="AB-" {% if profile.blood_group == "AB-" %}selected{% endif %}>AB-</option>
+              <option value="A+" {% if donor.blood_group == "A+" %}selected{% endif %}>A+</option>
+              <option value="A-" {% if donor.blood_group == "A-" %}selected{% endif %}>A-</option>
+              <option value="B+" {% if donor.blood_group == "B+" %}selected{% endif %}>B+</option>
+              <option value="B-" {% if donor.blood_group == "B-" %}selected{% endif %}>B-</option>
+              <option value="O+" {% if donor.blood_group == "O+" %}selected{% endif %}>O+</option>
+              <option value="O-" {% if donor.blood_group == "O-" %}selected{% endif %}>O-</option>
+              <option value="AB+" {% if donor.blood_group == "AB+" %}selected{% endif %}>AB+</option>
+              <option value="AB-" {% if donor.blood_group == "AB-" %}selected{% endif %}>AB-</option>
             </select>
+
           </div>
 
           <div class="form-group">
             <label for="address">Address</label>
-            <textarea id="address" name="address" value="{{profile.address}}"  rows="3" placeholder="Enter your address" required>{{profile.address}}</textarea>
+            <textarea id="address" name="address" rows="3" placeholder="Enter your address" required>{{ donor.address }}</textarea>
           </div>
-          <div>
-            <label for="weight">Weight (kg):</label>
-            <input type="number" id="weight" value="{{profile.weight}}" placeholder="Enter your weight" required><br/>
-            <p id="weight_message"></p>
-          </div>
-          
+
+          <!-- Donor fields -->
           <div class="form-group">
-            <label for="health">Do you have any health issues?</label>
-            <select id="health" name="health" required>
-                <option value="">Select</option>
-                <option value="yes" {% if profile.health == "yes" %}selected{% endif %}>Yes</option>
-                <option value="no" {% if profile.health == "no" %}selected{% endif %}>No</option>
-            </select><br/>
-            <p id="issue_message"></p>
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" name="weight" value="{{ donor.weight }}" placeholder="Enter your weight">
           </div>
 
           <div class="form-group">
-            <label for="heamoglobin">heamoglobin rate</label>
-            <input type="text" id="heamoglobin" name="heamoglobin" value="{{profile.heamoglobin}}"  placeholder="Enter your heamoglobin rate" required>
-            <p id="heamoglobin_message"></p>
+            <label for="health">Do you have any health issues?</label>
+            <select id="health" name="health">
+              <option value="">Select</option>
+              <option value="yes" {% if donor.health == "yes" %}selected{% endif %}>Yes</option>
+              <option value="no" {% if donor.health == "no" %}selected{% endif %}>No</option>
+            </select>
           </div>
+
+          <div class="form-group">
+            <label for="heamoglobin">Heamoglobin rate</label>
+            <input type="text" id="heamoglobin" name="heamoglobin" value="{{ donor.heamoglobin }}" placeholder="Enter your heamoglobin rate">
+          </div>
+
           <div class="form-group">
             <label for="medications">Are you currently taking any medications?</label>
-            <select id="medications" name="medications" required>
-                <option value="">Select</option>
-                <option value="yes"{% if profile.medications == "yes" %}selected{% endif %}>Yes</option>
-                <option value="no" {% if profile.medications == "no" %}selected{% endif %}>No</option>
+            <select id="medications" name="medications">
+              <option value="">Select</option>
+              <option value="yes" {% if donor.medications == "yes" %}selected{% endif %}>Yes</option>
+              <option value="no" {% if donor.medications == "no" %}selected{% endif %}>No</option>
             </select>
-            <p id="medications_message"></p>
           </div>
 
           <div class="form-group">
             <label for="tattoo">Have you got a tattoo or piercing in the last 6 months?</label>
-            <select id="tattoo" name="tattoo" required>
-                <option value="">Select</option>
-                <option value="yes" {% if profile.tattoo == "yes" %}selected{% endif %}>Yes</option>
-                <option value="no" {% if profile.tattoo == "no" %}selected{% endif %}>No</option>
+            <select id="tattoo" name="tattoo">
+              <option value="">Select</option>
+              <option value="yes" {% if donor.tattoo %}selected{% endif %}>Yes</option>
+              <option value="no" {% if not donor.tattoo %}selected{% endif %}>No</option>
+
             </select>
-            <p id="tattoo_message"></p>
           </div>
-        
+
           <div class="form-group">
             <label for="pregnancy">Are you currently pregnant or breastfeeding?</label>
-            <select id="pregnancy" name="pregnancy" required>
-                <option value="">Select</option>
-                <option value="yes" {% if profile.pregnancy == "yes" %}selected{% endif %}>Yes</option>
-                <option value="no"{% if profile.pregnancy == "no" %}selected{% endif %}>No</option>
+            <select id="pregnancy" name="pregnancy">
+              <option value="">Select</option>
+              <option value="yes" {% if donor.pregnancy %}selected{% endif %}>Yes</option>
+              <option value="no" {% if donor.pregnancy %}selected{% endif %}>No</option>
             </select>
-            <p id="pregnancy_message"></p>
-          </div>    
+          </div>
 
-
-          <div>
-            <label for="lastDonation">Last Donation Date:</label>
-            <input type="date" id="lastDonation" value="{{ profile.dob|date:'Y-m-d' }}"><br/>
-            <p id="days_message"></p>
-            <label>I am donating for the first time</label>
-            <input id="first_time" type="checkbox" {% if profile.is_first_time %}checked{% endif %}>
+          <div class="form-group">
+            <label for="lastDonation">Last Donation Date</label>
+            <input type="date" id="lastDonation" name="lastDonation" value="{{ donor.lastDonation|date:'Y-m-d' }}">
+            <label>
+              <input type="checkbox" id="first_time" name="first_time" {% if donor.is_first_time %}checked{% endif %}>
+              I am donating for the first time
+            </label>
           </div>
 
           <div class="form-group">
             <label for="travel">Have you traveled to malaria or epidemic areas recently?</label>
-            <select id="travel" name="travel" required>
-                <option value="">Select</option>
-                <option value="yes" {% if profile.travel == "yes" %}selected{% endif %}>Yes</option>
-                <option value="no"{% if profile.travel == "no" %}selected{% endif %}>No</option>
+            <select id="travel" name="travel">
+              <option value="">Select</option>
+              <option value="yes" {% if donor.travel %}selected{% endif %}>Yes</option>
+              <option value="no" {% if donor.travel %}selected{% endif %}>No</option>
             </select>
-            <p id="travel_message"></p>
           </div>
 
           <div class="form-group">
             <label for="systolic">Systolic BP (mmHg)</label>
-            <input type="number" id="systolic" value="{{profile.systolic}}" name="systolic" placeholder="e.g., 120" required>
-
+            <input type="number" id="systolic" name="systolic" value="{{ donor.systolic }}" placeholder="e.g., 120">
           </div>
+
           <div class="form-group">
             <label for="diastolic">Diastolic BP (mmHg)</label>
-            <input type="number" id="diastolic" value="{{profile.diastolic}}" name="diastolic" placeholder="e.g., 80" required>
-            <p id="bp_message"></p>
+            <input type="number" id="diastolic" name="diastolic" value="{{ donor.diastolic }}" placeholder="e.g., 80">
           </div>
 
-
-          
           <div class="form-group btn-area">
             <button type="submit" class="btn">Update Details</button>
-            <p id="message"></p>
           </div>
-          <!-- <div id="result"></div> -->
         </form>
-        
       </section>
     </main>
   </div>

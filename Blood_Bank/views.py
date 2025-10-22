@@ -1,4 +1,4 @@
-from .models import Profile, Donor
+from .models import Hospital, Profile, Donor
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -25,7 +25,16 @@ def register(request):
 
             profile = Profile.objects.create(user=user, role=form.cleaned_data['role'])
 
-            return redirect('donor_details', donor_id=profile.id)
+
+            role = user.profile.role
+            if role == 'patient':
+                return redirect('donor_details', donor_id=profile.id)
+            elif role == 'hospital':
+                return redirect('hospital_details',hospital_id =profile.id )
+            else:
+                return redirect('signin')
+            
+
 
     else:
         form = UserForm()
@@ -88,7 +97,32 @@ def patient_notification(request):
 
 #-----------------hospital dashboard Page-----------------
 def hospitaldashboard(request):
-    return render(request,'hospital_dashboard.html')
+    return render(request,'hospital_dashboard/hospital_dashboard.html')
+
+def request_blood_hospital(request):
+    return render(request,'hospital_dashboard/request_blood_hospital.html')
+
+def request_history(request):
+    return render(request,'hospital_dashboard/request_history.html')
+
+def hospital_reports(request):
+    return render(request,'hospital_dashboard/hospital_reports.html')
+
+def profile_update(request):
+    return render(request,'hospital_dashboard/profile_update.html')
+
+def hospital_details(request,hospital_id):
+    profile = get_object_or_404(Profile,id = hospital_id)
+    hospital,created = Hospital.objects.get_or_create(profile=profile)
+
+    if request.method == 'POST':
+        hospital.hospital_name = request.POST.get('hospital_name')
+        hospital.contact_number = request.POST.get('contact')
+        hospital.location = request.POST.get('location')
+        hospital.save()
+        return redirect('hospitaldashboard')
+    return render(request,'hospital_dashboard/hospital_details.html')
+
 
 #-----------------donor dashboard Page-----------------
 @login_required
@@ -98,27 +132,58 @@ def donordashboard(request):
     return render(request,'donor_dashboard/donor_dashboard.html',{'profile': profile})
 
 # @login_required
+@login_required
 def update_donor(request, donor_id):
-    # Get the logged-in user and profile to edit
+    # Get the Profile object
     profile = get_object_or_404(Profile, id=donor_id)
+    
+    # Get the linked Donor object or create one if it doesn't exist
+    donor, created = Donor.objects.get_or_create(profile=profile)
 
     if request.method == 'POST':
-        # Update User model fields
+        # --- Update User model fields ---
         user = profile.user
         user.username = request.POST.get('fullname')
         user.email = request.POST.get('email')
         user.save()
 
-        # Update Profile model fields
+        # --- Update Profile model fields ---
         profile.phonenumber = request.POST.get('phone')
         profile.age = request.POST.get('age')
         profile.blood_group = request.POST.get('bloodgroup')
         profile.address = request.POST.get('address')
         profile.save()
 
+        # --- Update Donor model fields ---
+        donor.weight = request.POST.get('weight')
+        donor.health = request.POST.get('health')
+        donor.heamoglobin = request.POST.get('heamoglobin')
+        donor.medications = request.POST.get('medications')
+        donor.tattoo = request.POST.get('tattoo')
+        donor.pregnancy = request.POST.get('pregnancy')
+        donor.travel = request.POST.get('travel')
+        donor.systolic = request.POST.get('systolic')
+        donor.diastolic = request.POST.get('diastolic')
+
+        # Last donation and first-time checkbox
+        if request.POST.get('first_time') == 'on':
+            donor.is_first_time = True
+            donor.lastDonation = None
+        else:
+            donor.is_first_time = False
+            last_donation = request.POST.get('lastDonation')
+            donor.lastDonation = datetime.strptime(last_donation, "%Y-%m-%d").date() if last_donation else None
+
+        donor.save()
+
         return redirect('donordashboard')
 
-    return render(request, 'donor_dashboard/update_donor.html', {'profile': profile, 'donor': profile.user})
+    # Pass profile, user, and donor to template
+    return render(request, 'donor_dashboard/update_donor.html', {
+        'profile': profile,
+        'user': profile.user,
+        'donor': donor
+    })
 
 
 def donation_history(request):
@@ -131,12 +196,13 @@ def donor_eligibility(request):
 
 def request_appoinment(request):
     profile = request.user.profile
-    donor, created = Donor.objects.get_or_create(profile=request.user.profile)
+    donor, created = Donor.objects.get_or_create(profile=profile)
     
     if request.method == 'POST':
         donor.preferred_date = request.POST.get('date')
         donor.preferred_time = request.POST.get('time')
         donor.save()
+
         return redirect('donordashboard')
     return render(request,'donor_dashboard/request_appointment.html',{'profile': profile})
 

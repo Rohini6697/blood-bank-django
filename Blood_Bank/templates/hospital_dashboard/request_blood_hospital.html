@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Blood | Hospital Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/hospital_dashboard/request_blood_hospital.css' %}">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Hospital Dashboard</h2>
+            <ul>
+                <li><a href="{% url 'hospitaldashboard' %}">📦 View Blood Stock</a></li>
+                <li><a href="{% url 'request_blood_hospital' %}">📝 Request Blood</a></li>
+                <li><a href="{% url 'request_history' %}">📜 Request History</a></li>
+                <li><a href="{% url 'hospital_reports' %}">📊 Reports</a></li>
+                <li><a href="{% url 'profile_update' %}">⚙ Profile</a></li>
+                <li><a href="{% url 'home' %}">🚪 Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h1>Request Blood</h1>
+
+            <form class="request-form">
+                <label for="patient-name">Hospital Name:</label>
+                <input type="text" id="patient-name" placeholder="Enter patient name" required>
+
+                <label for="blood-group">Blood Group:</label>
+                <select id="blood-group" required>
+                    <option value="">--Select--</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
+
+                <label for="units">Units Required:</label>
+                <input type="number" id="units" placeholder="Enter required units" min="1" required>
+
+                <label for="contact">Hospital Contact:</label>
+                <input type="tel" id="contact" placeholder="Enter hospital contact number" required>
+
+                <label for="location">Hospital Location:</label>
+                <input type="text" id="location" placeholder="Enter city or area" required>
+
+                <label for="required-date">Required Date:</label>
+                <input type="date" id="required-date" required>
+
+                <div class="urgent-checkbox">
+                    <input type="checkbox" id="urgent">
+                    <label for="urgent">Mark as Urgent</label>
+                </div>
+
+                <button type="submit">Submit Request</button>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

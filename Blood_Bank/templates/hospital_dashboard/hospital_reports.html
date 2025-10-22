@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | Hospital Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/hospital_dashboard/hospital_reports.css' %}">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Hospital Dashboard</h2>
+            <ul>
+                <li><a href="{% url 'hospitaldashboard' %}">📦 View Blood Stock</a></li>
+                <li><a href="{% url 'request_blood_hospital' %}">📝 Request Blood</a></li>
+                <li><a href="{% url 'request_history' %}">📜 Request History</a></li>
+                <li><a href="{% url 'hospital_reports' %}">📊 Reports</a></li>
+                <li><a href="{% url 'profile_update' %}">⚙ Profile</a></li>
+                <li><a href="{% url 'home' %}">🚪 Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h1>Hospital Reports</h1>
+
+            <div class="report-cards">
+                <div class="card">
+                    <h2>Total Blood Stock</h2>
+                    <p>120 Units</p>
+                </div>
+                <div class="card">
+                    <h2>Total Requests</h2>
+                    <p>45 Requests</p>
+                </div>
+                <div class="card">
+                    <h2>Urgent Requests</h2>
+                    <p>12 Requests</p>
+                </div>
+                <div class="card">
+                    <h2>Pending Requests</h2>
+                    <p>8 Requests</p>
+                </div>
+            </div>
+
+            <h2>Blood Stock Summary</h2>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Blood Group</th>
+                        <th>Available Units</th>
+                        <th>Low Stock Threshold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A+</td>
+                        <td>20</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>B+</td>
+                        <td>10</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>O-</td>
+                        <td>2</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>AB+</td>
+                        <td>7</td>
+                        <td>5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+</body>
+</html>

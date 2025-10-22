@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Details Form</title>
+    <link rel="stylesheet" href="{% static 'css/hospital_dashboard/hospital_details.css' %}">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Enter Hospital Details</h1>
+        <form class="hospital-form">
+            <label for="hospital-name">Hospital Name:</label>
+            <input type="text" id="hospital-name" name="hospital_name" placeholder="Enter hospital name" required>
+
+            <label for="contact">Contact Number:</label>
+            <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required>
+
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" placeholder="Enter the city" required>
+
+    
+            <button type="submit">Submit Details</button>
+        </form>
+    </div>
+</body>
+</html>

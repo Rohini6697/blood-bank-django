@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request History | Hospital Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/hospital_dashboard/request_history.css' %}">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Hospital Dashboard</h2>
+            <ul>
+                <li><a href="{% url 'hospitaldashboard' %}">📦 View Blood Stock</a></li>
+                <li><a href="{% url 'request_blood_hospital' %}">📝 Request Blood</a></li>
+                <li><a href="{% url 'request_history' %}">📜 Request History</a></li>
+                <li><a href="{% url 'hospital_reports' %}">📊 Reports</a></li>
+                <li><a href="{% url 'profile_update' %}">⚙ Profile</a></li>
+                <li><a href="{% url 'home' %}">🚪 Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h1>Blood Request History</h1>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Patient Name</th>
+                        <th>Blood Group</th>
+                        <th>Units</th>
+                        <th>Requested Date</th>
+                        <th>Urgency</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample Data -->
+                    <tr>
+                        <td>John Doe</td>
+                        <td>A+</td>
+                        <td>2</td>
+                        <td>2025-01-20</td>
+                        <td>Urgent</td>
+                        <td class="pending">Pending</td>
+                    </tr>
+                    <tr>
+                        <td>Emily Smith</td>
+                        <td>O-</td>
+                        <td>1</td>
+                        <td>2025-01-18</td>
+                        <td>Normal</td>
+                        <td class="approved">Approved</td>
+                    </tr>
+                    <tr>
+                        <td>Michael Lee</td>
+                        <td>B+</td>
+                        <td>3</td>
+                        <td>2025-01-15</td>
+                        <td>Urgent</td>
+                        <td class="rejected">Rejected</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+</body>
+</html>
