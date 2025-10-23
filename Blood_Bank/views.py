@@ -1,8 +1,8 @@
-from .models import Hospital, Patient, Profile, Donor
+from .models import Hospital, Patient, Profile, Donor, Request_list
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
-from datetime import datetime
+from datetime import datetime, date
 
 from .forms import UserForm
 
@@ -87,7 +87,42 @@ def search_blood(request):
 
 def request_blood(request):
     profile = get_object_or_404(Profile, user=request.user)
-    patient = Patient.objects.filter(profile=profile).first() 
+    patient = Patient.objects.filter(profile=profile).first()
+
+    requestlist = get_object_or_404(Request_list)
+
+    if request.method == 'POST':
+        units = request.POST.get('units')
+        required_date = request.POST.get('required_date')
+        urgent = request.POST.get('urgent') == 'on'
+        reason = request.POST.get('reason')
+
+
+        if urgent:
+            request_date = date.today()  # current date for urgent requests
+        else:
+            required_date = request.POST.get('required_date')
+            if required_date:
+                request_date = datetime.strptime(required_date, "%Y-%m-%d").date()
+            else:
+                request_date = None 
+
+
+
+
+
+
+        Request_list.objects.create(
+            patient=patient,
+            unit = units,
+            date = request_date,
+            urgent = urgent,
+            reason = reason
+        )
+
+        
+        return redirect('received_history')
+
     return render(request,'patient_dashboard/request_blood.html',{'patient': patient})
 
 def request_update(request,patient_id):

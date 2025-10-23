@@ -27,24 +27,11 @@
         <form class="request-form" method="post">
             {% csrf_token %}
 
-            <label for="blood-group">Blood Group:</label>
-            <select id="blood-group" name="blood_group" required>
-                <option value="">--Select--</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-            </select>
-
             <label for="units">Units Required:</label>
             <input type="number" id="units" name="units" placeholder="Enter required units" min="1" required>
 
             <label for="required-date">Required Date:</label>
-            <input type="date" id="required-date" name="required_date" required>
+            <input type="date" id="required-date" name="required_date">
 
             
             <div class="urgent-checkbox">
@@ -60,6 +47,5 @@
         </form>
     </div>
 
-    <script src="{% static 'js/patient_dashboard/request_blood.js' %}"></script>
 </body>
 </html>

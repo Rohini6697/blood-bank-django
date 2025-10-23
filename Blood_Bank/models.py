@@ -68,9 +68,18 @@ class Patient(models.Model):
         return f"{self.patient_name}"
     
 class Request_list(models.Model):
-    patient = models.OneToOneField(Patient,on_delete=models.CASCADE)
-    blood = models.CharField(max_length=10,null=True,blank=True)
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
     unit = models.PositiveIntegerField(null=True,blank=True)
     date = models.DateField(null=True,blank=True)
     reason = models.CharField(max_length=50,null=True,blank=True)
-    urgency = models.BooleanField(default=False)
+    urgent = models.BooleanField(default=False)
+
+    STATUS_CHOICES = (
+        ('requested', 'Requested'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='requested')
+
+    def __str__(self):
+        return f"{self.patient.patient_name}"
