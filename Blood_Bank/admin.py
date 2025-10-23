@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Donor,Hospital
+from .models import Patient, Profile, Donor,Hospital
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'role']
@@ -11,8 +11,11 @@ class DonorAdmin(admin.ModelAdmin):
         'travel', 'lastDonation', 'is_first_time', 'systolic', 'diastolic'
     ]
 class HospitalAdmin(admin.ModelAdmin):
-    list_display = ['hospital_name']
+    list_display = ('hospital_name', 'contact_number', 'location')
+class PatientAdmin(admin.ModelAdmin):
+    list_display = ('patient_name','patient_gender')
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Donor, DonorAdmin)
 admin.site.register(Hospital, HospitalAdmin)
+admin.site.register(Patient, PatientAdmin)

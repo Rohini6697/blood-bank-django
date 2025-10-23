@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Patient Details | LifeLink</title>
+    <link rel="stylesheet" href="{% static 'css/patient_dashboard/request_update.css' %}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>LifeLink</h2>
+        <ul>
+            <li><a href="{% url 'patient_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'search_blood' %}">Search Blood</a></li>
+            <li><a href="{% url 'request_blood' %}">Request Blood</a></li>
+            <li><a href="{% url 'request_update' %}">Request Update</a></li>
+            <li><a href="{% url 'received_history' %}">Received History</a></li>
+            <li><a href="{% url 'patient_notification' %}">Notifications</a></li>
+            <li><a href="{% url 'home' %}">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main content -->
+    <div class="content">
+        <h1>Update Patient Details</h1>
+
+        <div class="form-container">
+
+            <form method="post" action="{% url 'request_update' %}">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter patient's name"  required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="text" id="age" name="age"  required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="" disabled>Select gender</option>
+                        <option value="male" {% if patient.patient_gender == 'male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if patient.patient_gender == 'female' %}selected{% endif %}>Female</option>
+                        <option value="other" {% if patient.patient_gender == 'other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact">Contact Number:</label>
+                    <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <textarea id="address" name="address" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="bloodGroup">Blood Group:</label>
+                    <select id="bloodGroup" name="bloodGroup" required>
+                        <option value="" disabled>Select blood group</option>
+                        <option value="A+" {% if patient.patient_blood_group == 'A+' %}selected{% endif %}>A+</option>
+                        <option value="A-" {% if patient.patient_blood_group == 'A-' %}selected{% endif %}>A-</option>
+                        <option value="B+" {% if patient.patient_blood_group == 'B+' %}selected{% endif %}>B+</option>
+                        <option value="B-" {% if patient.patient_blood_group == 'B-' %}selected{% endif %}>B-</option>
+                        <option value="O+" {% if patient.patient_blood_group == 'O+' %}selected{% endif %}>O+</option>
+                        <option value="O-" {% if patient.patient_blood_group == 'O-' %}selected{% endif %}>O-</option>
+                        <option value="AB+" {% if patient.patient_blood_group == 'AB+' %}selected{% endif %}>AB+</option>
+                        <option value="AB-" {% if patient.patient_blood_group == 'AB-' %}selected{% endif %}>AB-</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="emergencyContact">Emergency Contact Name:</label>
+                    <input type="text" id="emergencyContact" name="emergencyContact"  placeholder="Enter emergency contact name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="emergencyNumber">Emergency Contact Number:</label>
+                    <input type="tel" id="emergencyNumber" name="emergencyNumber"  placeholder="Enter emergency contact number" required>
+                </div>
+
+                <button type="submit" class="submit-btn">Update</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

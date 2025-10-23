@@ -14,7 +14,7 @@
             <li><a href="{% url 'patient_dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'search_blood' %}">Search Blood</a></li>
             <li><a href="{% url 'request_blood' %}">Request Blood</a></li>
-            <li><a href="{% url 'request_status' %}">Request Status</a></li>
+            <li><a href="{% url 'request_update' %}">Request Update</a></li>
             <li><a href="{% url 'received_history' %}">Received History</a></li>
             <li><a href="{% url 'patient_notification' %}">Notifications</a></li>
             <li><a href="{% url 'home' %}">Logout</a></li>
@@ -24,12 +24,11 @@
     <div class="content">
         <h1>Submit Blood Request</h1>
 
-        <div class="request-form">
-            <label for="patient-name">Patient Name:</label>
-            <input type="text" id="patient-name" placeholder="Enter patient name" required>
+        <form class="request-form" method="post">
+            {% csrf_token %}
 
             <label for="blood-group">Blood Group:</label>
-            <select id="blood-group" required>
+            <select id="blood-group" name="blood_group" required>
                 <option value="">--Select--</option>
                 <option value="A+">A+</option>
                 <option value="A-">A-</option>
@@ -41,28 +40,26 @@
                 <option value="AB-">AB-</option>
             </select>
 
-
             <label for="units">Units Required:</label>
-            <input type="number" id="units" min="1" placeholder="Enter number of units" required>
+            <input type="number" id="units" name="units" placeholder="Enter required units" min="1" required>
 
-            <label for="contact">Contact Number:</label>
-            <input type="tel" id="contact" placeholder="Enter contact number" required>
+            <label for="required-date">Required Date:</label>
+            <input type="date" id="required-date" name="required_date" required>
 
-            <label for="location">Location:</label>
-            <input type="text" id="location" placeholder="Enter city or area" required>
+            <label for="reason">Reason for Blood Request:</label>
+            <textarea id="reason" name="reason" rows="3" placeholder="Enter reason for the blood request" required></textarea>
 
-            <div class="form-group">
-                <label for="lastDonation">Needed Date</label>
-                <input type="date" id="blood_date" name="blood_date">
-                <label>
-                    <input type="checkbox" id="urgent" name="urgent">Urgent
-                </label>
+            <div class="urgent-checkbox">
+                <label for="urgent">Mark as Urgent</label>
+                <input type="checkbox" id="urgent" name="urgent">
             </div>
 
-            <button onclick="submitRequest()">Submit Request</button>
-        </div>
+            <button type="submit">Submit Request</button>
+        </form>
 
-        <div id="confirmation" class="confirmation"></div>
+        <div class="confirmation" id="confirmation">
+            Your blood request has been submitted successfully!
+        </div>
     </div>
 
     <script src="{% static 'js/patient_dashboard/request_blood.js' %}"></script>

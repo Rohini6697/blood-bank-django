@@ -30,7 +30,7 @@
       </header>
 
       <section class="update-card">
-        <form action="{% url 'update_donor' profile.id %}" method="post" id="eligibility-form">
+        <form action="{% url 'update_donor' hospital.id %}" method="post" id="eligibility-form">
           {% csrf_token %}
 
           <!-- User fields -->

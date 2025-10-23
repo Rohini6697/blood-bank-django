@@ -40,8 +40,8 @@ class Donor(models.Model):
     preferred_date = models.DateField(null=True,blank=True)
     preferred_time = models.TimeField(null=True,blank=True)
 
-def __str__(self):
-    return f"{self.fullname} {self.blood_group}"
+    def __str__(self):
+        return f"{self.fullname} {self.blood_group}"
 
 class Hospital(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
@@ -49,5 +49,20 @@ class Hospital(models.Model):
     contact_number = models.CharField(max_length = 20,null=True,blank=True)
     location = models.CharField(max_length=40,null=True,blank=True)
 
-def __str__(self):
-    return f"{self.hospital_name}"
+    def __str__(self):
+        return f"{self.hospital_name}"
+    
+class Patient(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    patient_name = models.CharField(max_length=20,null=True,blank=True)
+    patient_age = models.PositiveIntegerField(null=True,blank=True)
+    patient_dob = models.DateField(null=True,blank=True)
+    patient_gender = models.CharField(max_length=10,null=True,blank=True)
+    patient_number = models.CharField(max_length=20,null=True,blank=True)
+    patient_address = models.CharField(max_length=50,null=True,blank=True)
+    patient_blood_group = models.CharField(max_length=10,null=True,blank=True)
+    emergency_contact_name = models.CharField(max_length=20,null=True,blank=True)
+    emergency_contact_number = models.CharField(max_length=20,null=True,blank=True)
+
+    def __str__(self):
+        return f"{self.patient_name}"

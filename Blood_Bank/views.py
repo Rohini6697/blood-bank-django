@@ -1,4 +1,4 @@
-from .models import Hospital, Profile, Donor
+from .models import Hospital, Patient, Profile, Donor
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -27,10 +27,12 @@ def register(request):
 
 
             role = user.profile.role
-            if role == 'patient':
+            if role == 'donor':
                 return redirect('donor_details', donor_id=profile.id)
             elif role == 'hospital':
                 return redirect('hospital_details',hospital_id =profile.id )
+            elif role == 'patient':
+                return redirect('patient_details',patient_id = profile.id )
             else:
                 return redirect('signin')
             
@@ -82,8 +84,8 @@ def search_blood(request):
 def request_blood(request):
     return render(request,'patient_dashboard/request_blood.html')
 
-def request_status(request):
-    return render(request,'patient_dashboard/request_status.html')
+def request_update(request):
+    return render(request,'patient_dashboard/request_update.html')
 
 def received_history(request):
     return render(request,'patient_dashboard/received_history.html')
@@ -91,39 +93,61 @@ def received_history(request):
 def patient_notification(request):
     return render(request,'patient_dashboard/patient_notification.html')
 
+def patient_details(request,patient_id):
+    profile = get_object_or_404(Profile,id = patient_id)
+    patient,created = Patient.objects.get_or_create(profile=profile)
+
+    if request.method == 'POST':
+        patient.patient_name = request.POST.get('fullName')
+        patient.patient_age = int(request.POST.get('age')) if request.POST.get('age') else None
+        patient.patient_dob = request.POST.get('dob')
+        patient.patient_gender = request.POST.get('gender')
+        patient.patient_number = request.POST.get('contact')
+        patient.patient_address = request.POST.get('address')
+        patient.patient_blood_group = request.POST.get('bloodGroup')
+        patient.emergency_contact_name = request.POST.get('emergencyContact')
+        patient.emergency_contact_number = request.POST.get('emergencyNumber')
+        patient.save()
+        return redirect('patient_dashboard')
+
+
+    return render(request,'patient_dashboard/patient_details.html',{'patient':patient,'profile':profile})
+
 
 
 
 
 #-----------------hospital dashboard Page-----------------
 def hospitaldashboard(request):
-    return render(request,'hospital_dashboard/hospital_dashboard.html')
+    profile = request.user.profile
+    hospital = get_object_or_404(Hospital, profile=profile)
+    return render(request,'hospital_dashboard/hospital_dashboard.html',{'hospital':hospital})
 
 def request_blood_hospital(request):
-    return render(request,'hospital_dashboard/request_blood_hospital.html')
+    profile = request.user.profile
+    hospital = get_object_or_404(Hospital, profile=profile)
+    return render(request,'hospital_dashboard/request_blood_hospital.html',{'hospital':hospital})
 
 def request_history(request):
-    return render(request,'hospital_dashboard/request_history.html')
+    profile = request.user.profile
+    hospital = get_object_or_404(Hospital, profile=profile)
+    return render(request,'hospital_dashboard/request_history.html',{'hospital':hospital})
 
 def hospital_reports(request):
-    return render(request,'hospital_dashboard/hospital_reports.html')
+    profile = request.user.profile
+    hospital = get_object_or_404(Hospital, profile=profile)
+    return render(request,'hospital_dashboard/hospital_reports.html',{'hospital':hospital})
 
-def profile_update(request):
-    return render(request,'hospital_dashboard/profile_update.html')
-
-def hospital_details(request,hospital_id):
-    profile = get_object_or_404(Profile,id = hospital_id)
-    hospital,created = Hospital.objects.get_or_create(profile=profile)
-
-    if request.method == 'POST':
-        hospital.hospital_name = request.POST.get('hospital_name')
-        hospital.contact_number = request.POST.get('contact')
-        hospital.location = request.POST.get('location')
-        hospital.save()
-        return redirect('hospitaldashboard')
-    return render(request,'hospital_dashboard/hospital_details.html')
+def profile_update(request,hospital_id):
+    hospital = get_object_or_404(Hospital,id=hospital_id)
 
 
+    return render(request,'hospital_dashboard/profile_update.html',{'hospital':hospital})
+
+
+def hospital_details(request, hospital_id):
+    hospital = get_object_or_404(Hospital, id=hospital_id)
+    return render(request, 'hospital_details.html', {'hospital': hospital})
 #-----------------donor dashboard Page-----------------
 @login_required
 def donordashboard(request):
@@ -135,7 +159,12 @@ def donordashboard(request):
 @login_required
 def update_donor(request, donor_id):
     # Get the Profile object
-    profile = get_object_or_404(Profile, id=donor_id)
+    profile = get_object_or_404(Profile, id=donor_id ,role='hospital')
+    try:
+        hospital = Hospital.objects.get(profile=profile)
+    except Hospital.DoesNotExist:
+        # Handle the case if the hospital object is missing
+        hospital = None 
     
     # Get the linked Donor object or create one if it doesn't exist
     donor, created = Donor.objects.get_or_create(profile=profile)

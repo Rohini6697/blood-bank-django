@@ -17,7 +17,7 @@ urlpatterns = [
     path('request_blood_hospital/',views.request_blood_hospital,name='request_blood_hospital'),
     path('request_history/',views.request_history,name='request_history'),
     path('hospital_reports/',views.hospital_reports,name='hospital_reports'),
-    path('profile_update/',views.profile_update,name='profile_update'),
+    path('profile_update/<int:hospital_id>',views.profile_update,name='profile_update'),
     path('hospital_details/<int:hospital_id>/',views.hospital_details,name='hospital_details'),
 
 
@@ -42,8 +42,9 @@ urlpatterns = [
     path('patient_dashboard/',views.patient_dashboard,name='patient_dashboard'),
     path('search_blood/',views.search_blood,name='search_blood'),
     path('request_blood/',views.request_blood,name='request_blood'),
-    path('request_status/',views.request_status,name='request_status'),
+    path('request_update/',views.request_update,name='request_update'),
     path('received_history/',views.received_history,name='received_history'),
     path('patient_notification/',views.patient_notification,name='patient_notification'),
+    path('patient_details/<int:patient_id>/',views.patient_details,name='patient_details'),
 
 ]
