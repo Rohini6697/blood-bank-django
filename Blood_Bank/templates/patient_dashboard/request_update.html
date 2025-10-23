@@ -15,7 +15,7 @@
             <li><a href="{% url 'patient_dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'search_blood' %}">Search Blood</a></li>
             <li><a href="{% url 'request_blood' %}">Request Blood</a></li>
-            <li><a href="{% url 'request_update' %}">Request Update</a></li>
+            <li><a href="{% url 'request_update' patient.id %}">Request Update</a></li>
             <li><a href="{% url 'received_history' %}">Received History</a></li>
             <li><a href="{% url 'patient_notification' %}">Notifications</a></li>
             <li><a href="{% url 'home' %}">Logout</a></li>
@@ -28,22 +28,22 @@
 
         <div class="form-container">
 
-            <form method="post" action="{% url 'request_update' %}">
+            <form method="post" action="{% url 'request_update' patient.id %}">
                 {% csrf_token %}
 
                 <div class="form-group">
                     <label for="fullName">Full Name:</label>
-                    <input type="text" id="fullName" name="fullName" placeholder="Enter patient's name"  required>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter patient's name" value="{{patient.patient_name}}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="age">Age:</label>
-                    <input type="text" id="age" name="age"  required>
+                    <input type="text" id="age" name="age" value="{{patient.patient_age}}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="dob">Date of Birth:</label>
-                    <input type="date" id="dob" name="dob" required>
+                    <input type="date" id="dob" name="dob" value="{{ patient.patient_dob|date:'Y-m-d' }}" required>
                 </div>
 
                 <div class="form-group">
@@ -58,12 +58,12 @@
 
                 <div class="form-group">
                     <label for="contact">Contact Number:</label>
-                    <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required>
+                    <input type="tel" id="contact" name="contact" placeholder="Enter contact number" value="{{patient.patient_number}}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="address">Address:</label>
-                    <textarea id="address" name="address" rows="3" required></textarea>
+                    <textarea id="address" name="address" rows="3" required>{{patient.patient_address}}</textarea>
                 </div>
 
                 <div class="form-group">
@@ -83,12 +83,12 @@
 
                 <div class="form-group">
                     <label for="emergencyContact">Emergency Contact Name:</label>
-                    <input type="text" id="emergencyContact" name="emergencyContact"  placeholder="Enter emergency contact name" required>
+                    <input type="text" id="emergencyContact" name="emergencyContact" value="{{patient.emergency_contact_name}}"  placeholder="Enter emergency contact name" required>
                 </div>
 
                 <div class="form-group">
                     <label for="emergencyNumber">Emergency Contact Number:</label>
-                    <input type="tel" id="emergencyNumber" name="emergencyNumber"  placeholder="Enter emergency contact number" required>
+                    <input type="tel" id="emergencyNumber" name="emergencyNumber" value="{{patient.emergency_contact_number}}"  placeholder="Enter emergency contact number" required>
                 </div>
 
                 <button type="submit" class="submit-btn">Update</button>

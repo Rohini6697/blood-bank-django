@@ -76,22 +76,33 @@ def admindashboard(request):
 
 #-----------------patient dashboard Page-----------------
 def patient_dashboard(request):
-    return render(request,'patient_dashboard/patient_dashboard.html')
+    profile = get_object_or_404(Profile, user=request.user)
+    patient = Patient.objects.filter(profile=profile).first() 
+    return render(request,'patient_dashboard/patient_dashboard.html',{'patient': patient})
 
 def search_blood(request):
-    return render(request,'patient_dashboard/search_blood.html')
+    profile = get_object_or_404(Profile, user=request.user)
+    patient = Patient.objects.filter(profile=profile).first() 
+    return render(request,'patient_dashboard/search_blood.html',{'patient': patient})
 
 def request_blood(request):
-    return render(request,'patient_dashboard/request_blood.html')
+    profile = get_object_or_404(Profile, user=request.user)
+    patient = Patient.objects.filter(profile=profile).first() 
+    return render(request,'patient_dashboard/request_blood.html',{'patient': patient})
 
-def request_update(request):
-    return render(request,'patient_dashboard/request_update.html')
+def request_update(request,patient_id):
+    patient = get_object_or_404(Patient,id=patient_id)
+    return render(request,'patient_dashboard/request_update.html',{'patient':patient})
 
 def received_history(request):
-    return render(request,'patient_dashboard/received_history.html')
+    profile = get_object_or_404(Profile, user=request.user)
+    patient = Patient.objects.filter(profile=profile).first() 
+    return render(request,'patient_dashboard/received_history.html',{'patient': patient})
 
 def patient_notification(request):
-    return render(request,'patient_dashboard/patient_notification.html')
+    profile = get_object_or_404(Profile, user=request.user)
+    patient = Patient.objects.filter(profile=profile).first() 
+    return render(request,'patient_dashboard/patient_notification.html',{'patient': patient})
 
 def patient_details(request,patient_id):
     profile = get_object_or_404(Profile,id = patient_id)
