@@ -66,3 +66,11 @@ class Patient(models.Model):
 
     def __str__(self):
         return f"{self.patient_name}"
+    
+class Request_list(models.Model):
+    patient = models.OneToOneField(Patient,on_delete=models.CASCADE)
+    blood = models.CharField(max_length=10,null=True,blank=True)
+    unit = models.PositiveIntegerField(null=True,blank=True)
+    date = models.DateField(null=True,blank=True)
+    reason = models.CharField(max_length=50,null=True,blank=True)
+    urgency = models.BooleanField(default=False)
