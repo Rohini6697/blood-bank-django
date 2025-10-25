@@ -35,37 +35,19 @@
             <tr>
               <th>#</th>
               <th>Date</th>
-              <th>Location</th>
-              <th>Blood Type</th>
-              <th>Units Donated</th>
+              <th>Time</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>15 Sep 2025</td>
-              <td>City Hospital</td>
-              <td>O+</td>
-              <td>1 Unit</td>
-              <td><span class="status success">Completed</span></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>10 Jun 2025</td>
-              <td>Red Cross Center</td>
-              <td>O+</td>
-              <td>1 Unit</td>
-              <td><span class="status success">Completed</span></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>05 Feb 2025</td>
-              <td>Global Blood Bank</td>
-              <td>O+</td>
-              <td>1 Unit</td>
-              <td><span class="status pending">Pending Verification</span></td>
-            </tr>
+            {% for d in donation %}
+              <tr>
+                <td>1</td>
+                <td>{{d.preferred_date}}</td>
+                <td>{{d.preferred_time}}</td>
+                <td><span class="status success">{{d.status}}</span></td>
+              </tr>
+            {% endfor %}
           </tbody>
         </table>
       </section>

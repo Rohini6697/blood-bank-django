@@ -73,11 +73,6 @@
           </div>
 
           <div class="form-group">
-            <label for="heamoglobin">heamoglobin rate</label>
-            <input type="text" id="heamoglobin" name="heamoglobin"  placeholder="Enter your heamoglobin rate" required>
-            <p id="heamoglobin_message"></p>
-          </div>
-          <div class="form-group">
             <label for="medications">Are you currently taking any medications?</label>
             <select id="medications" name="medications" required>
                 <option value="">Select</option>
@@ -126,18 +121,6 @@
             <p id="travel_message"></p>
           </div>
 
-          <div class="form-group">
-            <label for="systolic">Systolic BP (mmHg)</label>
-            <input type="number" id="systolic" name="systolic" placeholder="e.g., 120" required>
-
-          </div>
-          <div class="form-group">
-            <label for="diastolic">Diastolic BP (mmHg)</label>
-            <input type="number" id="diastolic" name="diastolic" placeholder="e.g., 80" required>
-            <p id="bp_message"></p>
-          </div>
-
-
           
           <div class="form-group btn-area">
             <button type="submit" class="btn">Update Details</button>
@@ -149,6 +132,6 @@
       </section>
     </main>
   </div>
-  <script src="{% static 'js/donor_dashboard/update_donor.js' %}"></script>
+  <!-- <script src="{% static 'js/donor_dashboard/update_donor.js' %}"></script> -->
 </body>
 </html>

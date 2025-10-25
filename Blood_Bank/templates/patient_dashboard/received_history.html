@@ -15,7 +15,7 @@
             <li><a href="{% url 'patient_dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'search_blood' %}">Search Blood</a></li>
             <li><a href="{% url 'request_blood' %}">Request Blood</a></li>
-            <li><a href="{% url 'request_update' patient.id %}">Request Update</a></li>
+            <li><a href="{% url 'request_update'%}">Request Update</a></li>
             <li><a href="{% url 'received_history' %}">Received History</a></li>
             <li><a href="{% url 'patient_notification' %}">Notifications</a></li>
             <li><a href="{% url 'home' %}">Logout</a></li>
@@ -31,34 +31,21 @@
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Blood Group</th>
                         <th>Units Received</th>
-                        <th>Donor Name</th>
+                        <th>Reason</th>
                         <th>Hospital</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>2025-10-15</td>
-                        <td>O+</td>
-                        <td>2</td>
-                        <td>John Doe</td>
-                        <td>City Hospital</td>
-                    </tr>
-                    <tr>
-                        <td>2025-09-28</td>
-                        <td>A+</td>
-                        <td>1</td>
-                        <td>Jane Smith</td>
-                        <td>LifeCare Hospital</td>
-                    </tr>
-                    <tr>
-                        <td>2025-09-10</td>
-                        <td>B-</td>
-                        <td>3</td>
-                        <td>Mike Johnson</td>
-                        <td>General Hospital</td>
-                    </tr>
+                    {% for r in request_list %}
+                        <tr>
+                            <td>{{r.date}}</td>
+                            <td>{{r.unit}}</td>
+                            <td>{{r.reason}}</td>
+                            <td>{{r.status}}</td>
+                        </tr>
+                    {% endfor %}
+                    
                 </tbody>
             </table>
         </div>

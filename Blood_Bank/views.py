@@ -1,4 +1,4 @@
-from .models import Hospital, Patient, Profile, Donor, Request_list
+from .models import Donation_Request, Hospital, Patient, Profile, Donor, Request_list
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -58,23 +58,28 @@ def signin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request,username=username,password=password)
+        user = authenticate(request, username=username, password=password)
         if user is not None:
-            auth_login(request,user)
+            auth_login(request, user)
             if user.is_superuser:
                 return redirect('admindashboard')
             else:
                 role = user.profile.role
                 if role == 'donor':
-                    if hasattr(user, 'Donor'):
+                    try:
+                        donor = user.profile.donor
                         return redirect('donordashboard')
-                    else:
+                    except Donor.DoesNotExist:
                         return redirect('donor_details', profile_id=user.profile.id)
 
                 elif role == 'hospital':
                     return redirect('hospitaldashboard')
-                else:
-                    return redirect('donordashboard')
+                elif role == 'patient':
+                    try:
+                        patient = user.profile.patient
+                        return redirect('patient_dashboard')
+                    except Patient.DoesNotExist:
+                        return redirect('patient_details', patient_id=user.profile.id)
         else:
             return render(request,'signin.html',{'error':'Invalid username or password'})
     return render(request,'signin.html')
@@ -96,13 +101,18 @@ def patient_dashboard(request):
 def search_blood(request):
     profile = get_object_or_404(Profile, user=request.user)
     patient = Patient.objects.filter(profile=profile).first() 
+
+
+
+
     return render(request,'patient_dashboard/search_blood.html',{'patient': patient})
 
 def request_blood(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    patient = Patient.objects.filter(profile=profile).first()
+    profile = Profile.objects.get(user=request.user)
+    patient = Patient.objects.get(profile=profile)
 
-    requestlist = get_object_or_404(Request_list)
+    # requestlist = get_object_or_404(Request_list)
+    # requestlist = 
 
     if request.method == 'POST':
         units = request.POST.get('units')
@@ -138,14 +148,34 @@ def request_blood(request):
 
     return render(request,'patient_dashboard/request_blood.html',{'patient': patient})
 
-def request_update(request,patient_id):
-    patient = get_object_or_404(Patient,id=patient_id)
+def request_update(request):
+    # patient = get_object_or_404(Patient,id=patient_id)
+    profile = Profile.objects.get(user = request.user)
+    patient = Patient.objects.get(profile=profile)
+    if request.method == 'POST':
+        patient.patient_name = request.POST.get('fullName')
+        patient.patient_age = request.POST.get('age')
+        patient.patient_dob = request.POST.get('dob')
+        patient.patient_gender = request.POST.get('gender')
+        patient.patient_number = request.POST.get('contact')
+        patient.patient_address = request.POST.get('address')
+        patient.patient_blood_group = request.POST.get('bloodGroup')
+        patient.emergency_contact_name = request.POST.get('emergencyContact')
+        patient.patient_name = request.POST.get('fullName')
+        patient.emergency_contact_number = request.POST.get('emergencyNumber')
+
+        patient.save()
+        return redirect('received_history')
+
+
     return render(request,'patient_dashboard/request_update.html',{'patient':patient})
 
 def received_history(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    patient = Patient.objects.filter(profile=profile).first() 
-    return render(request,'patient_dashboard/received_history.html',{'patient': patient})
+    profile = Profile.objects.get(user=request.user)
+    patient = Patient.objects.get(profile=profile)
+    request_list = Request_list.objects.filter(patient = patient)
+
+    return render(request,'patient_dashboard/received_history.html',{'patient': patient,'request_list':request_list})
 
 def patient_notification(request):
     profile = get_object_or_404(Profile, user=request.user)
@@ -331,10 +361,13 @@ def update_donor(request, donor_id):
 def donation_history(request):
     profile = request.user.profile
     donor = Donor.objects.get(profile=profile)
+
+    donation = Donation_Request.objects.filter(donor = donor)
     
     return render(request, 'donor_dashboard/donation_history.html', {
         'profile': profile,
-        'donor': donor
+        'donor': donor,
+        'donation':donation
     })
 
 # def donation_history(request):
@@ -346,32 +379,42 @@ def donation_history(request):
 #         'donor': donor
 #     })
 
-def donor_eligibility(request):
-    return render(request,'donor_dashboard/donor_eligibility.html')
+
 def request_appointment(request):
-# Ensure the user has a profile
-    profile = get_object_or_404(Profile, user=request.user)
-
-    # Get or create a Donor object for this profile
-    donor, created = Donor.objects.get_or_create(profile=profile)
-
-    # Now you can safely generate the update URL
-    update_url = f"/update_donor/{donor.id}/"  # or use: reverse('update_donor', args=[donor.id])
-
+    # person = Donation_Request.objects.get(user = request.user)
+    profile = Profile.objects.get(user = request.user)
+    donor = Donor.objects.get(profile=profile)
     if request.method == 'POST':
-        # handle appointment form submission here
-        preferred_date = request.POST.get('preferred_date')
-        preferred_time = request.POST.get('preferred_time')
-        # save to a model if you have one
+        
+        date = request.POST.get('date')
+        time = request.POST.get('time')
 
-        # redirect after saving
-        return redirect('donordashboard')
+        Donation_Request.objects.create(
+            donor=donor,
+            preferred_date = date,
+            preferred_time = time
+        )
+        return redirect('donation_history')
+    return render(request, 'donor_dashboard/request_appointment.html',{'donor': donor})
 
-    return render(request, 'donor_dashboard/request_appointment.html', {
-        'profile': profile,
-        'donor': donor,
-        'update_url': update_url
-    })
+# def request_appointment(request):
+#     profile = get_object_or_404(Profile, user=request.user)
+
+#     donor, created = Donor.objects.get_or_create(profile=profile)
+
+#     update_url = f"/update_donor/{donor.id}/" 
+
+#     if request.method == 'POST':
+#         preferred_date = request.POST.get('preferred_date')
+#         preferred_time = request.POST.get('preferred_time')
+
+#         return redirect('donordashboard')
+
+#     return render(request, 'donor_dashboard/request_appointment.html', {
+#         'profile': profile,
+#         'donor': donor,
+#         'update_url': update_url
+#     })
 
 # def request_appoinment(request):
 #     profile = request.user.profile

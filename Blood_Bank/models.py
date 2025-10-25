@@ -27,21 +27,33 @@ class Donor(models.Model):
     address = models.CharField(max_length=50,null=True,blank=True)
     weight = models.PositiveIntegerField(null=True,blank=True)
     health = models.CharField(max_length=100,null=True,blank=True)
-    heamoglobin = models.PositiveIntegerField(null=True, blank=True)
     medications = models.CharField(max_length=10, null=True, blank=True)   
     tattoo = models.CharField(max_length=10, null=True, blank=True)        
     pregnancy = models.CharField(max_length=10, null=True, blank=True)     
     travel = models.CharField(max_length=10, null=True, blank=True)        
     lastDonation = models.DateField(null=True, blank=True)
     is_first_time = models.BooleanField(default=False)
-    systolic = models.PositiveIntegerField(null=True, blank=True)
-    diastolic = models.PositiveIntegerField(null=True, blank=True)
-
-    preferred_date = models.DateField(null=True,blank=True)
-    preferred_time = models.TimeField(null=True,blank=True)
+    
 
     def __str__(self):
         return f"{self.fullname} {self.blood_group}"
+    
+
+class Donation_Request(models.Model):
+    donor = models.ForeignKey(Donor,on_delete=models.CASCADE)
+    preferred_date = models.DateField(null=True,blank=True)
+    preferred_time = models.TimeField(null=True,blank=True)
+
+    STATUS_CHOICES = (
+        ('requested', 'Requested'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='requested')
+
+    def __str__(self):
+        return f"{self.preferred_date}"
+
 
 class Hospital(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
