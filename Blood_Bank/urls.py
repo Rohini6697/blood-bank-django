@@ -30,9 +30,11 @@ urlpatterns = [
     path('update_donor/<int:donor_id>/',views.update_donor,name='update_donor'),
     path('donation_history/',views.donation_history,name='donation_history'),
     path('donor_eligibility/',views.donor_eligibility,name='donor_eligibility'),
-    path('request_appointment/',views.request_appoinment,name='request_appointment'),
+    path('request_appointment/',views.request_appointment,name='request_appointment'),
     path('donor_notification/',views.donor_notification,name='donor_notification'),
-    path('donor_details/<int:donor_id>/', views.donor_details, name='donor_details'),
+    # path('donor_details/<int:donor_id>/', views.donor_details, name='donor_details'),
+    path('donor_details/<int:profile_id>/', views.donor_details, name='donor_details'),
+
 
 
 

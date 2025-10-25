@@ -18,7 +18,7 @@
       </header>
 
       <section class="update-card">
-        <form action="{% url 'donor_details' patient.id %}" method="post" id="eligibility-form">
+        <form action="{% url 'donor_details' profile.id %}" method="post" id="eligibility-form">
     {% csrf_token %}
 
           <div class="form-group">
