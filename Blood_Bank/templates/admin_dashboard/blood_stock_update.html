@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Blood Stock</title>
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard/blood_stock_update.css' %}">
+</head>
+<body>
+
+<div class="container">
+    <div class="form-card">
+        <h1>Update Stock</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            <label>Blood Group:</label>
+            <input type="text" value="{{ blood_stock.blood_group }}" name="blood_group" disabled>
+
+            <label>Units Available:</label>
+            <input type="number" name="units" value="{{ blood_stock.unit }}" min="1" required>
+
+            <div class="btn-group">
+                <button type="submit" href="{% url 'blood_stock_update' blood_stock.id %}" class="btn update">Update</button>
+                <a href="{% url 'blood_stock' %}" class="btn cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

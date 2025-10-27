@@ -1,4 +1,4 @@
-from .models import Donation_Request, Hospital, Hospital_Request, Patient, Profile, Donor, Request_list
+from .models import BloodStock, Donation_Request, Hospital, Hospital_Request, Patient, Profile, Donor, Request_list
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -115,14 +115,27 @@ def manage_users(request):
 def manage_hospitals(request):
     hospital_request = Hospital_Request.objects.all()
 
+
     return render(request,'admin_dashboard/manage_hospitals.html',{'hospital_request':hospital_request})
 
 
-def manage_hospitals_update(request, h_id):
+def manage_hospital_request(request, h_id):
     hospital_request = get_object_or_404(Hospital_Request, id=h_id)
-    hospital_request.status = 'approved'
-    hospital_request.save()
-    return redirect('manage_hospitals')
+
+    # Approve Request
+    if request.method == "POST":
+        if hospital_request.status != "approved":  # Avoid double approval
+            # Get blood stock for the requested group
+            blood_stock = get_object_or_404(BloodStock, blood_group=hospital_request.blood_group)
+
+            if blood_stock.unit >= hospital_request.unit:
+                blood_stock.unit -= hospital_request.unit   # Deduct stock
+                blood_stock.save()
+
+                hospital_request.status = "approved"
+                hospital_request.save()
+
+    return redirect('manage_hospitals') 
 
 def manage_hospitals_delete(request, h_id):
     hospital_request = get_object_or_404(Hospital_Request, id=h_id)
@@ -169,7 +182,42 @@ def manage_patients_delete(request, h_id):
 
 
 def blood_stock(request):
-    return render(request,'admin_dashboard/blood_stock.html')
+    if request.method == 'POST':
+        blood_group = request.POST.get('blood_group')
+        units = request.POST.get('units')
+
+        stock,created = BloodStock.objects.get_or_create(blood_group=blood_group)
+
+        if created:
+            stock.unit = units
+        else:
+            stock.unit += int(units)
+        stock.save()
+
+    stocks = BloodStock.objects.all()
+
+    return render(request,'admin_dashboard/blood_stock.html',{'stocks':stocks})
+
+
+
+
+def blood_stock_update(request,id):
+    blood_stock = get_object_or_404(BloodStock, id=id)
+    if request.method == 'POST':
+        # blood_stock.blood_group = request.POST.get('blood_group')
+        blood_stock.unit = request.POST.get('units')
+        blood_stock.save()
+        return redirect('blood_stock')
+        
+
+    return render(request,'admin_dashboard/blood_stock_update.html',{'blood_stock':blood_stock})
+
+
+def blood_stock_delete(request,id):
+    blood_stock = get_object_or_404(BloodStock,id=id)
+    blood_stock.delete()        
+    return redirect('blood_stock')
+
 
 def report_page(request):
     return render(request,'admin_dashboard/report_page.html')

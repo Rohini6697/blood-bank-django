@@ -38,19 +38,19 @@
                 </tr>
             </thead>
             <tbody>
-                {% for stock in blood_stock %}
+                {% for stock in stocks %}
                 <tr>
                     <td>{{ stock.blood_group }}</td>
-                    <td>{{ stock.units }}</td>
-                    <td>{{ stock.updated_at }}</td>
+                    <td>{{ stock.unit }}</td>
+                    <td>{{ stock.update_at }}</td>
                     <td>
-                        <form action="{% url 'update_stock' stock.id %}" method="post" style="display:inline;">
+                        <form action="#" method="post" style="display:inline;">
                             {% csrf_token %}
-                            <button class="btn update">Update</button>
+                            <button class="btn update"><a href="{% url 'blood_stock_update' stock.id %}">Update</a></button>
                         </form>
-                        <form action="{% url 'delete_stock' stock.id %}" method="post" style="display:inline;">
+                        <form action="#" method="post" style="display:inline;">
                             {% csrf_token %}
-                            <button class="btn delete">Delete</button>
+                            <button class="btn delete"><a href="{% url 'blood_stock_delete' stock.id %}">Delete</a></button>
                         </form>
                     </td>
                 </tr>
