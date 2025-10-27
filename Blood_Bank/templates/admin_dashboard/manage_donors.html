@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for r in donor_requests %}
+                    {% for r in donation_request %}
                     <tr>
                         <td>{{ r.donor.fullname }}</td>
                         <td>{{ r.donor.blood_group }}</td>
@@ -46,14 +46,14 @@
                         <td>{{ r.preferred_time }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-                            <form method="post" action="{% url 'approve_donor_request' r.id %}" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn approve">Accept</button>
-                            </form>
-                            <form method="post" action="{% url 'reject_donor_request' r.id %}" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn reject">Reject</button>
-                            </form>
+                            <a href="{% url 'manage_donors_update' r.id %}">
+                                <button class="btn approve" type="button">Accept</button>
+                            </a>
+
+                            <!-- Reject -->
+                            <a href="{% url 'manage_donors_delete' r.id %}">
+                                <button class="btn reject" type="button">Reject</button>
+                            </a>
                         </td>
                     </tr>
                     {% empty %}

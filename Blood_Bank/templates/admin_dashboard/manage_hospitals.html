@@ -32,29 +32,32 @@
                         <th>Hospital Name</th>
                         <th>Blood Group</th>
                         <th>Units</th>
-                        <th>Date</th>
+                        <th>Required Date</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for r in donoation_request %}
+                    {% for r in hospital_request %}
                     <tr>
-                        <td>{{ r.hospital.donoation_request }}</td>
+                        <td>{{ r.hospital.hospital_name }}</td>
                         <td>{{ r.Blood_group }}</td>
                         <td>{{ r.unit }}</td>
                         <td>{{ r.date }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-                            <form action="#" method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <button class="btn approve">Accept</button>
-                            </form>
-                            <form action="#" method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <button class="btn reject">Reject</button>
-                            </form>
+    <!-- Accept -->
+                            <a href="{% url 'manage_hospitals_update' r.id %}">
+                                <button class="btn approve" type="button">Accept</button>
+                            </a>
+
+                            <!-- Reject -->
+                            <a href="{% url 'manage_hospitals_delete' r.id %}">
+                                <button class="btn reject" type="button">Reject</button>
+                            </a>
                         </td>
+
+
                     </tr>
                     {% empty %}
                     <tr>

@@ -21,8 +21,12 @@ urlpatterns = [
     path('manage_users/',views.manage_users,name='manage_users'),
     path('blood_stock/',views.blood_stock,name='blood_stock'),
     path('report_page/',views.report_page,name='report_page'),
-    
-
+    path('manage_hospitals_update/<int:h_id>/',views.manage_hospitals_update,name='manage_hospitals_update'),
+    path('manage_hospitals_delete/<int:h_id>/',views.manage_hospitals_delete,name='manage_hospitals_delete'),
+    path('manage_donors_update/<int:h_id>/',views.manage_donors_update,name='manage_donors_update'),
+    path('manage_donors_delete/<int:h_id>/',views.manage_donors_delete,name='manage_donors_delete'),
+    path('manage_patients_update/<int:h_id>/',views.manage_patients_update,name='manage_patients_update'),
+    path('manage_patients_delete/<int:h_id>/',views.manage_patients_delete,name='manage_patients_delete'),
 
 
 

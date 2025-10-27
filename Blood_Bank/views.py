@@ -113,22 +113,60 @@ def manage_users(request):
 
 
 def manage_hospitals(request):
-    donoation_request = Donation_Request.objects.all()
-    hospital = Hospital.objects.all()
+    hospital_request = Hospital_Request.objects.all()
 
-    return render(request,'admin_dashboard/manage_hospitals.html',{'donoation_request':donoation_request})
+    return render(request,'admin_dashboard/manage_hospitals.html',{'hospital_request':hospital_request})
+
+
+def manage_hospitals_update(request, h_id):
+    hospital_request = get_object_or_404(Hospital_Request, id=h_id)
+    hospital_request.status = 'approved'
+    hospital_request.save()
+    return redirect('manage_hospitals')
+
+def manage_hospitals_delete(request, h_id):
+    hospital_request = get_object_or_404(Hospital_Request, id=h_id)
+    hospital_request.delete()
+    return redirect('manage_hospitals')
 
 
 
 
 def manage_donors(request):
-    return render(request,'admin_dashboard/manage_donors.html')
+    donation_request = Donation_Request.objects.all()
+    return render(request,'admin_dashboard/manage_donors.html',{'donation_request':donation_request})
 
+def manage_donors_update(request, h_id):
+    donation_request = get_object_or_404(Donation_Request, id=h_id)
+    donation_request.status = 'approved'
+    donation_request.save()
+    return redirect('manage_donors')
+
+def manage_donors_delete(request, h_id):
+    donation_request = get_object_or_404(Donation_Request, id=h_id)
+    donation_request.delete()
+    return redirect('manage_donors')
 
 
 
 def manage_patients(request):
-    return render(request,'admin_dashboard/manage_patients.html')
+    request_list = Request_list.objects.all()
+    return render(request,'admin_dashboard/manage_patients.html',{'request_list':request_list})
+
+def manage_patients_update(request, h_id):
+    request_list = get_object_or_404(Request_list, id=h_id)
+    request_list.status = 'approved'
+    request_list.save()
+    return redirect('manage_patients')
+
+def manage_patients_delete(request, h_id):
+    request_list = get_object_or_404(Request_list, id=h_id)
+    request_list.delete()
+    return redirect('manage_patients')
+
+
+
+
 
 def blood_stock(request):
     return render(request,'admin_dashboard/blood_stock.html')

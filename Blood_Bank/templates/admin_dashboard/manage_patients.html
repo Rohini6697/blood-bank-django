@@ -33,14 +33,14 @@
                         <th>Blood Group</th>
                         <th>Units</th>
                         <th>Reason</th>
-                        <th>Date</th>
+                        <th>Required Date</th>
                         <th>Urgent</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for r in patient_requests %}
+                    {% for r in request_list %}
                     <tr>
                         <td>{{ r.patient.patient_name }}</td>
                         <td>{{ r.patient.patient_blood_group }}</td>
@@ -50,14 +50,14 @@
                         <td>{{ r.urgent }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-                            <form method="post" action="{% url 'approve_patient_request' r.id %}" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn approve">Accept</button>
-                            </form>
-                            <form method="post" action="{% url 'reject_patient_request' r.id %}" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn reject">Reject</button>
-                            </form>
+                            <a href="{% url 'manage_patients_update' r.id %}">
+                                <button class="btn approve" type="button">Accept</button>
+                            </a>
+
+                            <!-- Reject -->
+                            <a href="{% url 'manage_patients_delete' r.id %}">
+                                <button class="btn reject" type="button">Reject</button>
+                            </a>
                         </td>
                     </tr>
                     {% empty %}
