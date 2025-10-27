@@ -97,7 +97,8 @@ def admindashboard(request):
     donor = Donor.objects.all().count()
     hospital = Hospital.objects.all().count()
     patient = Patient.objects.all().count()
-    return render(request,'admin_dashboard/admin_dashboard.html',{'donor':donor,'hospital':hospital,'patient':patient})
+    blood_stock = BloodStock.objects.all().count()
+    return render(request,'admin_dashboard/admin_dashboard.html',{'donor':donor,'hospital':hospital,'patient':patient,'blood_stock':blood_stock})
 
 
 def manage_users(request):
@@ -119,23 +120,35 @@ def manage_hospitals(request):
     return render(request,'admin_dashboard/manage_hospitals.html',{'hospital_request':hospital_request})
 
 
-def manage_hospital_request(request, h_id):
+def manage_hospitals_update(request, h_id):
     hospital_request = get_object_or_404(Hospital_Request, id=h_id)
 
-    # Approve Request
-    if request.method == "POST":
-        if hospital_request.status != "approved":  # Avoid double approval
-            # Get blood stock for the requested group
-            blood_stock = get_object_or_404(BloodStock, blood_group=hospital_request.blood_group)
+    # Prevent double approval
+    if hospital_request.status == 'approved':
+        return redirect('manage_hospitals')
 
-            if blood_stock.unit >= hospital_request.unit:
-                blood_stock.unit -= hospital_request.unit   # Deduct stock
-                blood_stock.save()
+    # ✅ Correct field names
+    blood_group = hospital_request.Blood_group
+    requested_units = hospital_request.unit
 
-                hospital_request.status = "approved"
-                hospital_request.save()
+    # ✅ Get the stock for this blood group
+    stock = get_object_or_404(BloodStock, blood_group=blood_group)
 
-    return redirect('manage_hospitals') 
+    # ✅ Check and reduce stock
+    if stock.unit >= requested_units:
+        stock.unit -= requested_units
+        stock.save()
+
+        hospital_request.status = 'approved'
+        hospital_request.save()
+
+    else:
+        # Not enough stock — optional message or status change
+        hospital_request.status = 'rejected'
+        hospital_request.save()
+
+    return redirect('manage_hospitals')
+
 
 def manage_hospitals_delete(request, h_id):
     hospital_request = get_object_or_404(Hospital_Request, id=h_id)
@@ -166,10 +179,35 @@ def manage_patients(request):
     request_list = Request_list.objects.all()
     return render(request,'admin_dashboard/manage_patients.html',{'request_list':request_list})
 
+from django.shortcuts import get_object_or_404, redirect
+from .models import Request_list, BloodStock
+
 def manage_patients_update(request, h_id):
     request_list = get_object_or_404(Request_list, id=h_id)
-    request_list.status = 'approved'
-    request_list.save()
+
+    # Take patient and their blood group
+    patient = request_list.patient
+    blood_group = patient.patient_blood_group
+    units_requested = request_list.unit
+
+    # Get stock for this blood group
+    blood_stock = get_object_or_404(BloodStock, blood_group=blood_group)
+
+    # If already approved, don’t reduce again
+    if request_list.status == 'approved':
+        return redirect('manage_patients')
+
+    # Check if enough stock exists
+    if blood_stock.unit >= units_requested:
+        blood_stock.unit -= units_requested
+        blood_stock.save()
+
+        request_list.status = 'approved'
+        request_list.save()
+    else:
+        request_list.status = 'rejected'
+        request_list.save()
+
     return redirect('manage_patients')
 
 def manage_patients_delete(request, h_id):
@@ -224,14 +262,16 @@ def report_page(request):
 
 
 import matplotlib
-matplotlib.use('Agg')  # Use backend for no GUI
+matplotlib.use('Agg')  # For non-GUI (server environment)
+
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
 from django.shortcuts import render
-from .models import Profile, Donor, Hospital, Patient, Request_list, Hospital_Request
+from .models import Donor, Hospital, Patient, Request_list, Hospital_Request, BloodStock
 
-def generate_graph(x, y, title, xlabel, ylabel):
+
+def generate_bar_graph(x, y, title, xlabel, ylabel):
     plt.figure(figsize=(5, 3))
     plt.bar(x, y)
     plt.title(title)
@@ -243,37 +283,50 @@ def generate_graph(x, y, title, xlabel, ylabel):
     buffer.seek(0)
     image_png = buffer.getvalue()
     buffer.close()
+    plt.close()
     return base64.b64encode(image_png).decode('utf-8')
 
+
+def generate_pie_chart(labels, sizes, title):
+    plt.figure(figsize=(5, 3))
+    plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)  # Pie Chart
+    plt.title(title)
+
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    plt.close()
+    return base64.b64encode(image_png).decode('utf-8')
+
+
 def report_page(request):
-    # Total counts
+    # Total Counts
     total_donors = Donor.objects.count()
     total_hospitals = Hospital.objects.count()
     total_patients = Patient.objects.count()
     total_requests = Request_list.objects.count()
 
-    # 2️⃣ Blood Stock (Example Static — Replace with your BloodStock Model later)
-    blood_groups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
-    units = [10, 5, 12, 7, 15, 6, 4, 3]  # Replace with real data from Blood Stock model
-    blood_stock_graph = generate_graph(blood_groups, units, 'Blood Stock by Type', 'Blood Group', 'Units')
+    # 1️⃣ Blood Stock - PIE CHART
+    blood_stock = BloodStock.objects.all()
+    blood_groups = [stock.blood_group for stock in blood_stock]
+    units = [stock.unit for stock in blood_stock]
+    blood_stock_graph = generate_pie_chart(blood_groups, units, 'Blood Stock Distribution')
 
-    # 3️⃣ Donors per Blood Group
-    groups = []
-    donor_counts = []
-    for group in blood_groups:
-        count = Donor.objects.filter(blood_group=group).count()
-        groups.append(group)
-        donor_counts.append(count)
-    donor_graph = generate_graph(groups, donor_counts, 'Donors by Blood Group', 'Blood group', 'Number')
+    # 2️⃣ Donors Per Blood Group - BAR
+    groups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
+    donor_counts = [Donor.objects.filter(blood_group=group).count() for group in groups]
+    donor_graph = generate_bar_graph(groups, donor_counts, 'Donors by Blood Group', 'Blood Group', 'Count')
 
-    # 5️⃣ Requests (Approved / Rejected / Pending)
+    # 3️⃣ Status of Requests - BAR
     statuses = ['approved', 'rejected', 'requested']
     status_counts = [
         Hospital_Request.objects.filter(status='approved').count() + Request_list.objects.filter(status='approved').count(),
         Hospital_Request.objects.filter(status='rejected').count() + Request_list.objects.filter(status='rejected').count(),
         Hospital_Request.objects.filter(status='requested').count() + Request_list.objects.filter(status='requested').count(),
     ]
-    request_status_graph = generate_graph(statuses, status_counts, 'Request Status Overview', 'Status', 'Count')
+    request_status_graph = generate_bar_graph(statuses, status_counts, 'Request Status Overview', 'Status', 'Count')
 
     return render(request, 'admin_dashboard/report_page.html', {
         'total_donors': total_donors,
@@ -284,8 +337,6 @@ def report_page(request):
         'donor_graph': donor_graph,
         'request_status_graph': request_status_graph,
     })
-
-
 
 
 #-----------------patient dashboard Page-----------------

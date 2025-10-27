@@ -8,67 +8,62 @@
     <link rel="stylesheet" href="{% static 'css/admin_dashboard/report_page.css' %}">
 </head>
 <body>
-<div class="container">
-    
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2>Admin Panel</h2>
-        <ul>
-            <li><a href="{% url 'admindashboard' %}">🏠 Dashboard</a></li>
-            <li><a href="{% url 'manage_users' %}">👥 Manage Users</a></li>
-            <li><a href="{% url 'blood_stock' %}">🩸 Blood Stock Management</a></li>
-            <li class="active"><a href="{% url 'report_page' %}">📊 Reports</a></li>
-            <li><a href="">⚙ Settings</a></li>
-        </ul>
-    </aside>
+    <div class="container">
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <h1>📊 Reports Overview</h1>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Admin Panel</h2>
+            <ul>
+                <li><a href="{% url 'admindashboard' %}">🏠 Dashboard</a></li>
+                <li><a href="{% url 'manage_users' %}">👥 Manage Users</a></li>
+                <li><a href="{% url 'blood_stock' %}">🩸 Blood Stock Management</a></li>
+                <li class="active"><a href="{% url 'report_page' %}">📊 Reports</a></li>
+                <li><a href="">⚙ Settings</a></li>
+            </ul>
+        </aside>
 
-        <!-- ✅ Summary Cards (Optional) -->
-        <div class="summary-cards">
-            <div class="card">
-                <h3>Total Donors</h3><p>{{ total_donors }}</p>
+        <!-- Main Content -->
+        <main class="main-content">
+            <h1>📊 Reports Overview</h1>
+
+            <!-- Summary Stats (Cards) -->
+            <div class="cards">
+                <div class="card">
+                    <h3>🧑‍🤝‍🧑 Total Donors</h3>
+                    <p>{{ total_donors }}</p>
+                </div>
+                <div class="card">
+                    <h3>🏥 Total Hospitals</h3>
+                    <p>{{ total_hospitals }}</p>
+                </div>
+                <div class="card">
+                    <h3>🧑‍⚕️ Total Patients</h3>
+                    <p>{{ total_patients }}</p>
+                </div>
+                <div class="card">
+                    <h3>📩 Total Requests</h3>
+                    <p>{{ total_requests }}</p>
+                </div>
             </div>
-            <div class="card">
-                <h3>Total Hospitals</h3><p>{{ total_hospitals }}</p>
-            </div>
-            <div class="card">
-                <h3>Total Patients</h3><p>{{ total_patients }}</p>
-            </div>
-            <div class="card">
-                <h3>Total Requests</h3><p>{{ total_requests }}</p>
-            </div>
-        </div>
 
-        <!-- ✅ Graphs Section -->
-        <h2>📊 Analytics & Graphs</h2>
-        <div class="graph-container">
-            <h3>1️⃣ Users by Role</h3>
-            <img src="data:image/png;base64,{{ user_role_graph }}" alt="Users by Role">
+            <!-- Section for Graphs -->
+            <section class="graphs">
+                <h2>📊 1. Blood Stock (Pie Chart)</h2>
+                <div class="graph-box">
+                    <img src="data:image/png;base64,{{ blood_stock_graph }}" alt="Blood Stock Chart">
+                </div>
 
-            <h3>2️⃣ Blood Stock per Blood Group</h3>
-            <img src="data:image/png;base64,{{ blood_stock_graph }}" alt="Blood Stock">
+                <h2>📊 2. Donors Per Blood Group</h2>
+                <div class="graph-box">
+                    <img src="data:image/png;base64,{{ donor_graph }}" alt="Donor Graph">
+                </div>
 
-            <h3>3️⃣ Donors per Blood Group</h3>
-            <img src="data:image/png;base64,{{ donor_graph }}" alt="Donors per Blood Group">
-        </div>
-
-        <!-- ✅ Blood Stock Grid -->
-        <h2 class="section-title">🩸 Blood Stock Overview</h2>
-        <div class="blood-grid">
-            {% for item in blood_stock %}
-            <div class="blood-card">
-                <h3>{{ item.blood_group }}</h3>
-                <p><strong>{{ item.units }}</strong> Units Available</p>
-                <span class="date">Updated: {{ item.updated_at }}</span>
-            </div>
-            {% empty %}
-            <p>No blood stock data available.</p>
-            {% endfor %}
-        </div>
-    </main>
-</div>
+                <h2>📊 3. Request Status Overview</h2>
+                <div class="graph-box">
+                    <img src="data:image/png;base64,{{ request_status_graph }}" alt="Request Status Graph">
+                </div>
+            </section>
+        </main>
+    </div>
 </body>
 </html>
