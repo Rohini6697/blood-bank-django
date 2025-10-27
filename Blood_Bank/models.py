@@ -115,3 +115,19 @@ class Hospital_Request(models.Model):
     def __str__(self):
         return f"{self.hospital.hospital_name}"
     
+
+
+
+class BloodStock(models.Model):
+    BLOOD_GROUP = [
+        ('A+', 'A+'), ('A-', 'A-'),
+        ('B+', 'B+'), ('B-', 'B-'),
+        ('O+', 'O+'), ('O-', 'O-'),
+        ('AB+', 'AB+'), ('AB-', 'AB-'),
+    ]
+    blood_group = models.CharField(max_length=10,choices=BLOOD_GROUP,null=True,blank=True)
+    unit = models.PositiveIntegerField(null=True,blank=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.blood_group} {self.unit}"
