@@ -10,7 +10,8 @@
 <body>
     <div class="form-container">
         <h1>Enter Hospital Details</h1>
-        <form class="hospital-form" method="post">
+        <form class="hospital-form" method="post" action="{% url 'hospital_details' hospital.id %}">
+
             {% csrf_token %}
 
             <label for="hospital-name">Hospital Name:</label>
@@ -22,8 +23,6 @@
 
             <label for="location">Location:</label>
             <input type="text" id="location" name="location" placeholder="Enter the city" required>
-
-    
             <button type="submit">Submit Details</button>
         </form>
     </div>

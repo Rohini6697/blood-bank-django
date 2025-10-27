@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | Admin</title>
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard/report_page.css' %}">
+</head>
+<body>
+<div class="container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a href="{% url 'admindashboard' %}">🏠 Dashboard</a></li>
+            <li class="active"><a href="{% url 'manage_users' %}">👥 Manage Users</a></li>
+            <li><a href="{% url 'blood_stock' %}">🩸 Blood Stock Management</a></li>
+            <li><a href="{% url 'report_page' %}">📊 Reports</a></li>
+            <li><a href="">⚙ Settings</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <h1>📊 Reports Overview</h1>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="card"><h3>Total Donors</h3><p>{{ total_donors }}</p></div>
+            <div class="card"><h3>Total Hospitals</h3><p>{{ total_hospitals }}</p></div>
+            <div class="card"><h3>Total Patients</h3><p>{{ total_patients }}</p></div>
+            <div class="card"><h3>Total Requests</h3><p>{{ total_requests }}</p></div>
+        </div>
+
+        <!-- Blood Stock Grid Cards -->
+        <h2 class="section-title">🩸 Blood Stock Overview</h2>
+        <div class="blood-grid">
+            {% for item in blood_stock %}
+            <div class="blood-card">
+                <h3>{{ item.blood_group }}</h3>
+                <p><strong>{{ item.units }}</strong> Units Available</p>
+                <span class="date">Updated: {{ item.updated_at }}</span>
+            </div>
+            {% empty %}
+            <p>No blood stock data available.</p>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+</body>
+</html>

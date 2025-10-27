@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Stock Management</title>
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard/blood_stock.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ✅ Sidebar (same as Admin Dashboard) -->
+    <aside class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a href="{% url 'admindashboard' %}">🏠 Dashboard</a></li>
+            <li><a href="{% url 'manage_users' %}">👥 Manage Users</a></li>
+            <li class="active"><a href="{% url 'blood_stock' %}">🩸 Blood Stock Management</a></li>
+            <li><a href="{% url 'report_page' %}">📊 Reports</a></li>
+            <li><a href="">⚙ Settings</a></li>
+        </ul>
+    </aside>
+
+    <!-- ✅ Main Content -->
+    <main class="main-content">
+        <h1>Blood Stock Management</h1>
+
+        <!-- ✅ Blood Stock Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Blood Group</th>
+                    <th>Units Available</th>
+                    <th>Last Updated</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stock in blood_stock %}
+                <tr>
+                    <td>{{ stock.blood_group }}</td>
+                    <td>{{ stock.units }}</td>
+                    <td>{{ stock.updated_at }}</td>
+                    <td>
+                        <form action="{% url 'update_stock' stock.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="btn update">Update</button>
+                        </form>
+                        <form action="{% url 'delete_stock' stock.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="btn delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No blood stock records available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- ✅ Add New Stock -->
+        <h3 style="margin-top:20px;">Add New Stock</h3>
+        <form method="post" class="add-form">
+            {% csrf_token %}
+            <label>Blood Group:</label>
+            <select name="blood_group" required>
+                <option value="A+">A+</option><option value="A-">A-</option>
+                <option value="B+">B+</option><option value="B-">B-</option>
+                <option value="O+">O+</option><option value="O-">O-</option>
+                <option value="AB+">AB+</option><option value="AB-">AB-</option>
+            </select>
+
+            <label>Units:</label>
+            <input type="number" name="units" min="1" required>
+
+            <button type="submit" class="btn add">Add Stock</button>
+        </form>
+
+    </main>
+
+</div>
+
+</body>
+</html>

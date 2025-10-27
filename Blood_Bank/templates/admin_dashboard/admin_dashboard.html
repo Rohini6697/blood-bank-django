@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard/admin_dashboard.css' %}">
+</head>
+<body>
+    <div class="container">
+
+        <aside class="sidebar">
+            <h2>Admin Panel</h2>
+            <ul>
+                <li><a href="{% url 'admindashboard' %}">🏠 Dashboard</a></li>
+                <li class="active"><a href="{% url 'manage_users' %}">👥 Manage Users</a></li>
+                <li><a href="{% url 'blood_stock' %}">🩸 Blood Stock Management</a></li>
+                <li><a href="{% url 'report_page' %}">📊 Reports</a></li>
+                <li><a href="">⚙ Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h1>Dashboard Overview</h1>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>🧑‍🤝‍🧑 Total Donors</h3>
+                    <p>{{donor}}</p>
+                </div>
+                <div class="card">
+                    <h3>🏥 Hospitals</h3>
+                    <p>{{hospital}}</p>
+                </div>
+                <div class="card">
+                    <h3>Patients</h3>
+                    <p>{{patient}}</p>
+                </div>
+                <div class="card">
+                    <h3>🩸 Available Blood Units</h3>
+                    <p>8</p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

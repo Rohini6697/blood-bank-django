@@ -1,4 +1,4 @@
-from .models import Donation_Request, Hospital, Patient, Profile, Donor, Request_list
+from .models import Donation_Request, Hospital, Hospital_Request, Patient, Profile, Donor, Request_list
 from django.shortcuts import redirect, render,get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -73,7 +73,11 @@ def signin(request):
                         return redirect('donor_details', profile_id=user.profile.id)
 
                 elif role == 'hospital':
-                    return redirect('hospitaldashboard')
+                    try:
+                        hospital = user.profile.hospital
+                        return redirect('hospitaldashboard')
+                    except Hospital.DoesNotExist:
+                        return redirect('hospital_details', hospital_id=user.profile.id)
                 elif role == 'patient':
                     try:
                         patient = user.profile.patient
@@ -90,7 +94,48 @@ def learnmore(request):
 
 #-----------------admin dashboard Page-----------------
 def admindashboard(request):
-    return render(request,'admin_dashboard.html')
+    donor = Donor.objects.all().count()
+    hospital = Hospital.objects.all().count()
+    patient = Patient.objects.all().count()
+    return render(request,'admin_dashboard/admin_dashboard.html',{'donor':donor,'hospital':hospital,'patient':patient})
+
+
+def manage_users(request):
+    donoation_request = Donation_Request.objects.filter(status = 'requested').count()
+    request_list = Request_list.objects.filter(status = 'requested').count()
+    hospital_request = Hospital_Request.objects.filter(status = 'requested').count()
+    return render(request,'admin_dashboard/manage_users.html',{
+        'donoation_request':donoation_request,
+        'request_list':request_list,
+        'hospital_request':hospital_request
+        })
+    
+
+
+def manage_hospitals(request):
+    donoation_request = Donation_Request.objects.all()
+    hospital = Hospital.objects.all()
+
+    return render(request,'admin_dashboard/manage_hospitals.html',{'donoation_request':donoation_request})
+
+
+
+
+def manage_donors(request):
+    return render(request,'admin_dashboard/manage_donors.html')
+
+
+
+
+def manage_patients(request):
+    return render(request,'admin_dashboard/manage_patients.html')
+
+def blood_stock(request):
+    return render(request,'admin_dashboard/blood_stock.html')
+
+def report_page(request):
+    return render(request,'admin_dashboard/report_page.html')
+
 
 #-----------------patient dashboard Page-----------------
 def patient_dashboard(request):
@@ -212,15 +257,52 @@ def hospitaldashboard(request):
     hospital = get_object_or_404(Hospital, profile=profile)
     return render(request,'hospital_dashboard/hospital_dashboard.html',{'hospital':hospital})
 
+from datetime import date, datetime
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Hospital, Hospital_Request
+
 def request_blood_hospital(request):
     profile = request.user.profile
-    hospital = get_object_or_404(Hospital, profile=profile)
-    return render(request,'hospital_dashboard/request_blood_hospital.html',{'hospital':hospital})
+    hospital = Hospital.objects.filter(profile=profile).first()
+
+    if not hospital:
+        return render(request, 'hospital_dashboard/request_blood_hospital.html', {
+            'error': 'No hospital is associated with this profile.'
+        })
+
+    if request.method == 'POST':
+        Blood_group = request.POST.get('blood_group')
+        unit = request.POST.get('units')
+        urgent = request.POST.get('urgent') == 'on'
+
+        if urgent:
+            request_date = date.today()  # ✅ Correct
+        else:
+            required_date = request.POST.get('date')
+            request_date = datetime.strptime(required_date, "%Y-%m-%d").date() if required_date else None
+
+        Hospital_Request.objects.create(
+            hospital=hospital,
+            Blood_group=Blood_group,
+            unit=unit,
+            date=request_date,
+            urgent=urgent
+        )
+
+        return redirect('request_history')
+
+    return render(request, 'hospital_dashboard/request_blood_hospital.html', {'hospital': hospital})
+
 
 def request_history(request):
     profile = request.user.profile
     hospital = get_object_or_404(Hospital, profile=profile)
-    return render(request,'hospital_dashboard/request_history.html',{'hospital':hospital})
+    request_history = Hospital_Request.objects.filter(hospital=hospital)
+
+    return render(request, 'hospital_dashboard/request_history.html', {
+        'hospital': hospital,
+        'request_history': request_history
+    })
 
 def hospital_reports(request):
     profile = request.user.profile
@@ -235,8 +317,20 @@ def profile_update(request,hospital_id):
 
 
 def hospital_details(request, hospital_id):
-    hospital = get_object_or_404(Hospital, id=hospital_id)
-    return render(request, 'hospital_details.html', {'hospital': hospital})
+    # hospital = get_object_or_404(Hospital, id=hospital_id)
+    # profile = get_object_or_404(Profile,id = hospital_id)
+    # hospital,created = Hospital.objects.get_or_create(profile=profile)
+    profile = Profile.objects.get(user = request.user)
+    hospital, created = Hospital.objects.get_or_create(profile=profile)
+
+    if request.method == 'POST':
+        hospital.hospital_name = request.POST.get('hospital_name')
+        hospital.contact_number = request.POST.get('contact')
+        hospital.location = request.POST.get('location')
+        hospital.save()
+        return redirect('hospitaldashboard')
+
+    return render(request, 'hospital_dashboard/hospital_details.html', {'hospital': hospital})
 #-----------------donor dashboard Page-----------------
 @login_required
 def donordashboard(request):

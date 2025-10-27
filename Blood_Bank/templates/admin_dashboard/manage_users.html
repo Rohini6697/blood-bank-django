@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage User Requests</title>
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard/manage_users.css' %}">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Admin Panel</h2>
+            <ul>
+                <li><a href="{% url 'admindashboard' %}">🏠 Dashboard</a></li>
+                <li class="active"><a href="{% url 'manage_users' %}">👥 Manage Users</a></li>
+                <li><a href="{% url 'blood_stock' %}">🩸 Blood Stock Management</a></li>
+                <li><a href="{% url 'report_page' %}">📊 Reports</a></li>
+                <li><a href="">⚙ Settings</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <h1>Manage User Requests</h1>
+
+            <div class="top-menu">
+                <a href="{% url 'manage_hospitals' %}">🏥 Hospital Requests</a>
+                <a href="{% url 'manage_donors' %}">🧑 Donor Requests</a>
+                <a href="{% url 'manage_patients' %}">🧑‍⚕ Patient Requests</a>
+            </div>
+
+            <div class="card-container">
+                <div class="card">
+                    <h3>🏥 Hospital Requests</h3>
+                    <p>{{ hospital_request }} Pending</p>
+                </div>
+
+                <div class="card">
+                    <h3>🧑 Donor Requests</h3>
+                    <p>{{ donoation_request }} Pending</p>
+                </div>
+
+                <div class="card">
+                    <h3>🧑‍⚕ Patient Requests</h3>
+                    <p>{{ request_list }} Pending</p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

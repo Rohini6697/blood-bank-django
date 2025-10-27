@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Requests</title>
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard/manage_donors.css' %}">
+</head>
+<body>
+    <div class="page-container">
+
+        <!-- ✅ Top Navigation -->
+        <nav class="top-menu">
+            <a href="{% url 'manage_hospitals' %}" class="active">🏥 Hospital</a>
+            <a href="{% url 'manage_donors' %}">🧑 Donor</a>
+            <a href="{% url 'manage_patients' %}">🧑‍⚕ Patient</a>
+        </nav>
+
+        <!-- ✅ Back Button -->
+        <div class="back-section">
+            <a href="{% url 'admindashboard' %}" class="back-btn">⬅ Back</a>
+        </div>
+
+        <!-- ✅ Table Section -->
+        <main class="table-container">
+            <h2>Donor Blood Requests</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Donor Name</th>
+                        <th>Blood Group</th>
+                        <th>Preferred Date</th>
+                        <th>Preferred Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in donor_requests %}
+                    <tr>
+                        <td>{{ r.donor.fullname }}</td>
+                        <td>{{ r.donor.blood_group }}</td>
+                        <td>{{ r.preferred_date }}</td>
+                        <td>{{ r.preferred_time }}</td>
+                        <td>{{ r.status }}</td>
+                        <td>
+                            <form method="post" action="{% url 'approve_donor_request' r.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn approve">Accept</button>
+                            </form>
+                            <form method="post" action="{% url 'reject_donor_request' r.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn reject">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No donor requests available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+    </div>
+</body>
+</html>

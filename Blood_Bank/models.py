@@ -95,3 +95,22 @@ class Request_list(models.Model):
 
     def __str__(self):
         return f"{self.patient.patient_name}"
+    
+
+
+class Hospital_Request(models.Model):
+    hospital = models.ForeignKey(Hospital,on_delete=models.CASCADE)
+    Blood_group = models.CharField(null=False,blank=False)
+    unit = models.PositiveIntegerField(null=True,blank=True)
+    date = models.DateField(null=True,blank=True)
+    urgent = models.BooleanField(default=False)
+
+    STATUS_CHOICES = (
+        ('requested', 'Requested'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='requested')
+
+    def __str__(self):
+        return f"{self.hospital.hospital_name}"

@@ -7,7 +7,21 @@ urlpatterns = [
     path('signup',views.register,name='signup'),
     path('signin/',views.signin,name='signin'),
     path('learnmore/',views.learnmore,name='learnmore'),
+    
+
+
+
+
+
+
     path('admindashboard/',views.admindashboard,name='admindashboard'),
+    path('manage_donors/',views.manage_donors,name='manage_donors'),
+    path('manage_patients/',views.manage_patients,name='manage_patients'),
+    path('manage_hospitals/',views.manage_hospitals,name='manage_hospitals'),
+    path('manage_users/',views.manage_users,name='manage_users'),
+    path('blood_stock/',views.blood_stock,name='blood_stock'),
+    path('report_page/',views.report_page,name='report_page'),
+    
 
 
 
