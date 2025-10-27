@@ -175,6 +175,71 @@ def report_page(request):
     return render(request,'admin_dashboard/report_page.html')
 
 
+import matplotlib
+matplotlib.use('Agg')  # Use backend for no GUI
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+from django.shortcuts import render
+from .models import Profile, Donor, Hospital, Patient, Request_list, Hospital_Request
+
+def generate_graph(x, y, title, xlabel, ylabel):
+    plt.figure(figsize=(5, 3))
+    plt.bar(x, y)
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    return base64.b64encode(image_png).decode('utf-8')
+
+def report_page(request):
+    # Total counts
+    total_donors = Donor.objects.count()
+    total_hospitals = Hospital.objects.count()
+    total_patients = Patient.objects.count()
+    total_requests = Request_list.objects.count()
+
+    # 2️⃣ Blood Stock (Example Static — Replace with your BloodStock Model later)
+    blood_groups = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']
+    units = [10, 5, 12, 7, 15, 6, 4, 3]  # Replace with real data from Blood Stock model
+    blood_stock_graph = generate_graph(blood_groups, units, 'Blood Stock by Type', 'Blood Group', 'Units')
+
+    # 3️⃣ Donors per Blood Group
+    groups = []
+    donor_counts = []
+    for group in blood_groups:
+        count = Donor.objects.filter(blood_group=group).count()
+        groups.append(group)
+        donor_counts.append(count)
+    donor_graph = generate_graph(groups, donor_counts, 'Donors by Blood Group', 'Blood group', 'Number')
+
+    # 5️⃣ Requests (Approved / Rejected / Pending)
+    statuses = ['approved', 'rejected', 'requested']
+    status_counts = [
+        Hospital_Request.objects.filter(status='approved').count() + Request_list.objects.filter(status='approved').count(),
+        Hospital_Request.objects.filter(status='rejected').count() + Request_list.objects.filter(status='rejected').count(),
+        Hospital_Request.objects.filter(status='requested').count() + Request_list.objects.filter(status='requested').count(),
+    ]
+    request_status_graph = generate_graph(statuses, status_counts, 'Request Status Overview', 'Status', 'Count')
+
+    return render(request, 'admin_dashboard/report_page.html', {
+        'total_donors': total_donors,
+        'total_hospitals': total_hospitals,
+        'total_patients': total_patients,
+        'total_requests': total_requests,
+        'blood_stock_graph': blood_stock_graph,
+        'donor_graph': donor_graph,
+        'request_status_graph': request_status_graph,
+    })
+
+
+
+
 #-----------------patient dashboard Page-----------------
 def patient_dashboard(request):
     profile = get_object_or_404(Profile, user=request.user)

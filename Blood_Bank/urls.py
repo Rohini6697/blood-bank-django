@@ -27,7 +27,12 @@ urlpatterns = [
     path('manage_donors_delete/<int:h_id>/',views.manage_donors_delete,name='manage_donors_delete'),
     path('manage_patients_update/<int:h_id>/',views.manage_patients_update,name='manage_patients_update'),
     path('manage_patients_delete/<int:h_id>/',views.manage_patients_delete,name='manage_patients_delete'),
+    path('reports/', views.report_page, name='report_page'),
 
+
+
+
+    
 
 
 

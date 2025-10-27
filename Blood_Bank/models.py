@@ -114,3 +114,4 @@ class Hospital_Request(models.Model):
 
     def __str__(self):
         return f"{self.hospital.hospital_name}"
+    
