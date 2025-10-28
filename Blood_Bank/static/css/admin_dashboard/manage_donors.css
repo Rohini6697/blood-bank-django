@@ -90,6 +90,9 @@ th {
     color: white;
     font-size: 13px;
 }
+.donated{
+    color: black;
+}
 
 .approve {
     background-color: #28a745;

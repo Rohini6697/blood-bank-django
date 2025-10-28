@@ -46,7 +46,7 @@
                         <td>{{ r.date }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-    <!-- Accept -->
+                            <!-- Accept -->
                             <a href="{% url 'manage_hospitals_update' r.id %}">
                                 <button class="btn approve" type="button">Accept</button>
                             </a>
@@ -55,9 +55,14 @@
                             <a href="{% url 'manage_hospitals_delete' r.id %}">
                                 <button class="btn reject" type="button">Reject</button>
                             </a>
+
+                            <!-- ✅ Donated (New Button Added) -->
+                            <a href="#">
+                                <button class="btn donated" type="button">Donated</button>
+                            </a>
+
+                            
                         </td>
-
-
                     </tr>
                     {% empty %}
                     <tr>
