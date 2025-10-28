@@ -120,6 +120,15 @@ def manage_hospitals(request):
     return render(request,'admin_dashboard/manage_hospitals.html',{'hospital_request':hospital_request})
 
 
+
+def accept_donor(request):
+    return render(request,'admin_dashboard/accept_donor.html')
+
+
+
+
+
+
 def manage_hospitals_update(request, h_id):
     hospital_request = get_object_or_404(Hospital_Request, id=h_id)
 
@@ -158,15 +167,81 @@ def manage_hospitals_delete(request, h_id):
 
 
 
+from datetime import date
+
 def manage_donors(request):
-    donation_request = Donation_Request.objects.all()
-    return render(request,'admin_dashboard/manage_donors.html',{'donation_request':donation_request})
+    donation_request = Donation_Request.objects.select_related('donor').all()
+
+    # Calculate eligibility and attach to donor
+    for req in donation_request:
+        donor = req.donor
+        age = donor.age or 0
+        weight = donor.weight or 0
+
+        if donor.lastDonation:
+            days_difference = (date.today() - donor.lastDonation).days
+        else:
+            days_difference = 9999  # default large number if never donated
+
+        if (
+            age < 18 or age > 60 or weight < 50
+            or donor.health == "yes" or donor.medications == "yes"
+            or donor.tattoo == "yes" or donor.pregnancy == "yes"
+            or days_difference < 35
+        ):
+            req.eligibility = 'Not Eligible'
+        else:
+            req.eligibility = 'Eligible'
+
+    return render(request, 'admin_dashboard/manage_donors.html', {'donation_request': donation_request})
+
+# def manage_donors_update(request, h_id):
+#     donation_request = get_object_or_404(Donation_Request, id=h_id)
+#     donation_request.status = 'approved'
+#     donation_request.save()
+#     return redirect('manage_donors')
+
+
+
+
 
 def manage_donors_update(request, h_id):
     donation_request = get_object_or_404(Donation_Request, id=h_id)
-    donation_request.status = 'approved'
-    donation_request.save()
+
+    # Prevent double approval
+    if donation_request.status == 'donated':
+        return redirect('manage_donors')
+
+    # ✅ Correct field names
+    blood_group = donation_request.donor.blood_group
+    requested_units = 1
+
+    # ✅ Get the stock for this blood group
+    stock = get_object_or_404(BloodStock, blood_group=blood_group)
+
+    # ✅ Check and reduce stock
+    if stock.unit >= requested_units:
+        stock.unit += requested_units
+        stock.save()
+
+        donation_request.status = 'donated'
+        donation_request.save()
+
+    else:
+        # Not enough stock — optional message or status change
+        donation_request.status = 'rejected'
+        donation_request.save()
+
     return redirect('manage_donors')
+
+
+
+
+
+
+
+
+
 
 def manage_donors_delete(request, h_id):
     donation_request = get_object_or_404(Donation_Request, id=h_id)
@@ -177,6 +252,7 @@ def manage_donors_delete(request, h_id):
 
 def manage_patients(request):
     request_list = Request_list.objects.all()
+
     return render(request,'admin_dashboard/manage_patients.html',{'request_list':request_list})
 
 from django.shortcuts import get_object_or_404, redirect
@@ -189,14 +265,14 @@ def manage_patients_update(request, h_id):
     patient = request_list.patient
     blood_group = patient.patient_blood_group
     units_requested = request_list.unit
-
+    
     # Get stock for this blood group
     blood_stock = get_object_or_404(BloodStock, blood_group=blood_group)
 
     # If already approved, don’t reduce again
     if request_list.status == 'approved':
         return redirect('manage_patients')
-
+    
     # Check if enough stock exists
     if blood_stock.unit >= units_requested:
         blood_stock.unit -= units_requested

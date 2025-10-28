@@ -34,6 +34,7 @@
                         <th>Preferred Date</th>
                         <th>Preferred Time</th>
                         <th>Status</th>
+                        <th>Eligibility</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -45,6 +46,8 @@
                         <td>{{ r.preferred_date }}</td>
                         <td>{{ r.preferred_time }}</td>
                         <td>{{ r.status }}</td>
+                        <td>{{ r.eligibility }}</td>
+                        
                         <td>
                             <a href="{% url 'manage_donors_update' r.id %}">
                                 <button class="btn approve" type="button">Accept</button>
@@ -55,7 +58,7 @@
                                 <button class="btn reject" type="button">Reject</button>
                             </a>
                             <a href="">
-                                <button class="btn donated" type="button">Donated</button>
+                                <button class="btn donated" type="button"><a href="{% url 'manage_donors_update' r.id %}">Donated</a></button>
                             </a>
                         </td>
                     </tr>

@@ -23,6 +23,7 @@ urlpatterns = [
     path('report_page/',views.report_page,name='report_page'),
     path('manage_hospitals_update/<int:h_id>/',views.manage_hospitals_update,name='manage_hospitals_update'),
     path('manage_hospitals_delete/<int:h_id>/',views.manage_hospitals_delete,name='manage_hospitals_delete'),
+    path('accept_donor/<int:h_id>/',views.accept_donor,name='accept_donor'),
     path('manage_donors_update/<int:h_id>/',views.manage_donors_update,name='manage_donors_update'),
     path('manage_donors_delete/<int:h_id>/',views.manage_donors_delete,name='manage_donors_delete'),
     path('manage_patients_update/<int:h_id>/',views.manage_patients_update,name='manage_patients_update'),

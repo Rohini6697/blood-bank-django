@@ -48,6 +48,7 @@ class Donation_Request(models.Model):
         ('requested', 'Requested'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
+        ('donated','Donated')
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='requested')
 
