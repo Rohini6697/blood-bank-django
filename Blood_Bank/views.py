@@ -121,11 +121,6 @@ def manage_hospitals(request):
 
 
 
-def accept_donor(request):
-    return render(request,'admin_dashboard/accept_donor.html')
-
-
-
 
 
 
@@ -156,6 +151,7 @@ def manage_hospitals_update(request, h_id):
         hospital_request.status = 'rejected'
         hospital_request.save()
 
+    
     return redirect('manage_hospitals')
 
 
@@ -200,6 +196,43 @@ def manage_donors(request):
 #     donation_request.status = 'approved'
 #     donation_request.save()
 #     return redirect('manage_donors')
+
+
+
+
+def accept_donor(request,h_id):
+    donation_request = get_object_or_404(Donation_Request, id=h_id)
+    # donation = Donation_Request.objects.all()
+
+    # Prevent re-accepting a donor
+    if donation_request.status == 'approved':
+        return render(request, 'admin_dashboard/accept_donor.html', {
+            'donation_request': donation_request,
+            'already_approved': True
+        })
+
+
+    if request.method == "POST":
+        appointment_date = request.POST.get("appointment_date")
+        appointment_time = request.POST.get("appointment_time")
+
+        # Save appointment info
+        donation_request.appointment_date = appointment_date
+        donation_request.appointment_time = appointment_time
+        donation_request.status = "approved"
+        donation_request.save()
+
+        return redirect('manage_donors')
+
+    
+    return render(request,'admin_dashboard/accept_donor.html',{'donation_request':donation_request})
+
+
+
+
+
+
+
 
 
 
@@ -800,17 +833,13 @@ def request_appointment(request):
 #         return redirect('donordashboard')
 #     return render(request,'donor_dashboard/request_appointment.html',{'profile': profile})
 def donor_notification(request):
-    # Get the profile of the logged-in user
     profile = get_object_or_404(Profile, user=request.user)
-
-    # Get or create the Donor object
     donor, created = Donor.objects.get_or_create(profile=profile)
-
-    # Now donor.id is guaranteed to exist
     update_url = f"/update_donor/{donor.id}/"  # or use: reverse('update_donor', args=[donor.id])
+    notifications = []
 
-    # Fetch notifications here if you have a model for it
-    notifications = []  # replace with actual query
+
+    
 
     return render(request, 'donor_dashboard/donor_notification.html', {
         'profile': profile,

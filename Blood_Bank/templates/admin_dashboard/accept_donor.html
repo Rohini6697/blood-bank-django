@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Appointment</title>
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard/accept_donor.css' %}">
+</head>
+<body>
+    <div class="page-container">
+
+        <!-- 🔹 Back Button -->
+        <div class="back-section">
+            <a href="{% url 'manage_donors' %}" class="back-btn">⬅ Back</a>
+        </div>
+
+        <!-- 🔹 Form Section -->
+        <main class="form-container">
+            <h2>Set Appointment Details</h2>
+
+            <form method="post" class="appointment-form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Preferred Date:</label>
+                    <input type="date" name="preferred_date" value="{{donation_request.preferred_date|date:'Y-m-d' }}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Preferred Time:</label>
+                    <input type="time" name="preferred_time" value="{{donation_request.preferred_time|time:'H:i'}}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Appointment Date:</label>
+                    <input type="date" name="appointment_date" value="{{donation_request.appointment_date|date:'Y-m-d' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Appointment Time:</label>
+                    <input type="time" name="appointment_time" value="{{donation_request.appointment_time|time:'H:i'}}" required>
+                </div>
+
+                <div class="btn-section">
+                    <button type="submit" class="btn save">💾 Save</button>
+                    <a href="{% url 'manage_donors' %}" class="btn cancel">✖ Cancel</a>
+                </div>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

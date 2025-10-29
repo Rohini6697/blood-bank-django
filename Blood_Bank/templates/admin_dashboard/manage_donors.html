@@ -33,6 +33,8 @@
                         <th>Blood Group</th>
                         <th>Preferred Date</th>
                         <th>Preferred Time</th>
+                        <th>Appointed Date</th>
+                        <th>Appointed Time</th>
                         <th>Status</th>
                         <th>Eligibility</th>
                         <th>Action</th>
@@ -45,11 +47,13 @@
                         <td>{{ r.donor.blood_group }}</td>
                         <td>{{ r.preferred_date }}</td>
                         <td>{{ r.preferred_time }}</td>
+                        <td>{{ r.appointment_date }}</td>
+                        <td>{{ r.appointment_time }}</td>
                         <td>{{ r.status }}</td>
                         <td>{{ r.eligibility }}</td>
                         
                         <td>
-                            <a href="{% url 'manage_donors_update' r.id %}">
+                            <a href="{% url 'accept_donor' r.id %}">
                                 <button class="btn approve" type="button">Accept</button>
                             </a>
 

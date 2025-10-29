@@ -1,0 +1,83 @@
+/* Page container */
+.page-container {
+    font-family: "Poppins", sans-serif;
+    background-color: #f9fafc;
+    min-height: 100vh;
+}
+
+/* 🔹 Back Button */
+.back-section {
+    margin: 20px;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: #b71c1c;
+    font-weight: bold;
+}
+
+/* 🔹 Form Container */
+.form-container {
+    background-color: #fff;
+    width: 60%;
+    margin: 40px auto;
+    padding: 30px 50px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #b71c1c;
+    margin-bottom: 25px;
+}
+
+/* 🔹 Form Layout */
+.appointment-form .form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+/* 🔹 Buttons */
+.btn-section {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.btn {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    margin: 0 8px;
+}
+
+.btn.save {
+    background-color: #b71c1c;
+    color: white;
+}
+
+.btn.cancel {
+    background-color: #ccc;
+    color: #333;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}

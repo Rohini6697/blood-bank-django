@@ -44,6 +44,9 @@ class Donation_Request(models.Model):
     preferred_date = models.DateField(null=True,blank=True)
     preferred_time = models.TimeField(null=True,blank=True)
 
+    appointment_date = models.DateField(null=True, blank=True)
+    appointment_time = models.TimeField(null=True, blank=True)
+
     STATUS_CHOICES = (
         ('requested', 'Requested'),
         ('approved', 'Approved'),
