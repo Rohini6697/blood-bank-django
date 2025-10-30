@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Notifications | LifeLink</title>
+    <link rel="stylesheet" href="{% static 'css/hospital_dashboard/hospital_notification.css' %}">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>LifeLink</h2>
+            <ul>
+                <li><a href="{% url 'hospitaldashboard' %}">Hospital Details</a></li>
+                <li><a href="{% url 'request_blood_hospital' %}">Request Blood</a></li>
+                <li><a href="{% url 'request_history' %}">Request History</a></li>
+                <li><a href="{% url 'hospital_reports' %}">Reports</a></li>
+                <li><a href="{% url 'hospital_notification' %}" class="active">hospital_notification</a></li>
+                {% if hospital %}
+                    <li><a href="{% url 'profile_update' hospital.id %}">Profile</a></li>
+                {% else %}
+                    <li><a href="#">Profile</a></li>
+                {% endif %}                
+                <li><a href="{% url 'home' %}">Logout</a></li>
+            </ul>
+
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <h1>🔔 Notifications</h1>
+
+            {% if notifications %}
+                <div class="notifications-list">
+                    {% for note in notifications %}
+                        <div class="notification-card {% if note.is_read %}read{% else %}unread{% endif %}">
+                            <div class="note-header">
+                                <span class="date">{{ note.created_at|date:"M d, Y H:i" }}</span>
+                            </div>
+                            <p>{{ note.message }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="no-notification">No new notifications 💤</p>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

@@ -1,128 +1,84 @@
-/* Global */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
-
 .page-container {
-    width: 100%;
+    font-family: Arial, sans-serif;
     padding: 20px;
-    background-color: #ffffff;
 }
 
-/* ✅ Top Menu */
 .top-menu {
     display: flex;
-    gap: 10px;
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+    gap: 15px;
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 6px;
 }
 
 .top-menu a {
     text-decoration: none;
-    color: #333;
-    padding: 10px 20px;
-    border: 1px solid #ddd;
+    color: black;
+    padding: 6px 12px;
     border-radius: 5px;
-    background-color: #f8f8f8;
-    font-weight: bold;
-}
-
-.top-menu a:hover {
-    background-color: #e6e6e6;
 }
 
 .top-menu a.active {
-    background-color: #dfe6ff;
-    border-color: #4a69bd;
-    color: #000;
+    background: crimson;
+    color: white;
 }
 
-/* ✅ Table */
-.table-container h2 {
-    margin-bottom: 15px;
-    font-size: 22px;
+.back-section {
+    margin: 15px 0;
+}
+
+.back-btn {
+    background: #555;
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+}
+
+.table-container {
+    margin-top: 20px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-}
-
-table, th, td {
-    border: 1px solid #ccc;
+    text-align: center;
 }
 
 th, td {
     padding: 10px;
-    text-align: center;
+    border: 1px solid #ddd;
 }
 
-th {
-    background-color: #f2f2f2;
-}
-
-/* ✅ Buttons */
 .btn {
-    padding: 6px 12px;
     border: none;
-    border-radius: 4px;
+    padding: 6px 10px;
     cursor: pointer;
-    font-size: 13px;
-}
-
-.approve {
-    background-color: #28a745;
+    border-radius: 5px;
     color: white;
-}
-
-.reject {
-    background-color: #dc3545;
-    color: white;
-}
-
-.approve:hover {
-    background-color: #218838;
-}
-
-.reject:hover {
-    background-color: #c82333;
-}
-/* Back button styling */
-.back-section {
-    margin: 10px 0;
-}
-
-.back-btn {
-    text-decoration: none;
-    padding: 8px 15px;
-    background-color: #555;
-    color: white;
-    border-radius: 4px;
     font-size: 14px;
-    border: 1px solid #333;
+    transition: 0.3s;
 }
 
-.back-btn:hover {
-    background-color: #333;
-    cursor: pointer;
-}
-.reject {
-    background-color: #dc3545;
-    color: white;
-    transition: background-color 0.5s ease, opacity 0.5s ease;
+.btn.approve {
+    background-color: green;
 }
 
-.reject:hover {
-    background-color: #c82333;
+.btn.reject {
+    background-color: crimson;
 }
 
-/* Smooth fade to gray when disabled */
-.reject.fade-disabled {
-    background-color: #999;
-    opacity: 0.6;
-    cursor: not-allowed;
+.btn:hover {
+    opacity: 0.8;
+}
+
+.status-approved {
+    color: green;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.status-approved.show {
+    opacity: 1;
 }

@@ -17,6 +17,7 @@
                 <li><a href="{% url 'request_blood_hospital' %}" class="active">Request Blood</a></li>
                 <li><a href="{% url 'request_history' %}">Request History</a></li>
                 <li><a href="{% url 'hospital_reports' %}">Reports</a></li>
+                <li><a href="{% url 'hospital_notification' %}">hospital_notification</a></li>
                 <li><a href="{% url 'profile_update' hospital.id %}">Profile</a></li>
                 <li><a href="{% url 'home' %}">Logout</a></li>
             </ul>
@@ -71,16 +72,19 @@
         </main>
     </div>
 
+    <!-- ✅ JS: Disable Date when Urgent is checked -->
     <script>
-        function disableReject(button) {
-            // Find the current table row
-            const row = button.closest("tr");
-            const rejectBtn = row.querySelector(".reject");
+        const urgentCheckbox = document.getElementById('urgent');
+        const dateField = document.getElementById('required-date');
 
-            // Disable reject and accept buttons
-            rejectBtn.disabled = true;
-            button.disabled = true;
-        }
+        urgentCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                dateField.disabled = true;
+                dateField.value = ''; // Clear existing date if selected
+            } else {
+                dateField.disabled = false;
+            }
+        });
     </script>
 
 </body>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import BloodStock, Donation_Request, Hospital_Request, Patient, Profile, Donor,Hospital, Request_list
+from .models import BloodStock, Donation_Request, Hospital_Request, Notification, Patient, Profile, Donor,Hospital, Request_list
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'role']
@@ -34,6 +34,11 @@ class BloodStockAdmin(admin.ModelAdmin):
     list_display = ('blood_group', 'unit', 'update_at')
 
 
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('message','created_at')
+
+
+
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Donor, DonorAdmin)
 admin.site.register(Hospital, HospitalAdmin)
@@ -42,3 +47,4 @@ admin.site.register(Request_list, RequestlistAdmin)
 admin.site.register(Donation_Request,DonationlistAdmin )
 admin.site.register(Hospital_Request,Hospital_requestAdmin )
 admin.site.register(BloodStock,BloodStockAdmin )
+admin.site.register(Notification,NotificationAdmin)

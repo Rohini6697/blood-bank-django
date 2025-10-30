@@ -10,7 +10,7 @@
 <body>
     <div class="page-container">
 
-        <!-- ✅ Top Menu Navigation -->
+        <!-- ✅ Navigation -->
         <nav class="top-menu">
             <a href="{% url 'manage_hospitals' %}" class="active">🏥 Hospital</a>
             <a href="{% url 'manage_donors' %}">🧑 Donor</a>
@@ -46,21 +46,24 @@
                         <td>{{ r.date }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-                            <button class="btn approve" type="button" 
-                                    data-url="{% url 'manage_hospitals_update' r.id %}" 
-                                    onclick="handleAccept(this)">Accept</button>
+                            {% if r.status == 'approved' %}
+                                <span class="status-approved show">✔ Accepted</span>
+                            {% else %}
+                                <button class="btn approve" 
+                                        type="button" 
+                                        data-url="{% url 'manage_hospitals_update' r.id %}" 
+                                        onclick="handleAccept(this)">Accept</button>
 
-                            {% if r.status != 'approved' %}
-                                <button class="btn reject" type="button">Reject</button>
+                                <button class="btn reject" 
+                                        type="button" 
+                                        data-url="{% url 'manage_hospitals_reject' r.id %}"
+                                        onclick="handleReject(this)">Reject</button>
                             {% endif %}
-                            </td>
-
-  
-
+                        </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="7">No hospital requests available</td>
+                        <td colspan="6">No hospital requests available</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -68,26 +71,46 @@
         </main>
     </div>
 
-    <!-- ✅ Script to disable reject after clicking accept -->
-   <script>
-function handleAccept(acceptBtn) {
-    const row = acceptBtn.closest("tr");
-    const rejectBtn = row.querySelector(".reject");
+    <!-- ✅ JavaScript -->
+    <script>
+        function handleAccept(acceptBtn) {
+            const row = acceptBtn.closest("tr");
+            const rejectBtn = row.querySelector(".reject");
 
-    // Smoothly fade out the reject button (for better UX)
-    if (rejectBtn) {
-        rejectBtn.style.transition = "opacity 0.6s ease";
-        rejectBtn.style.opacity = "0";
-        setTimeout(() => rejectBtn.remove(), 600); // remove after fade
-    }
+            // Disable all buttons immediately
+            acceptBtn.disabled = true;
+            if (rejectBtn) rejectBtn.disabled = true;
 
-    // Redirect to Django view to update the database
-    const updateUrl = acceptBtn.getAttribute("data-url");
-    window.location.href = updateUrl;
-}
-</script>
+            // Smooth fade-out for both buttons
+            [acceptBtn, rejectBtn].forEach(btn => {
+                if (btn) {
+                    btn.style.transition = "opacity 0.5s ease";
+                    btn.style.opacity = "0";
+                    setTimeout(() => btn.remove(), 500);
+                }
+            });
 
+            // Add "✔ Accepted" text
+            setTimeout(() => {
+                const acceptedText = document.createElement("span");
+                acceptedText.textContent = "✔ Accepted";
+                acceptedText.classList.add("status-approved", "show");
+                row.querySelector("td:last-child").appendChild(acceptedText);
+            }, 550);
 
+            // Redirect to Django view (update request)
+            const updateUrl = acceptBtn.getAttribute("data-url");
+            setTimeout(() => {
+                window.location.href = updateUrl;
+            }, 900); // wait for animation
+        }
 
+        function handleReject(rejectBtn) {
+            const rejectUrl = rejectBtn.getAttribute("data-url");
+            if (confirm("Are you sure you want to reject and delete this request?")) {
+                window.location.href = rejectUrl;
+            }
+        }
+    </script>
 </body>
 </html>

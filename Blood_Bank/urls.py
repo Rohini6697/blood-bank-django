@@ -22,7 +22,7 @@ urlpatterns = [
     path('blood_stock/',views.blood_stock,name='blood_stock'),
     path('report_page/',views.report_page,name='report_page'),
     path('manage_hospitals_update/<int:h_id>/',views.manage_hospitals_update,name='manage_hospitals_update'),
-    path('manage_hospitals_delete/<int:h_id>/',views.manage_hospitals_delete,name='manage_hospitals_delete'),
+    path('manage_hospitals_reject/<int:h_id>',views.manage_hospitals_reject,name='manage_hospitals_reject'),
     path('accept_donor/<int:h_id>/',views.accept_donor,name='accept_donor'),
     path('manage_donors_update/<int:h_id>/',views.manage_donors_update,name='manage_donors_update'),
     path('manage_donors_delete/<int:h_id>/',views.manage_donors_delete,name='manage_donors_delete'),
@@ -45,7 +45,7 @@ urlpatterns = [
     path('hospital_reports/',views.hospital_reports,name='hospital_reports'),
     path('profile_update/<int:hospital_id>',views.profile_update,name='profile_update'),
     path('hospital_details/<int:hospital_id>/',views.hospital_details,name='hospital_details'),
-
+    path('hospital_notification/',views.hospital_notification,name='hospital_notification'),
 
 
 

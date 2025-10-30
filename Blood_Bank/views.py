@@ -124,6 +124,14 @@ def manage_hospitals(request):
 
 
 
+from django.contrib.auth.models import User
+from .models import Hospital_Request, BloodStock, Notification
+
+from django.shortcuts import get_object_or_404, redirect
+from .models import Hospital_Request, BloodStock, Notification, Hospital
+
+
+# ✅ APPROVE REQUEST
 def manage_hospitals_update(request, h_id):
     hospital_request = get_object_or_404(Hospital_Request, id=h_id)
 
@@ -131,11 +139,9 @@ def manage_hospitals_update(request, h_id):
     if hospital_request.status == 'approved':
         return redirect('manage_hospitals')
 
-    # ✅ Correct field names
     blood_group = hospital_request.Blood_group
     requested_units = hospital_request.unit
 
-    # ✅ Get the stock for this blood group
     stock = get_object_or_404(BloodStock, blood_group=blood_group)
 
     # ✅ Check and reduce stock
@@ -146,21 +152,56 @@ def manage_hospitals_update(request, h_id):
         hospital_request.status = 'approved'
         hospital_request.save()
 
+        # ✅ Create notification for the hospital user
+        Notification.objects.create(
+            user=hospital_request.hospital.profile.user,
+            message=f"Your request for {requested_units} units of {blood_group} blood has been approved.",
+            role='hospital'
+        )
+
     else:
-        # Not enough stock — optional message or status change
         hospital_request.status = 'rejected'
         hospital_request.save()
 
-    
+        # ✅ Notify about rejection
+        Notification.objects.create(
+            user=hospital_request.hospital.profile.user,
+            message=f"Your request for {requested_units} units of {blood_group} blood was rejected due to insufficient stock.",
+            role='hospital'
+        )
+
     return redirect('manage_hospitals')
 
 
-def manage_hospitals_delete(request, h_id):
+# ❌ REJECT REQUEST MANUALLY (from Reject Button)
+def manage_hospitals_reject(request, h_id):
     hospital_request = get_object_or_404(Hospital_Request, id=h_id)
+
+    # ✅ Notify hospital before deletion
+    Notification.objects.create(
+        user=hospital_request.hospital.profile.user,
+        message=f"Your request for {hospital_request.Blood_group} blood has been rejected by the admin.",
+        role='hospital'
+    )
+
+    # ✅ Update status and then delete
+    hospital_request.status = 'rejected'
+    hospital_request.save()
+
+    # ✅ Delete the rejected request
     hospital_request.delete()
+
     return redirect('manage_hospitals')
 
+# 🔔 HOSPITAL NOTIFICATION VIEW
+def hospital_notification(request):
+    hospital = Hospital.objects.filter(profile__user=request.user).first()
+    notifications = Notification.objects.filter(role='hospital').order_by('-created_at')
 
+    return render(request, 'hospital_dashboard/hospital_notification.html', {
+        'notifications': notifications,
+        'hospital': hospital,
+    })
 
 
 from datetime import date

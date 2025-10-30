@@ -147,3 +147,22 @@ class BloodStock(models.Model):
 
     def __str__(self):
         return f"{self.blood_group} {self.unit}"
+    
+
+
+class Notification(models.Model):
+    ROLE_CHOICES = [
+        ('admin', 'Admin'),
+        ('hospital', 'Hospital'),
+        ('donor', 'Donor'),
+        ('patient', 'Patient'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, blank=True, null=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.role} - {self.message[:30]}"

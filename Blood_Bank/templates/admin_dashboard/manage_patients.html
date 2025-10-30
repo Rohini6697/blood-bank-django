@@ -6,15 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Requests</title>
     <link rel="stylesheet" href="{% static 'css/admin_dashboard/manage_patients.css' %}">
+    <style>
+        .btn {
+            transition: opacity 0.6s ease;
+        }
+    </style>
 </head>
 <body>
     <div class="page-container">
 
         <!-- ✅ Top Menu Navigation -->
         <nav class="top-menu">
-            <a href="{% url 'manage_hospitals' %}" class="active">🏥 Hospital</a>
+            <a href="{% url 'manage_hospitals' %}">🏥 Hospital</a>
             <a href="{% url 'manage_donors' %}">🧑 Donor</a>
-            <a href="{% url 'manage_patients' %}">🧑‍⚕ Patient</a>
+            <a href="{% url 'manage_patients' %}" class="active">🧑‍⚕ Patient</a>
         </nav>
 
         <!-- ✅ Back Button -->
@@ -50,16 +55,15 @@
                         <td>{{ r.urgent }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-                            <a href="{% url 'manage_patients_update' r.id %}">
-                                <button class="btn approve" type="button">Accept</button>
-                            </a>
+                            <button class="btn approve" type="button"
+                                data-url="{% url 'manage_patients_update' r.id %}"
+                                onclick="handleAccept(this)">Accept</button>
 
-                            <!-- Reject -->
-                            <a href="{% url 'manage_patients_delete' r.id %}">
-                                <button class="btn reject" type="button">Reject</button>
-                            </a>
-
-
+                            {% if r.status != 'approved' %}
+                            <button class="btn reject" type="button"
+                                data-url="{% url 'manage_hospitals_reject' r.id %}"
+                                onclick="handleReject(this)">Reject</button>
+                            {% endif %}
                         </td>
                     </tr>
                     {% empty %}
@@ -71,5 +75,31 @@
             </table>
         </main>
     </div>
+
+    <!-- ✅ Fade animation + Redirect Script -->
+    <script>
+        function handleAccept(acceptBtn) {
+            const row = acceptBtn.closest("tr");
+            const rejectBtn = row.querySelector(".reject");
+
+            // Fade out reject button smoothly
+            if (rejectBtn) {
+                rejectBtn.style.opacity = "0";
+                rejectBtn.style.transition = "opacity 0.6s ease";
+                setTimeout(() => rejectBtn.remove(), 600);
+            }
+
+            // Redirect to Django view after fade
+            const updateUrl = acceptBtn.getAttribute("data-url");
+            setTimeout(() => {
+                window.location.href = updateUrl;
+            }, 600);
+        }
+
+        function handleReject(rejectBtn) {
+            const deleteUrl = rejectBtn.getAttribute("data-url");
+            window.location.href = deleteUrl;
+        }
+    </script>
 </body>
 </html>
