@@ -769,6 +769,7 @@ def donation_history(request):
 
     donation = Donation_Request.objects.filter(donor = donor)
     
+    
     return render(request, 'donor_dashboard/donation_history.html', {
         'profile': profile,
         'donor': donor,

@@ -19,12 +19,12 @@
 
             <div class="form-group">
                 <label for="age">Age:</label>
-                <input type="text" id="age" name="age" required>
+                <input type="text" id="age" name="age" required readonly>
             </div>
 
             <div class="form-group">
                 <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob" required>
+                <input type="date" id="dob" name="dob" required >
             </div>
 
             <div class="form-group">
@@ -78,4 +78,22 @@
         </form>
     </div>
 </body>
+<script>
+    document.getElementById('dob').addEventListener('change', function() {
+        const dob = new Date(this.value);
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+
+        // Adjust if birthday hasn't occurred yet this year
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+
+        // Display calculated age in the age input field
+        document.getElementById('age').value = age;
+    });
+    
+</script>
+
 </html>

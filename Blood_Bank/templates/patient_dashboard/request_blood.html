@@ -48,4 +48,18 @@
     </div>
 
 </body>
+<script>
+    const urgentCheckbox = document.getElementById('urgent');
+    const dateField = document.getElementById('required-date');
+
+    urgentCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            dateField.disabled = true;
+            dateField.value = '';  // clear any date if already selected
+        } else {
+            dateField.disabled = false;
+        }
+    });
+</script>
+
 </html>

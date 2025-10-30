@@ -1,94 +1,99 @@
 document.getElementById("eligibility-form").addEventListener("submit", function(event) {
   event.preventDefault();
 
-  let formValid = true;
+  // Clear all previous messages
+  document.querySelectorAll("p[id$='_message']").forEach(p => p.innerText = "");
+  document.getElementById("message").innerText = "";
 
+  let formValid = true;
+  let message = "";
+
+  // --- Get form values ---
   const age = parseInt(document.getElementById("age").value);
   const weight = parseInt(document.getElementById("weight").value);
-  const health = document.getElementById("health").value; // dropdown now
-  const lastDonation = new Date(document.getElementById("lastDonation").value);
-  const today = new Date();
-  let systolic = parseInt(document.getElementById("systolic").value);
-  let diastolic = parseInt(document.getElementById("diastolic").value);
+  const health = document.getElementById("health").value;
+  const medications = document.getElementById("medications");
+  const tattoo = document.getElementById("tattoo");
+  const pregnancy = document.getElementById("pregnancy");
+  const lastDonationField = document.getElementById("lastDonation");
+  const first_time = document.getElementById("first_time");
 
+  // --- Donation date check ---
+  let diffDays = 999; // default (no donation)
+  if (lastDonationField.value && !first_time.checked) {
+    const lastDonation = new Date(lastDonationField.value);
+    const today = new Date();
+    diffDays = Math.floor((today - lastDonation) / (1000 * 60 * 60 * 24));
+  }
 
-  const travel = document.getElementById('travel');
+  // --- AGE check ---
+  if (isNaN(age) || age < 18 || age > 60) {
+    document.getElementById("age_message").innerText = "❌ You must be between 18 and 60 years old to donate.";
+    formValid = false;
+  }
 
-  const diffDays = Math.floor((today - lastDonation) / (1000 * 60 * 60 * 24));
-  
+  // --- WEIGHT check ---
+  if (isNaN(weight) || weight < 50) {
+    document.getElementById("weight_message").innerText = "❌ You must weigh at least 50 kg.";
+    formValid = false;
+  }
 
-  if (age < 18 || age > 60) {
-    message = " You must be between 18 and 60 years old to donate.";
-    document.getElementById("age_message").innerText = message;
-  } else if (weight < 50) {
-    message = " You must weigh at least 50 kg.";
-    document.getElementById("weight_message").innerText = message;
-  } else if (health === "yes") {
-    message = " You are not eligible due to health issues.";
-    document.getElementById("issue_message").innerText = message;
-  } else if (diffDays < 90) {
-    message = `You can donate after ${90 - diffDays} more days.`;
-    document.getElementById("days_message").innerText = message;
-  } 
+  // --- HEALTH issues ---
+  if (health === "yes") {
+    document.getElementById("issue_message").innerText = "❌ You are not eligible due to health issues.";
+    formValid = false;
+  }
 
+  // --- MEDICATIONS check ---
+  if (medications.value === 'yes') {
+    document.getElementById("medications_message").innerText = "❌ You are temporarily ineligible due to recent medication intake.";
+    formValid = false;
+  }
 
+  // --- TATTOO check ---
+  if (tattoo.value === 'yes') {
+    document.getElementById("tattoo_message").innerText = "❌ You may be temporarily ineligible due to a recent tattoo or piercing.";
+    formValid = false;
+  }
 
-  
-    if(travel.value == 'yes'){
-        message = " You are temporarily ineligible due to recent travel to malaria/epidemic areas.";
-        document.getElementById("travel_message").innerText = message;
-    }
+  // --- PREGNANCY check ---
+  if (pregnancy.value === 'yes') {
+    document.getElementById("pregnancy_message").innerText = "❌ You may be temporarily ineligible if you are currently pregnant or breastfeeding.";
+    formValid = false;
+  }
 
-    if(medications.value == 'yes'){
-        message = "You are temporarily ineligible due to recent medication intake.";
-        document.getElementById("medications_message").innerText = message;
-    }
-    if(tattoo.value == 'yes'){
-        message = "You may be temporarily ineligible due to a recent tattoo or piercing.";
-        document.getElementById("tattoo_message").innerText = message;
-    }
-    if (pregnancy.value == 'yes') {
-        let message = " You may be temporarily ineligible if you are currently pregnant or breastfeeding.";
-        document.getElementById("pregnancy_message").innerText = message;
-    }
-    if (heamoglobin.value < 12.5) {
-        let message = "You are temporarily ineligible due to low hemoglobin levels. Please consult a doctor and try again later.";
-        document.getElementById("heamoglobin_message").innerText = message;
-    }
+  // --- LAST DONATION check ---
+  if (!first_time.checked && lastDonationField.value && diffDays < 90) {
+    document.getElementById("days_message").innerText = `❌ You can donate after ${90 - diffDays} more days.`;
+    formValid = false;
+  }
 
+  // --- FINAL DECISION ---
+  if (!formValid) {
+    document.getElementById("message").innerText = "⚠️ Please fix the above issues before submitting.";
+    document.getElementById("message").style.color = "red";
+  } else {
+    document.getElementById("message").innerText = "✅ You are eligible to donate blood. Redirecting...";
+    document.getElementById("message").style.color = "green";
 
-    if (isNaN(systolic) || isNaN(diastolic)) {
-        let message = "Please enter valid blood pressure values.";
-        document.getElementById("bp_message").innerText = message
-        
-    } 
-    else if (systolic < 90 || systolic > 180 || diastolic < 50 || diastolic > 100) {
-
-        let message =" You may be temporarily ineligible due to abnormal blood pressure levels. Please ensure your BP is within the normal range before donating.";
-
-        document.getElementById("bp_message").innerText = message
-    } 
-
-    if (formValid) {
-        this.submit(); 
-    }
-
-
-
+    // Submit form after small delay (for visual feedback)
+    setTimeout(() => {
+      document.getElementById("eligibility-form").submit();
+    }, 800);
+  }
 });
 
 
 // -----------------------------------------------------------------------------
-first_time = document.getElementById('first_time');
-last_time = document.getElementById('lastDonation');
+// Disable last donation date if 'first time' is checked
+const first_time = document.getElementById('first_time');
+const last_time = document.getElementById('lastDonation');
 
-
-first_time.addEventListener('change',function(){
-    if(this.checked){
-        last_time.disabled = true;
-        last_time.value = ''
-    }
-    else{
-        last_time.disabled = false
-    }
-})
+first_time.addEventListener('change', function() {
+  if (this.checked) {
+    last_time.disabled = true;
+    last_time.value = '';
+  } else {
+    last_time.disabled = false;
+  }
+});
