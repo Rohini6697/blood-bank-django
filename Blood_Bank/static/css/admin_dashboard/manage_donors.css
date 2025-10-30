@@ -109,3 +109,11 @@ th {
 .reject:hover {
     background-color: #b52a3a;
 }
+.reject {
+    transition: opacity 0.6s ease;
+}
+
+.reject:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
