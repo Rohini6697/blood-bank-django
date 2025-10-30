@@ -67,7 +67,6 @@ urlpatterns = [
 
 
     path('patient_dashboard/',views.patient_dashboard,name='patient_dashboard'),
-    path('search_blood/',views.search_blood,name='search_blood'),
     path('request_blood/',views.request_blood,name='request_blood'),
     path('request_update/',views.request_update,name='request_update'),
     path('received_history/',views.received_history,name='received_history'),

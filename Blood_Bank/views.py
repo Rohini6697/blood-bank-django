@@ -454,14 +454,6 @@ def patient_dashboard(request):
     patient = Patient.objects.filter(profile=profile).first() 
     return render(request,'patient_dashboard/patient_dashboard.html',{'patient': patient})
 
-def search_blood(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    patient = Patient.objects.filter(profile=profile).first() 
-
-
-
-
-    return render(request,'patient_dashboard/search_blood.html',{'patient': patient})
 
 def request_blood(request):
     profile = Profile.objects.get(user=request.user)
