@@ -63,6 +63,15 @@ class Hospital(models.Model):
     contact_number = models.CharField(max_length = 20,null=True,blank=True)
     location = models.CharField(max_length=40,null=True,blank=True)
 
+    a_pos = models.PositiveIntegerField(null=True, blank=True, default=0)
+    a_neg = models.PositiveIntegerField(null=True, blank=True, default=0)
+    b_pos = models.PositiveIntegerField(null=True, blank=True, default=0)
+    b_neg = models.PositiveIntegerField(null=True, blank=True, default=0)
+    ab_pos = models.PositiveIntegerField(null=True, blank=True, default=0)
+    ab_neg = models.PositiveIntegerField(null=True, blank=True, default=0)
+    o_pos = models.PositiveIntegerField(null=True, blank=True, default=0)
+    o_neg = models.PositiveIntegerField(null=True, blank=True, default=0)
+
     def __str__(self):
         return f"{self.hospital_name}"
     

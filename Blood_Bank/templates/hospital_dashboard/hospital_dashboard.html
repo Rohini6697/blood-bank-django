@@ -4,52 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Blood Stock | Hospital Dashboard</title>
+    <title>Hospital Dashboard | LifeLink</title>
     <link rel="stylesheet" href="{% static 'css/hospital_dashboard/hospital_dashboard.css' %}">
 </head>
 <body>
     <div class="container">
+        <!-- Sidebar -->
         <aside class="sidebar">
-            <h2>Hospital Dashboard</h2>
+            <h2>LifeLink</h2>
             <ul>
-                <li><a href="{% url 'hospitaldashboard' %}">📦 View Blood Stock</a></li>
-                <li><a href="{% url 'request_blood_hospital' %}">📝 Request Blood</a></li>
-                <li><a href="{% url 'request_history' %}">📜 Request History</a></li>
-                <li><a href="{% url 'hospital_reports' %}">📊 Reports</a></li>
-                <li><a href="{% url 'profile_update' hospital.id %}">⚙ Profile</a></li>
-                <li><a href="{% url 'home' %}">🚪 Logout</a></li>
+                <li><a href="{% url 'hospitaldashboard' %}" class="active">Hospital Details</a></li>
+                <li><a href="{% url 'request_blood_hospital' %}">Request Blood</a></li>
+                <li><a href="{% url 'request_history' %}">Request History</a></li>
+                <li><a href="{% url 'hospital_reports' %}">Reports</a></li>
+                <li><a href="{% url 'profile_update' hospital.id %}">Profile</a></li>
+                <li><a href="{% url 'home' %}">Logout</a></li>
             </ul>
         </aside>
 
+        <!-- Main Content -->
         <main class="main-content">
-            <h1>Available Blood Stock</h1>
-            <table class="stock-table">
-                <thead>
-                    <tr>
-                        <th>Blood Group</th>
-                        <th>Available Units</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Example rows -->
-                    <tr>
-                        <td>A+</td>
-                        <td>12 Units</td>
-                        <td class="in-stock">Available</td>
-                    </tr>
-                    <tr>
-                        <td>B+</td>
-                        <td>3 Units</td>
-                        <td class="low-stock">Low Stock</td>
-                    </tr>
-                    <tr>
-                        <td>O-</td>
-                        <td>0 Units</td>
-                        <td class="out-stock">Out of Stock</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h1>Welcome, {{ user.profile.hospital.hospital_name }}</h1>
+
+            <div class="hospital-details">
+                <div class="info-card">
+                    <h2>🏥 Hospital Information</h2>
+                    <p><strong>Name:</strong> {{ user.profile.hospital.hospital_name }}</p>
+                    <p><strong>Location:</strong> {{ user.profile.hospital.location }}</p>
+                    <p><strong>Contact:</strong> {{ user.profile.hospital.contact_number }}</p>
+                    <p><strong>Email:</strong> {{ user.email}}</p>
+                </div>
+
+                <div class="about-card">
+                    <h2>💬 About Us</h2>
+                    <p>
+                        {{ hospital.description|default:"At LifeLink, our hospital is committed to saving lives and ensuring the timely availability of blood for all patients in need. We take pride in being a trusted partner in healthcare, serving our community with compassion and efficiency." }}
+                    </p>
+                </div>
+            </div>
         </main>
     </div>
 </body>

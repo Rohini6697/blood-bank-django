@@ -10,14 +10,14 @@
 <body>
     <div class="container">
         <aside class="sidebar">
-            <h2>Hospital Dashboard</h2>
+            <h2>LifeLink</h2>
             <ul>
-                <li><a href="{% url 'hospitaldashboard' %}">📦 View Blood Stock</a></li>
-                <li><a href="{% url 'request_blood_hospital' %}">📝 Request Blood</a></li>
-                <li><a href="{% url 'request_history' %}">📜 Request History</a></li>
-                <li><a href="{% url 'hospital_reports' %}">📊 Reports</a></li>
-                <li><a href="{% url 'profile_update' hospital.id %}">⚙ Profile</a></li>
-                <li><a href="{% url 'home' %}">🚪 Logout</a></li>
+                <li><a href="{% url 'hospitaldashboard' %}">Hospital Details</a></li>
+                <li><a href="{% url 'request_blood_hospital' %}">Request Blood</a></li>
+                <li><a href="{% url 'request_history' %}">Request History</a></li>
+                <li><a href="{% url 'hospital_reports' %}" class="active">Reports</a></li>
+                <li><a href="{% url 'profile_update' hospital.id %}">Profile</a></li>
+                <li><a href="{% url 'home' %}">Logout</a></li>
             </ul>
         </aside>
 

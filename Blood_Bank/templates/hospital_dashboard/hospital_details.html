@@ -4,26 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Details Form</title>
+    <title>Hospital Details</title>
     <link rel="stylesheet" href="{% static 'css/hospital_dashboard/hospital_details.css' %}">
 </head>
 <body>
     <div class="form-container">
-        <h1>Enter Hospital Details</h1>
-        <form class="hospital-form" method="post" action="{% url 'hospital_details' hospital.id %}">
+        <h1>🏥 Hospital Details Form</h1>
+        <p class="subtitle">Please provide your hospital information and available blood stock details.</p>
 
+        <form class="hospital-form" method="POST" action="{% url 'hospital_details' hospital.id %}">
             {% csrf_token %}
 
-            <label for="hospital-name">Hospital Name:</label>
-            <input type="text" id="hospital-name" name="hospital_name" placeholder="Enter hospital name" required>
+            <!-- Basic Details -->
+            <div class="section">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="hospital-name">Hospital Name</label>
+                        <input type="text" id="hospital-name" name="hospital_name" placeholder="Enter hospital name" required>
+                    </div>
 
-            <label for="contact">Contact Number:</label>
-            <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required>
+                    <div class="input-group">
+                        <label for="contact">Contact Number</label>
+                        <input type="tel" id="contact" name="contact" placeholder="Enter contact number" required>
+                    </div>
+                </div>
 
+                <div class="input-group full-width">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" placeholder="Enter the city" required>
+                </div>
+            </div>
 
-            <label for="location">Location:</label>
-            <input type="text" id="location" name="location" placeholder="Enter the city" required>
-            <button type="submit">Submit Details</button>
+            <!-- Blood Stock Section -->
+            <h2>🩸 Available Blood Stock</h2>
+            <div class="blood-grid">
+                <div class="blood-group"><label for="a_pos">A+</label><input type="number" id="a_pos" name="a_pos" min="0" placeholder="Units"></div>
+                <div class="blood-group"><label for="a_neg">A−</label><input type="number" id="a_neg" name="a_neg" min="0" placeholder="Units"></div>
+                <div class="blood-group"><label for="b_pos">B+</label><input type="number" id="b_pos" name="b_pos" min="0" placeholder="Units"></div>
+                <div class="blood-group"><label for="b_neg">B−</label><input type="number" id="b_neg" name="b_neg" min="0" placeholder="Units"></div>
+                <div class="blood-group"><label for="ab_pos">AB+</label><input type="number" id="ab_pos" name="ab_pos" min="0" placeholder="Units"></div>
+                <div class="blood-group"><label for="ab_neg">AB−</label><input type="number" id="ab_neg" name="ab_neg" min="0" placeholder="Units"></div>
+                <div class="blood-group"><label for="o_pos">O+</label><input type="number" id="o_pos" name="o_pos" min="0" placeholder="Units"></div>
+                <div class="blood-group"><label for="o_neg">O−</label><input type="number" id="o_neg" name="o_neg" min="0" placeholder="Units"></div>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Details</button>
         </form>
     </div>
 </body>

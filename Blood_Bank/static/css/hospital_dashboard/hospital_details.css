@@ -1,60 +1,135 @@
-/* Page Layout */
+/* General Page Setup */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #eef2f3;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
     margin: 0;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
-/* Form Container */
+/* Card Container */
 .form-container {
-    background-color: white;
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-    width: 100%;
-    max-width: 450px;
-}
-
-/* Form Heading */
-.form-container h1 {
+    background: #fff;
+    width: 600px;
+    padding: 40px 50px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     text-align: center;
+}
+
+/* Headings */
+h1 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 15px;
     margin-bottom: 25px;
-    color: #2c3e50;
 }
 
-/* Form Styling */
-.hospital-form label {
+/* Input Group Layout */
+.input-row {
+    display: flex;
+    gap: 50px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    flex: 1;
+    text-align: left;
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Labels and Inputs */
+label {
     display: block;
-    margin: 12px 0 5px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #444;
 }
 
-.hospital-form input {
+input[type="text"],
+input[type="tel"],
+input[type="number"] {
     width: 100%;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 10px 12px;
     border: 1px solid #ccc;
-    margin-bottom: 15px;
-    font-size: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: 0.3s;
 }
 
-/* Submit Button */
-.hospital-form button {
+input:focus {
+    border-color: #ff4b2b;
+    box-shadow: 0 0 6px rgba(255, 75, 43, 0.4);
+    outline: none;
+}
+
+/* Blood Group Grid */
+h2 {
+    color: #333;
+    font-size: 22px;
+    margin: 25px 0 15px;
+}
+
+.blood-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.blood-group {
+    background: #fafafa;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.blood-group label {
+    font-weight: 600;
+    color: #ff416c;
+}
+
+/* Button Styling */
+.submit-btn {
     width: 100%;
-    background-color: #2c3e50;
-    color: white;
+    background: #ff4b2b;
+    color: #fff;
     border: none;
-    padding: 12px;
-    border-radius: 6px;
+    padding: 14px;
+    border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: 0.3s ease;
 }
 
-.hospital-form button:hover {
-    background-color: #1abc9c;
+.submit-btn:hover {
+    background: #ff416c;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .form-container {
+        width: 90%;
+        padding: 30px;
+    }
+    .input-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .blood-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
