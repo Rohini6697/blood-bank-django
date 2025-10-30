@@ -568,12 +568,17 @@ def request_blood_hospital(request):
     profile = request.user.profile
     hospital = Hospital.objects.filter(profile=profile).first()
 
+    
+
     if not hospital:
         return render(request, 'hospital_dashboard/request_blood_hospital.html', {
             'error': 'No hospital is associated with this profile.'
         })
 
     if request.method == 'POST':
+        patient_name = request.POST.get('patient_name')
+        patient_email = request.POST.get('patient_email')
+        patient_contact = request.POST.get('patient_contact')
         Blood_group = request.POST.get('blood_group')
         unit = request.POST.get('units')
         urgent = request.POST.get('urgent') == 'on'
@@ -586,6 +591,9 @@ def request_blood_hospital(request):
 
         Hospital_Request.objects.create(
             hospital=hospital,
+            patient_name=patient_name,
+            patient_email=patient_email,
+            patient_contact=patient_contact,
             Blood_group=Blood_group,
             unit=unit,
             date=request_date,

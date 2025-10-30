@@ -116,6 +116,11 @@ class Hospital_Request(models.Model):
     date = models.DateField(null=True,blank=True)
     urgent = models.BooleanField(default=False)
 
+
+    patient_name = models.CharField(max_length=100, null=True, blank=True)
+    patient_email = models.EmailField(null=True, blank=True)
+    patient_contact = models.CharField(max_length=15, null=True, blank=True)
+
     STATUS_CHOICES = (
         ('requested', 'Requested'),
         ('approved', 'Approved'),

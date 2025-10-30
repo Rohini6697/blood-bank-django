@@ -26,6 +26,9 @@
             <table class="history-table">
                 <thead>
                     <tr>
+                        <th>Patient Name</th>
+                        <th>Email</th>
+                        <th>Contact Number</th>
                         <th>Blood Group</th>
                         <th>Units</th>
                         <th>Requested Date</th>
@@ -33,15 +36,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Sample Data -->
-                     {% for r in request_history %}
+                    {% if request_history %}
+                        {% for r in request_history %}
+                            <tr>
+                                <td>{{ r.patient_name }}</td>
+                                <td>{{ r.patient_email }}</td>
+                                <td>{{ r.patient_contact }}</td>
+                                <td>{{ r.Blood_group }}</td>
+                                <td>{{ r.unit }}</td>
+                                <td>{{ r.date }}</td>
+                                <td class="{% if r.status == 'approved' %}approved{% elif r.status == 'rejected' %}rejected{% else %}pending{% endif %}">
+                                    {{ r.status|title }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
                         <tr>
-                            <td>{{r.Blood_group}}</td>
-                            <td>{{r.unit}}</td>
-                            <td>{{r.date}}</td>
-                            <td class="pending">Pending</td>
+                            <td colspan="7" style="text-align: center;">No requests found.</td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </main>
