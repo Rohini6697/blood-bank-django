@@ -29,7 +29,6 @@ class Donor(models.Model):
     medications = models.CharField(max_length=10, null=True, blank=True)   
     tattoo = models.CharField(max_length=10, null=True, blank=True)        
     pregnancy = models.CharField(max_length=10, null=True, blank=True)     
-    travel = models.CharField(max_length=10, null=True, blank=True)        
     lastDonation = models.DateField(null=True, blank=True)
     is_first_time = models.BooleanField(default=False)
     

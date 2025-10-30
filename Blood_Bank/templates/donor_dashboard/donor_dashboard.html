@@ -22,19 +22,33 @@
     </aside>
 
     <main class="main-content">
-      <header>
-        <h1>Welcome, Donor!</h1>
-      </header>
+
 
       <div class="card-container">
-        <section class="card">
-          <h2>Donation History</h2>
-          
-        </section>
+        <section class="hero">
+    <div class="hero-content">
+      <h2>Welcome, {{ user.profile.donor.fullname }}</h2>
+      <p>Every drop counts. Every donor is a hero.” ❤️</p>
+      <a href="{% url 'request_appointment' %}" class="hero-btn">Request Appointment</a>
+    </div>
+  </section>
 
-        <section class="card">
-          <h2>new notificatios</h2>
-        </section>
+  
+  <section class="motivation">
+    <h2>Why Donate Blood?</h2>
+    <p>
+      Every two seconds, someone in the world needs blood. Your donation can help accident victims,
+      patients undergoing surgery, and those battling life-threatening diseases. 
+      Together, we can make a difference.
+    </p>
+    <blockquote>
+      “Every drop of blood donated is a drop of love shared.”
+    </blockquote>
+  </section>
+        
+       
+
+        
       </div>
     </main>
   </div>

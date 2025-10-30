@@ -8,7 +8,7 @@ class DonorAdmin(admin.ModelAdmin):
     list_display = [
         'profile', 'fullname', 'age', 'blood_group', 'phonenumber', 'address', 
         'weight', 'health', 'medications', 'tattoo', 'pregnancy',
-        'travel', 'lastDonation', 'is_first_time'
+        'lastDonation', 'is_first_time'
     ]
 
 class DonationlistAdmin(admin.ModelAdmin):
