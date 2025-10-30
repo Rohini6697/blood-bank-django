@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <h2>LifeLink</h2>
             <ul>
@@ -21,21 +22,38 @@
             </ul>
         </aside>
 
+        <!-- Main Content -->
         <main class="main-content">
-            <h1>Hospital Profile</h1>
+            <h1>🏥 Hospital Profile</h1>
 
             <form class="profile-form" method="post" action="{% url 'profile_update' hospital.id %}">
+                {% csrf_token %}
+
+                <!-- Basic Info -->
                 <label for="hospital-name">Hospital Name:</label>
-                <input type="text" id="hospital-name" placeholder="Enter hospital name" value="{{hospital.hospital_name}}" required>
+                <input type="text" id="hospital-name" name="hospital_name" placeholder="Enter hospital name" value="{{ hospital.hospital_name }}" required>
 
                 <label for="contact">Contact Number:</label>
-                <input type="tel" id="contact" placeholder="Enter contact number" value="{{hospital.contact_number}}" required>
+                <input type="tel" id="contact" name="contact" placeholder="Enter contact number" value="{{ hospital.contact_number }}" required>
 
                 <label for="email">Email:</label>
-                <input type="email" id="email" placeholder="Enter email address" value="{{user.email}}"  required>
+                <input type="email" id="email" placeholder="Enter email address" value="{{ user.email }}" disabled>
 
                 <label for="location">Location:</label>
-                <input type="text" id="location" placeholder="Enter city or area" value="{{hospital.location}}"  required>
+                <input type="text" id="location" name="location" placeholder="Enter city or area" value="{{ hospital.location }}" required>
+
+                <!-- Blood Stock Info -->
+                <h2>🩸 Available Blood Stock</h2>
+                <div class="blood-stock-grid">
+                    <div><label>A+</label><input type="number" name="a_pos" value="{{ hospital.a_pos }}" min="0"></div>
+                    <div><label>A−</label><input type="number" name="a_neg" value="{{ hospital.a_neg }}" min="0"></div>
+                    <div><label>B+</label><input type="number" name="b_pos" value="{{ hospital.b_pos }}" min="0"></div>
+                    <div><label>B−</label><input type="number" name="b_neg" value="{{ hospital.b_neg }}" min="0"></div>
+                    <div><label>AB+</label><input type="number" name="ab_pos" value="{{ hospital.ab_pos }}" min="0"></div>
+                    <div><label>AB−</label><input type="number" name="ab_neg" value="{{ hospital.ab_neg }}" min="0"></div>
+                    <div><label>O+</label><input type="number" name="o_pos" value="{{ hospital.o_pos }}" min="0"></div>
+                    <div><label>O−</label><input type="number" name="o_neg" value="{{ hospital.o_neg }}" min="0"></div>
+                </div>
 
                 <button type="submit">Update Profile</button>
             </form>

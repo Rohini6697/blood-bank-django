@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <h2>LifeLink</h2>
             <ul>
@@ -21,12 +22,26 @@
             </ul>
         </aside>
 
+        <!-- Main Content -->
         <main class="main-content">
             <h1>Request Blood</h1>
 
             <form class="request-form" method="POST">
                 {% csrf_token %}
 
+                <!-- 🧍 Patient Info -->
+                <h2>Patient Details</h2>
+                <label for="patient-name">Patient Name:</label>
+                <input type="text" id="patient-name" name="patient_name" placeholder="Enter patient's full name" required>
+
+                <label for="patient-email">Patient Email:</label>
+                <input type="email" id="patient-email" name="patient_email" placeholder="Enter patient's email" required>
+
+                <label for="patient-contact">Patient Contact Number:</label>
+                <input type="tel" id="patient-contact" name="patient_contact" placeholder="Enter patient's contact number" pattern="[0-9]{10}" required>
+
+                <!-- 🩸 Blood Request -->
+                <h2>Blood Request Details</h2>
                 <label for="blood-group">Blood Group:</label>
                 <select id="blood-group" name="blood_group" required>
                     <option value="">--Select--</option>
@@ -43,32 +58,31 @@
                 <label for="units">Units Required:</label>
                 <input type="number" id="units" name="units" placeholder="Enter required units" min="1" required>
 
-
                 <label for="required-date">Required Date:</label>
                 <input type="date" name="date" id="required-date">
 
                 <div class="urgent-checkbox">
                     <label for="urgent">Mark as Urgent</label>
                     <input type="checkbox" name="urgent" id="urgent">
-                    
                 </div>
 
                 <button type="submit">Submit Request</button>
             </form>
         </main>
     </div>
-</body>
-<script>
-    const urgentCheckbox = document.getElementById('urgent');
-    const dateField = document.getElementById('required-date');
 
-    urgentCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            dateField.disabled = true;
-            dateField.value = '';  // clear any date if already selected
-        } else {
-            dateField.disabled = false;
-        }
-    });
-</script>
+    <script>
+        const urgentCheckbox = document.getElementById('urgent');
+        const dateField = document.getElementById('required-date');
+
+        urgentCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                dateField.disabled = true;
+                dateField.value = '';
+            } else {
+                dateField.disabled = false;
+            }
+        });
+    </script>
+</body>
 </html>

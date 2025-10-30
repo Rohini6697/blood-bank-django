@@ -607,10 +607,123 @@ def request_history(request):
         'request_history': request_history
     })
 
+
+
+
+
+
+
+
+
+import io
+import base64
+import matplotlib.pyplot as plt
+from django.db.models import Count
+from django.shortcuts import render, get_object_or_404
+from .models import Hospital, Hospital_Request, BloodStock
+
 def hospital_reports(request):
-    profile = request.user.profile
-    hospital = get_object_or_404(Hospital, profile=profile)
-    return render(request,'hospital_dashboard/hospital_reports.html',{'hospital':hospital})
+    # ✅ Fixed line here
+    hospital = get_object_or_404(Hospital, profile=request.user.profile)
+
+    # 🩸 Blood stock data
+    blood_groups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+    stocks = [
+        getattr(hospital, 'a_pos', 0),
+        getattr(hospital, 'a_neg', 0),
+        getattr(hospital, 'b_pos', 0),
+        getattr(hospital, 'b_neg', 0),
+        getattr(hospital, 'ab_pos', 0),
+        getattr(hospital, 'ab_neg', 0),
+        getattr(hospital, 'o_pos', 0),
+        getattr(hospital, 'o_neg', 0),
+    ]
+
+    # 📊 Status data
+    status_counts = Hospital_Request.objects.filter(hospital=hospital).values('status').annotate(count=Count('id'))
+    statuses = [s['status'] for s in status_counts]
+    totals = [s['count'] for s in status_counts]
+
+    # ✅ Summary counts
+    total_requests = sum(totals)
+    approved = next((s['count'] for s in status_counts if s['status'] == 'approved'), 0)
+    rejected = next((s['count'] for s in status_counts if s['status'] == 'rejected'), 0)
+    pending = next((s['count'] for s in status_counts if s['status'] == 'pending'), 0)
+
+    charts = []
+
+    # ---------- 1️⃣ PIE CHART ----------
+    plt.figure(figsize=(4, 4))
+    plt.pie(stocks, labels=blood_groups, autopct='%1.1f%%', startangle=90)
+    plt.title('Blood Stock Distribution')
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    charts.append('data:image/png;base64,' + base64.b64encode(buffer.getvalue()).decode())
+    buffer.close()
+
+    # ---------- 2️⃣ BAR CHART ----------
+    plt.figure(figsize=(6, 4))
+    plt.bar(blood_groups, stocks)
+    plt.title('Blood Units Available per Group')
+    plt.xlabel('Blood Group')
+    plt.ylabel('Units')
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    charts.append('data:image/png;base64,' + base64.b64encode(buffer.getvalue()).decode())
+    buffer.close()
+
+    # ---------- 3️⃣ STATUS CHART ----------
+    plt.figure(figsize=(5, 4))
+    plt.bar(statuses, totals, color=['#6FA8DC', '#FFD966', '#E06666'])
+    plt.title('Request Status Summary')
+    plt.xlabel('Status')
+    plt.ylabel('Number of Requests')
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    charts.append('data:image/png;base64,' + base64.b64encode(buffer.getvalue()).decode())
+    buffer.close()
+
+    blood_data = [
+        ('A+', hospital.a_pos),
+        ('A-', hospital.a_neg),
+        ('B+', hospital.b_pos),
+        ('B-', hospital.b_neg),
+        ('AB+', hospital.ab_pos),
+        ('AB-', hospital.ab_neg),
+        ('O+', hospital.o_pos),
+        ('O-', hospital.o_neg),
+    ]
+
+
+
+    context = {
+        'hospital': hospital,
+        'charts': charts,
+        'total_requests': total_requests,
+        'approved': approved,
+        'rejected': rejected,
+        'pending': pending,
+        'blood_data': blood_data,
+    }
+
+    return render(request, 'hospital_dashboard/hospital_reports.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def profile_update(request,hospital_id):
     hospital = get_object_or_404(Hospital,id=hospital_id)
@@ -620,20 +733,30 @@ def profile_update(request,hospital_id):
 
 
 def hospital_details(request, hospital_id):
-    # hospital = get_object_or_404(Hospital, id=hospital_id)
-    # profile = get_object_or_404(Profile,id = hospital_id)
-    # hospital,created = Hospital.objects.get_or_create(profile=profile)
-    profile = Profile.objects.get(user = request.user)
+    profile = Profile.objects.get(user=request.user)
     hospital, created = Hospital.objects.get_or_create(profile=profile)
 
     if request.method == 'POST':
+        # Basic hospital info
         hospital.hospital_name = request.POST.get('hospital_name')
         hospital.contact_number = request.POST.get('contact')
         hospital.location = request.POST.get('location')
+
+        # 🩸 Blood stock info
+        hospital.a_pos = request.POST.get('a_pos') or 0
+        hospital.a_neg = request.POST.get('a_neg') or 0
+        hospital.b_pos = request.POST.get('b_pos') or 0
+        hospital.b_neg = request.POST.get('b_neg') or 0
+        hospital.ab_pos = request.POST.get('ab_pos') or 0
+        hospital.ab_neg = request.POST.get('ab_neg') or 0
+        hospital.o_pos = request.POST.get('o_pos') or 0
+        hospital.o_neg = request.POST.get('o_neg') or 0
+
         hospital.save()
         return redirect('hospitaldashboard')
 
     return render(request, 'hospital_dashboard/hospital_details.html', {'hospital': hospital})
+
 #-----------------donor dashboard Page-----------------
 @login_required
 def donordashboard(request):

@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <h2>LifeLink</h2>
             <ul>
@@ -21,61 +22,42 @@
             </ul>
         </aside>
 
+        <!-- Main Content -->
         <main class="main-content">
-            <h1>Hospital Reports</h1>
+            <h1>{{ hospital.hospital_name }} Reports</h1>
+            <p class="subtitle">Visual summary of your hospital’s performance and blood stock statistics.</p>
 
-            <div class="report-cards">
-                <div class="card">
-                    <h2>Total Blood Stock</h2>
-                    <p>120 Units</p>
+            <!-- Chart Grid -->
+            <div class="chart-grid">
+                {% for chart in charts %}
+                <div class="chart-card">
+                    <img src="{{ chart }}" alt="Chart {{ forloop.counter }}">
                 </div>
-                <div class="card">
-                    <h2>Total Requests</h2>
-                    <p>45 Requests</p>
-                </div>
-                <div class="card">
-                    <h2>Urgent Requests</h2>
-                    <p>12 Requests</p>
-                </div>
-                <div class="card">
-                    <h2>Pending Requests</h2>
-                    <p>8 Requests</p>
-                </div>
+                {% endfor %}
             </div>
 
-            <h2>Blood Stock Summary</h2>
-            <table class="summary-table">
-                <thead>
-                    <tr>
-                        <th>Blood Group</th>
-                        <th>Available Units</th>
-                        <th>Low Stock Threshold</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>A+</td>
-                        <td>20</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>B+</td>
-                        <td>10</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>O-</td>
-                        <td>2</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>AB+</td>
-                        <td>7</td>
-                        <td>5</td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- Blood Group Table -->
+            <div class="table-section">
+                <h2>Hospital Blood Group Summary</h2>
+                <table class="blood-table">
+                    <thead>
+                        <tr>
+                            <th>Blood Group</th>
+                            <th>Available Units</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bg, stock in blood_data %}
+                        <tr>
+                            <td>{{ bg }}</td>
+                            <td>{{ stock }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </main>
     </div>
 </body>
 </html>
+    

@@ -125,3 +125,54 @@ input:disabled {
     border: 1px solid #ccc;     
     cursor: not-allowed;        
 }
+.request-form {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.request-form h2 {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #b30000;
+    border-bottom: 2px solid #b30000;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.request-form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.request-form input,
+.request-form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background: #b30000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #800000;
+}
+
+.urgent-checkbox {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
