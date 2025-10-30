@@ -72,17 +72,16 @@
     </div>
 
     <script>
-        const urgentCheckbox = document.getElementById('urgent');
-        const dateField = document.getElementById('required-date');
+        function disableReject(button) {
+            // Find the current table row
+            const row = button.closest("tr");
+            const rejectBtn = row.querySelector(".reject");
 
-        urgentCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                dateField.disabled = true;
-                dateField.value = '';
-            } else {
-                dateField.disabled = false;
-            }
-        });
+            // Disable reject and accept buttons
+            rejectBtn.disabled = true;
+            button.disabled = true;
+        }
     </script>
+
 </body>
 </html>

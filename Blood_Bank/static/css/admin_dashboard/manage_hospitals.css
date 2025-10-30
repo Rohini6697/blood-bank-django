@@ -110,3 +110,19 @@ th {
     background-color: #333;
     cursor: pointer;
 }
+.reject {
+    background-color: #dc3545;
+    color: white;
+    transition: background-color 0.5s ease, opacity 0.5s ease;
+}
+
+.reject:hover {
+    background-color: #c82333;
+}
+
+/* Smooth fade to gray when disabled */
+.reject.fade-disabled {
+    background-color: #999;
+    opacity: 0.6;
+    cursor: not-allowed;
+}

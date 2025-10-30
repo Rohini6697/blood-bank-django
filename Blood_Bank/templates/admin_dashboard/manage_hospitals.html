@@ -46,18 +46,17 @@
                         <td>{{ r.date }}</td>
                         <td>{{ r.status }}</td>
                         <td>
-                            <!-- Accept -->
-                            <a href="{% url 'manage_hospitals_update' r.id %}">
-                                <button class="btn approve" type="button">Accept</button>
-                            </a>
+                            <button class="btn approve" type="button" 
+                                    data-url="{% url 'manage_hospitals_update' r.id %}" 
+                                    onclick="handleAccept(this)">Accept</button>
 
-                            <!-- Reject -->
-                            <a href="{% url 'manage_hospitals_delete' r.id %}">
+                            {% if r.status != 'approved' %}
                                 <button class="btn reject" type="button">Reject</button>
-                            </a>
+                            {% endif %}
+                            </td>
 
-                            
-                        </td>
+  
+
                     </tr>
                     {% empty %}
                     <tr>
@@ -68,5 +67,27 @@
             </table>
         </main>
     </div>
+
+    <!-- ✅ Script to disable reject after clicking accept -->
+   <script>
+function handleAccept(acceptBtn) {
+    const row = acceptBtn.closest("tr");
+    const rejectBtn = row.querySelector(".reject");
+
+    // Smoothly fade out the reject button (for better UX)
+    if (rejectBtn) {
+        rejectBtn.style.transition = "opacity 0.6s ease";
+        rejectBtn.style.opacity = "0";
+        setTimeout(() => rejectBtn.remove(), 600); // remove after fade
+    }
+
+    // Redirect to Django view to update the database
+    const updateUrl = acceptBtn.getAttribute("data-url");
+    window.location.href = updateUrl;
+}
+</script>
+
+
+
 </body>
 </html>
