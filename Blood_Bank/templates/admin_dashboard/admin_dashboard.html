@@ -17,7 +17,7 @@
                 <li class="active"><a href="{% url 'manage_users' %}">👥 Manage Users</a></li>
                 <li><a href="{% url 'blood_stock' %}">🩸 Blood Stock Management</a></li>
                 <li><a href="{% url 'report_page' %}">📊 Reports</a></li>
-                <li><a href="">⚙ Settings</a></li>
+                <li><a href="{% url 'home' %}">Logout</a></li>
             </ul>
         </aside>
 
@@ -36,10 +36,6 @@
                 <div class="card">
                     <h3>Patients</h3>
                     <p>{{patient}}</p>
-                </div>
-                <div class="card">
-                    <h3>🩸 Available Blood Units</h3>
-                    <p>{{blood_stock}}</p>
                 </div>
             </div>
         </main>
