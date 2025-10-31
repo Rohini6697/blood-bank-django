@@ -4,17 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Requests</title>
-    <link rel="stylesheet" href="{% static 'css/admin_dashboard/manage_hospitals.css' %}">
+    <title>Donor Requests</title>
+    <link rel="stylesheet" href="{% static 'css/admin_dashboard/manage_donors.css' %}">
     <style>
-        .status-accepted {
+        .status-donated {
             color: green;
             font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-        .status-accepted.show {
-            opacity: 1;
         }
     </style>
 </head>
@@ -23,8 +18,8 @@
 
         <!-- ✅ Top Navigation -->
         <nav class="top-menu">
-            <a href="{% url 'manage_hospitals' %}" class="active">🏥 Hospital</a>
-            <a href="{% url 'manage_donors' %}">🧑 Donor</a>
+            <a href="{% url 'manage_hospitals' %}">🏥 Hospital</a>
+            <a href="{% url 'manage_donors' %}" class="active">🧑 Donor</a>
             <a href="{% url 'manage_patients' %}">🧑‍⚕ Patient</a>
         </nav>
 
@@ -35,44 +30,58 @@
 
         <!-- ✅ Table Section -->
         <main class="table-container">
-            <h2>Hospital Blood Requests</h2>
+            <h2>Donor Blood Requests</h2>
 
             <table>
                 <thead>
                     <tr>
-                        <th>Hospital Name</th>
+                        <th>Donor Name</th>
                         <th>Blood Group</th>
-                        <th>Units</th>
-                        <th>Required Date</th>
+                        <th>Preferred Date</th>
+                        <th>Preferred Time</th>
+                        <th>Appointed Date</th>
+                        <th>Appointed Time</th>
                         <th>Status</th>
+                        <th>Eligibility</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for r in hospital_request %}
+                    {% for r in donation_request %}
                     <tr>
-                        <td>{{ r.hospital.hospital_name }}</td>
-                        <td>{{ r.Blood_group }}</td>
-                        <td>{{ r.unit }}</td>
-                        <td>{{ r.date }}</td>
+                        <td>{{ r.donor.fullname }}</td>
+                        <td>{{ r.donor.blood_group }}</td>
+                        <td>{{ r.preferred_date }}</td>
+                        <td>{{ r.preferred_time }}</td>
+                        <td>{{ r.appointment_date }}</td>
+                        <td>{{ r.appointment_time }}</td>
                         <td>{{ r.status }}</td>
+                        <td>{{ r.eligibility }}</td>
                         <td>
-                            {% if r.status == 'approved' %}
-                                <span class="status-accepted show">✔ Accepted</span>
+                            {% if r.status == 'donated' %}
+                                <span class="status-donated show">✔ Donated</span>
+                            {% elif r.status == 'approved' %}
+                                <button class="btn donated" type="button"
+                                    data-url="{% url 'manage_donors_update' r.id %}"
+                                    onclick="handleDonated(this)">Donated</button>
                             {% else %}
                                 <button class="btn approve" type="button"
-                                    data-url="{% url 'manage_hospitals_update' r.id %}"
+                                    data-url="{% url 'accept_donor' r.id %}"
                                     onclick="handleAccept(this)">Accept</button>
 
                                 <button class="btn reject" type="button"
-                                    data-url="{% url 'manage_hospitals_reject' r.id %}"
+                                    data-url="{% url 'manage_donors_delete' r.id %}"
                                     onclick="handleReject(this)">Reject</button>
+
+                                <button class="btn donated" type="button"
+                                    data-url="{% url 'manage_donors_update' r.id %}"
+                                    onclick="handleDonated(this)">Donated</button>
                             {% endif %}
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6">No hospital requests available</td>
+                        <td colspan="9">No donor requests available</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -80,42 +89,68 @@
         </main>
     </div>
 
-    <!-- ✅ Fade + Redirect Script -->
+    <!-- ✅ Fade + Redirect Scripts -->
     <script>
-        function handleAccept(acceptBtn) {
-            const row = acceptBtn.closest("tr");
-            const rejectBtn = row.querySelector(".reject");
+ // Handle the "Accept" button logic
+function handleAccept(acceptBtn) {
+    const row = acceptBtn.closest("tr");
+    const rejectBtn = row.querySelector(".reject");
 
-            // Fade out both buttons
-            [acceptBtn, rejectBtn].forEach(btn => {
-                if (btn) {
-                    btn.style.transition = "opacity 0.6s ease";
-                    btn.style.opacity = "0";
-                    setTimeout(() => btn.remove(), 600);
-                }
-            });
+    // Fade out reject button
+    if (rejectBtn) {
+        rejectBtn.style.transition = "opacity 0.6s ease";
+        rejectBtn.style.opacity = "0";
+        setTimeout(() => rejectBtn.remove(), 600);
+    }
 
-            // Create Accepted text
-            const acceptedText = document.createElement("span");
-            acceptedText.textContent = "✔ Accepted";
-            acceptedText.classList.add("status-accepted");
-            row.querySelector("td:last-child").appendChild(acceptedText);
+    const updateUrl = acceptBtn.getAttribute("data-url");
+    window.location.href = updateUrl;
+}
 
-            // Show accepted text after fade
-            setTimeout(() => acceptedText.classList.add("show"), 600);
+// Handle the "Donated" button logic
+function handleDonated(donateBtn) {
+    const row = donateBtn.closest("tr");
+    const donateBtns = row.querySelectorAll(".btn");
 
-            // Redirect to update URL
-            const updateUrl = acceptBtn.getAttribute("data-url");
-            setTimeout(() => {
-                window.location.href = updateUrl;
-            }, 700);
-        }
+    // Fade out all buttons
+    donateBtns.forEach(btn => {
+        btn.style.opacity = "0";
+        setTimeout(() => btn.remove(), 600);
+    });
 
-        function handleReject(rejectBtn) {
-            if (!confirm("Are you sure you want to reject this request?")) return;
-            const updateUrl = rejectBtn.getAttribute("data-url");
-            window.location.href = updateUrl;
-        }
+    // Create "Donated" text and fade it in
+    const donatedText = document.createElement("span");
+    donatedText.textContent = "✔ Donated";
+    donatedText.classList.add("status-donated");
+    row.querySelector("td:last-child").appendChild(donatedText);
+
+    setTimeout(() => {
+        donatedText.classList.add("show");
+    }, 600);
+
+    // Redirect after animation
+    const updateUrl = donateBtn.getAttribute("data-url");
+    setTimeout(() => {
+        window.location.href = updateUrl;
+    }, 700);
+}
+
+// Handle the "Reject" button logic
+function handleReject(rejectBtn) {
+    const row = rejectBtn.closest("tr");
+    const donateBtns = row.querySelectorAll(".btn");
+
+    // Fade out all buttons
+    donateBtns.forEach(btn => {
+        btn.style.opacity = "0";
+        setTimeout(() => btn.remove(), 600);
+    });
+
+    // Redirect after a brief delay
+    const deleteUrl = rejectBtn.getAttribute("data-url");
+    setTimeout(() => {
+        window.location.href = deleteUrl;
+    }, 600);
+}
+
     </script>
-</body>
-</html>

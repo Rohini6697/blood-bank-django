@@ -1,47 +1,49 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notifications | LifeLink</title>
-    <link rel="stylesheet" href="{% static 'css/patient_dashboard/patient_notification.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications | LifeLink</title>
+  <link rel="stylesheet" href="{% static 'css/patient_dashboard/patient_notification.css' %}">
 </head>
 <body>
-    <div class="sidebar">
-        <h2>LifeLink</h2>
-        <ul>
-            <li><a href="{% url 'patient_dashboard' %}">Dashboard</a></li>
-            <li><a href="{% url 'request_blood' %}">Request Blood</a></li>
-            <li><a href="{% url 'request_update' %}">Request Update</a></li>
-            <li><a href="{% url 'received_history' %}">Received History</a></li>
-            <li><a href="{% url 'patient_notification' %}">Notifications</a></li>
-            <li><a href="{% url 'home' %}">Logout</a></li>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>LifeLink</h2>
+    <ul>
+      <li><a href="{% url 'patient_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'request_blood' %}">Request Blood</a></li>
+      <li><a href="{% url 'request_update' %}">Request Update</a></li>
+      <li><a href="{% url 'received_history' %}">Received History</a></li>
+      <li><a href="{% url 'patient_notification' %}" class="active">Notifications</a></li>
+      <li><a href="{% url 'home' %}">Logout</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h1>Notifications</h1>
+
+    <div class="card">
+      <h3>Recent Notifications</h3>
+
+      {% if notifications %}
+        <ul class="notification-list">
+          {% for notification in notifications %}
+            <li>
+              <span class="notification-date">
+                {{ notification.created_at|date:"Y-m-d H:i" }}
+              </span>
+              {{ notification.message }}
+              
+            </li>
+          {% endfor %}
         </ul>
+      {% else %}
+        <p>No notifications available at the moment.</p>
+      {% endif %}
     </div>
-
-    <div class="content">
-        <h1>Notifications</h1>
-
-        <div class="card">
-            <h3>Recent Notifications</h3>
-            <ul class="notification-list">
-                <li>
-                    <span class="notification-date">2025-10-19</span>
-                    Your blood request for O+ has been approved.
-                    <span class="notification-badge">New</span>
-                </li>
-                <li>
-                    <span class="notification-date">2025-10-18</span>
-                    You have received 2 units of A+ blood from Jane Smith.
-                </li>
-                <li>
-                    <span class="notification-date">2025-10-15</span>
-                    Your blood request for B- has been processed by the hospital.
-                </li>
-            </ul>
-        </div>
-    </div>
+  </div>
 </body>
 </html>

@@ -61,7 +61,7 @@
 
                             {% if r.status != 'approved' %}
                             <button class="btn reject" type="button"
-                                data-url="{% url 'manage_hospitals_reject' r.id %}"
+                                data-url="{% url 'manage_patients_delete' r.id %}"
                                 onclick="handleReject(this)">Reject</button>
                             {% endif %}
                         </td>

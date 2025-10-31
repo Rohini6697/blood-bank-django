@@ -195,8 +195,20 @@ def manage_hospitals_reject(request, h_id):
 
 # 🔔 HOSPITAL NOTIFICATION VIEW
 def hospital_notification(request):
+    # Get the hospital linked to the logged-in user
     hospital = Hospital.objects.filter(profile__user=request.user).first()
-    notifications = Notification.objects.filter(role='hospital').order_by('-created_at')
+    
+    if not hospital:
+        return render(request, 'hospital_dashboard/hospital_notification.html', {
+            'notifications': [],
+            'hospital': None,
+        })
+
+    # ✅ Fetch only notifications for the logged-in hospital user
+    notifications = Notification.objects.filter(
+        user=request.user,
+        role='hospital'
+    ).order_by('-created_at')
 
     return render(request, 'hospital_dashboard/hospital_notification.html', {
         'notifications': notifications,
@@ -241,17 +253,16 @@ def manage_donors(request):
 
 
 
-def accept_donor(request,h_id):
-    donation_request = get_object_or_404(Donation_Request, id=h_id)
-    # donation = Donation_Request.objects.all()
+from .models import Notification
 
-    # Prevent re-accepting a donor
+def accept_donor(request, h_id):
+    donation_request = get_object_or_404(Donation_Request, id=h_id)
+
     if donation_request.status == 'approved':
         return render(request, 'admin_dashboard/accept_donor.html', {
             'donation_request': donation_request,
             'already_approved': True
         })
-
 
     if request.method == "POST":
         appointment_date = request.POST.get("appointment_date")
@@ -263,11 +274,16 @@ def accept_donor(request,h_id):
         donation_request.status = "approved"
         donation_request.save()
 
+        # ✅ Send notification to donor
+        Notification.objects.create(
+            user=donation_request.donor.profile.user,
+            message=f"Your blood donation request has been approved. Appointment on {appointment_date} at {appointment_time}.",
+            role='donor'
+        )
+
         return redirect('manage_donors')
 
-    
-    return render(request,'admin_dashboard/accept_donor.html',{'donation_request':donation_request})
-
+    return render(request, 'admin_dashboard/accept_donor.html', {'donation_request': donation_request})
 
 
 
@@ -286,26 +302,24 @@ def manage_donors_update(request, h_id):
     if donation_request.status == 'donated':
         return redirect('manage_donors')
 
-    # ✅ Correct field names
     blood_group = donation_request.donor.blood_group
-    requested_units = 1
+    requested_units = 1  # assume 1 unit per donor
 
-    # ✅ Get the stock for this blood group
-    stock = get_object_or_404(BloodStock, blood_group=blood_group)
+    stock, _ = BloodStock.objects.get_or_create(blood_group=blood_group)
+    stock.unit += requested_units
+    stock.save()
 
-    # ✅ Check and reduce stock
-    if stock.unit >= requested_units:
-        stock.unit += requested_units
-        stock.save()
+    donation_request.status = 'donated'
+    donation_request.save()
 
-        donation_request.status = 'donated'
-        donation_request.save()
+    # ✅ Send notification
+    Notification.objects.create(
+        user=donation_request.donor.profile.user,
+        message=f"Thank you! Your blood donation ({blood_group}) has been successfully recorded.",
+        role='donor'
+    )
 
-    else:
-        # Not enough stock — optional message or status change
-        donation_request.status = 'rejected'
-        donation_request.save()
-
+    messages.success(request, "Donation marked as completed and stock updated.")
     return redirect('manage_donors')
 
 
@@ -317,9 +331,34 @@ def manage_donors_update(request, h_id):
 
 
 
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Donation_Request, Notification
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Donation_Request, Notification
+
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib import messages
+from .models import Donation_Request, Notification
+
 def manage_donors_delete(request, h_id):
+    # Retrieve the donation request using the ID passed in the URL
     donation_request = get_object_or_404(Donation_Request, id=h_id)
+
+    # Delete the donation request from the database
     donation_request.delete()
+
+    # ✅ Notify donor about the deletion
+    Notification.objects.create(
+        user=donation_request.donor.profile.user,
+        message=f"Your blood donation request ({donation_request.donor.blood_group}) was rejected by the admin.",
+        role='donor'
+    )
+
+    # Provide a success message and redirect to the donors management page
+    messages.warning(request, "Donation request deleted permanently.")
     return redirect('manage_donors')
 
 
@@ -329,45 +368,70 @@ def manage_patients(request):
 
     return render(request,'admin_dashboard/manage_patients.html',{'request_list':request_list})
 
-from django.shortcuts import get_object_or_404, redirect
-from .models import Request_list, BloodStock
+
+from .models import Request_list, BloodStock, Notification
 
 def manage_patients_update(request, h_id):
-    request_list = get_object_or_404(Request_list, id=h_id)
+    patient_request = get_object_or_404(Request_list, id=h_id)
 
-    # Take patient and their blood group
-    patient = request_list.patient
-    blood_group = patient.patient_blood_group
-    units_requested = request_list.unit
-    
-    # Get stock for this blood group
-    blood_stock = get_object_or_404(BloodStock, blood_group=blood_group)
-
-    # If already approved, don’t reduce again
-    if request_list.status == 'approved':
+    # Prevent double approval
+    if patient_request.status == 'approved':
         return redirect('manage_patients')
-    
-    # Check if enough stock exists
-    if blood_stock.unit >= units_requested:
-        blood_stock.unit -= units_requested
-        blood_stock.save()
 
-        request_list.status = 'approved'
-        request_list.save()
+    blood_group = patient_request.patient.patient_blood_group
+    requested_units = patient_request.unit
+
+    stock = get_object_or_404(BloodStock, blood_group=blood_group)
+
+    # ✅ Check and reduce stock
+    if stock.unit >= requested_units:
+        stock.unit -= requested_units
+        stock.save()
+
+        patient_request.status = 'approved'
+        patient_request.save()
+
+        # ✅ Create notification for the patient
+        Notification.objects.create(
+            user=patient_request.patient.profile.user,
+            message=f"Your request for {requested_units} unit(s) of {blood_group} blood has been approved.",
+            role='patient'
+        )
+
     else:
-        request_list.status = 'rejected'
-        request_list.save()
+        patient_request.status = 'rejected'
+        patient_request.save()
+
+        # ✅ Notify about rejection
+        Notification.objects.create(
+            user=patient_request.patient.profile.user,
+            message=f"Your request for {requested_units} unit(s) of {blood_group} blood was rejected due to insufficient stock.",
+            role='patient'
+        )
 
     return redirect('manage_patients')
+
+
+
+
+from django.contrib import messages
 
 def manage_patients_delete(request, h_id):
-    request_list = get_object_or_404(Request_list, id=h_id)
-    request_list.delete()
-    return redirect('manage_patients')
+    patient_request = get_object_or_404(Request_list, id=h_id)
 
+    # ✅ Notify patient before deletion
+    Notification.objects.create(
+        user=patient_request.patient.profile.user,
+        message=f"Your request for {patient_request.patient.patient_blood_group} blood has been rejected by the admin.",
+        role='patient'
+    )
 
+    # ✅ Update status and then delete
+    patient_request.status = 'rejected'
+    patient_request.save()
+    patient_request.delete()
 
-
+    return redirect('manage_patients')  # ✅ redirect instead of render
 
 def blood_stock(request):
     if request.method == 'POST':
@@ -554,7 +618,6 @@ def request_update(request):
         patient.emergency_contact_number = request.POST.get('emergencyNumber')
 
         patient.save()
-        return redirect('received_history')
 
 
     return render(request,'patient_dashboard/request_update.html',{'patient':patient})
@@ -566,10 +629,28 @@ def received_history(request):
 
     return render(request,'patient_dashboard/received_history.html',{'patient': patient,'request_list':request_list})
 
+# 🔔 PATIENT NOTIFICATION VIEW
 def patient_notification(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    patient = Patient.objects.filter(profile=profile).first() 
-    return render(request,'patient_dashboard/patient_notification.html',{'patient': patient})
+    # Get the patient associated with the logged-in user
+    patient = Patient.objects.filter(profile__user=request.user).first()
+    
+    if not patient:
+        return render(request, 'patient_dashboard/patient_notification.html', {
+            'notifications': [],
+            'patient': None,
+        })
+
+    # ✅ Fetch notifications only for this patient's user
+    notifications = Notification.objects.filter(
+        user=request.user,  # filter by logged-in user's notifications
+        role='patient'
+    ).order_by('-created_at')
+
+    return render(request, 'patient_dashboard/patient_notification.html', {
+        'notifications': notifications,
+        'patient': patient,
+    })
+
 
 def patient_details(request,patient_id):
     profile = get_object_or_404(Profile,id = patient_id)
@@ -776,7 +857,24 @@ def hospital_reports(request):
 
 def profile_update(request,hospital_id):
     hospital = get_object_or_404(Hospital,id=hospital_id)
+    if request.method == "POST":
+        # Basic Information
+        hospital.hospital_name = request.POST.get('hospital_name')
+        hospital.contact_number = request.POST.get('contact')
+        hospital.location = request.POST.get('location')
 
+        # Blood Stock Updates
+        hospital.a_pos = request.POST.get('a_pos') or 0
+        hospital.a_neg = request.POST.get('a_neg') or 0
+        hospital.b_pos = request.POST.get('b_pos') or 0
+        hospital.b_neg = request.POST.get('b_neg') or 0
+        hospital.ab_pos = request.POST.get('ab_pos') or 0
+        hospital.ab_neg = request.POST.get('ab_neg') or 0
+        hospital.o_pos = request.POST.get('o_pos') or 0
+        hospital.o_neg = request.POST.get('o_neg') or 0
+
+        # Save changes
+        hospital.save()
 
     return render(request,'hospital_dashboard/profile_update.html',{'hospital':hospital})
 
@@ -997,14 +1095,19 @@ def request_appointment(request):
 
 #         return redirect('donordashboard')
 #     return render(request,'donor_dashboard/request_appointment.html',{'profile': profile})
+from django.shortcuts import render, get_object_or_404
+from .models import Profile, Donor, Notification
+
 def donor_notification(request):
     profile = get_object_or_404(Profile, user=request.user)
     donor, created = Donor.objects.get_or_create(profile=profile)
-    update_url = f"/update_donor/{donor.id}/"  # or use: reverse('update_donor', args=[donor.id])
-    notifications = []
+    update_url = f"/update_donor/{donor.id}/"
 
-
-    
+    # ✅ Fetch notifications for this donor user
+    notifications = Notification.objects.filter(
+        user=request.user,
+        role='donor'
+    ).order_by('-id')  # recent first
 
     return render(request, 'donor_dashboard/donor_notification.html', {
         'profile': profile,
@@ -1012,6 +1115,7 @@ def donor_notification(request):
         'update_url': update_url,
         'notifications': notifications
     })
+
 
 
 
