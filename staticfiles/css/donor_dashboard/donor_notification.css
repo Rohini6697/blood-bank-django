@@ -1,0 +1,126 @@
+/* ===== General Styles ===== */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 230px;
+  background-color: #c0392b;
+  color: white;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sidebar h2 {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar ul li {
+  margin: 12px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 12px;
+  display: block;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.sidebar ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Highlight active menu */
+.sidebar ul li a.active {
+  background-color: rgba(255, 255, 255, 0.3);
+  font-weight: bold;
+}
+
+/* ===== Main Content ===== */
+.main-content {
+  margin-left: 250px;
+  padding: 40px;
+  flex-grow: 1;
+}
+
+.main-content h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+/* ===== Notification Section ===== */
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.notification-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.notification-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.notification-card .note-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.notification-card p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.notification-card .date {
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.notification-card.read {
+  background-color: #f0f0f0;
+}
+
+.notification-card.unread {
+  border-left: 4px solid #c0392b;
+}
+
+.no-notification {
+  color: #777;
+  font-size: 1.2rem;
+}

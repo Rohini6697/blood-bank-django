@@ -1,0 +1,135 @@
+/* General Page Setup */
+body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card Container */
+.form-container {
+    background: #fff;
+    width: 600px;
+    padding: 40px 50px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Headings */
+h1 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+/* Input Group Layout */
+.input-row {
+    display: flex;
+    gap: 50px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    flex: 1;
+    text-align: left;
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Labels and Inputs */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #444;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #ff4b2b;
+    box-shadow: 0 0 6px rgba(255, 75, 43, 0.4);
+    outline: none;
+}
+
+/* Blood Group Grid */
+h2 {
+    color: #333;
+    font-size: 22px;
+    margin: 25px 0 15px;
+}
+
+.blood-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.blood-group {
+    background: #fafafa;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.blood-group label {
+    font-weight: 600;
+    color: #ff416c;
+}
+
+/* Button Styling */
+.submit-btn {
+    width: 100%;
+    background: #ff4b2b;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #ff416c;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .form-container {
+        width: 90%;
+        padding: 30px;
+    }
+    .input-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .blood-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

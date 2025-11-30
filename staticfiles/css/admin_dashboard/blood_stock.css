@@ -1,0 +1,172 @@
+/* =================== Global Reset =================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* =================== Page Layout =================== */
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =================== Sidebar =================== */
+.sidebar {
+    width: 250px;
+    background-color: #1e1e2d;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    /* font-size: 20px; */
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    padding: 12px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    font-size: 15px;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+    background-color: #34344a;
+}
+
+/* =================== Main Content Area =================== */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    background-color: #ffffff;
+}
+
+.main-content h1 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    color: #222;
+}
+
+/* =================== Table Styling =================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+/* =================== Buttons =================== */
+.btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+/* Update Button */
+.btn.update {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn.update:hover {
+    background-color: #3d8b40;
+}
+
+/* Delete Button */
+.btn.delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn.delete:hover {
+    background-color: #c0392b;
+}
+
+/* Add Stock Button */
+.btn.add {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    margin-top: 10px;
+}
+
+.btn.add:hover {
+    background-color: #0063cc;
+}
+
+/* =================== Add Stock Form =================== */
+.add-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.add-form label {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.add-form select,
+.add-form input {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* =================== Responsive =================== */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    .add-form {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .add-form label {
+        margin-top: 10px;
+    }
+}

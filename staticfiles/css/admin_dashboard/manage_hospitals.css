@@ -1,0 +1,84 @@
+.page-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.top-menu {
+    display: flex;
+    gap: 15px;
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.top-menu a {
+    text-decoration: none;
+    color: black;
+    padding: 6px 12px;
+    border-radius: 5px;
+}
+
+.top-menu a.active {
+    background: crimson;
+    color: white;
+}
+
+.back-section {
+    margin: 15px 0;
+}
+
+.back-btn {
+    background: #555;
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+}
+
+.table-container {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.btn {
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn.approve {
+    background-color: green;
+}
+
+.btn.reject {
+    background-color: crimson;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.status-approved {
+    color: green;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.status-approved.show {
+    opacity: 1;
+}
