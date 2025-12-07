@@ -86,6 +86,16 @@ button:hover {
   background-color: #ff3333;
 }
 
+/* ===== ERROR MESSAGE ===== */
+.error {
+  background: #ffe6e6;
+  color: #b30000;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
 /* ===== SIGN UP LINK ===== */
 .signup-text {
   margin-top: 20px;
@@ -102,6 +112,17 @@ button:hover {
 
 .signup-link:hover {
   color: #ff3333;
+}
+
+/* ===== ADMIN CREDENTIAL BOX ===== */
+.admin-info {
+  margin-top: 18px;
+  font-size: 0.85rem;
+  color: #444;
+  background: #fff0f0;
+  padding: 8px;
+  border-radius: 8px;
+  border-left: 4px solid #b30000;
 }
 
 /* ===== ANIMATION ===== */
