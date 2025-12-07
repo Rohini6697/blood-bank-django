@@ -10,24 +10,34 @@
         .btn {
             transition: opacity 0.6s ease;
         }
+
+        .status-approved {
+            color: green;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .status-approved.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
     <div class="page-container">
 
-        <!-- ✅ Top Menu Navigation -->
+        <!-- Top Menu Navigation -->
         <nav class="top-menu">
             <a href="{% url 'manage_hospitals' %}">🏥 Hospital</a>
             <a href="{% url 'manage_donors' %}">🧑 Donor</a>
             <a href="{% url 'manage_patients' %}" class="active">🧑‍⚕ Patient</a>
         </nav>
 
-        <!-- ✅ Back Button -->
+        <!-- Back Button -->
         <div class="back-section">
             <a href="{% url 'admindashboard' %}" class="back-btn">⬅ Back</a>
         </div>
 
-        <!-- ✅ Table Section -->
+        <!-- Table Section -->
         <main class="table-container">
             <h2>Patient Blood Requests</h2>
 
@@ -54,15 +64,20 @@
                         <td>{{ r.date }}</td>
                         <td>{{ r.urgent }}</td>
                         <td>{{ r.status }}</td>
-                        <td>
-                            <button class="btn approve" type="button"
-                                data-url="{% url 'manage_patients_update' r.id %}"
-                                onclick="handleAccept(this)">Accept</button>
 
-                            {% if r.status != 'approved' %}
-                            <button class="btn reject" type="button"
-                                data-url="{% url 'manage_patients_delete' r.id %}"
-                                onclick="handleReject(this)">Reject</button>
+                        <td>
+                            {% if r.status == 'approved' %}
+                                <span class="status-approved show">✔ Accepted</span>
+                            {% else %}
+                                <button class="btn approve"
+                                        type="button"
+                                        data-url="{% url 'manage_patients_update' r.id %}"
+                                        onclick="handleAccept(this)">Accept</button>
+
+                                <button class="btn reject"
+                                        type="button"
+                                        data-url="{% url 'manage_patients_delete' r.id %}"
+                                        onclick="handleReject(this)">Reject</button>
                             {% endif %}
                         </td>
                     </tr>
@@ -76,29 +91,43 @@
         </main>
     </div>
 
-    <!-- ✅ Fade animation + Redirect Script -->
+    <!-- JS -->
     <script>
         function handleAccept(acceptBtn) {
             const row = acceptBtn.closest("tr");
             const rejectBtn = row.querySelector(".reject");
 
-            // Fade out reject button smoothly
-            if (rejectBtn) {
-                rejectBtn.style.opacity = "0";
-                rejectBtn.style.transition = "opacity 0.6s ease";
-                setTimeout(() => rejectBtn.remove(), 600);
-            }
+            // Disable buttons
+            acceptBtn.disabled = true;
+            if (rejectBtn) rejectBtn.disabled = true;
 
-            // Redirect to Django view after fade
+            // Fade out accept & reject buttons
+            [acceptBtn, rejectBtn].forEach(btn => {
+                if (btn) {
+                    btn.style.transition = "opacity 0.5s ease";
+                    btn.style.opacity = "0";
+                    setTimeout(() => btn.remove(), 500);
+                }
+            });
+
+            // Show ✔ Accepted text
+            setTimeout(() => {
+                const accepted = document.createElement("span");
+                accepted.textContent = "✔ Accepted";
+                accepted.classList.add("status-approved", "show");
+                row.querySelector("td:last-child").appendChild(accepted);
+            }, 520);
+
+            // Redirect to backend
             const updateUrl = acceptBtn.getAttribute("data-url");
             setTimeout(() => {
                 window.location.href = updateUrl;
-            }, 600);
+            }, 900);
         }
 
         function handleReject(rejectBtn) {
-            const deleteUrl = rejectBtn.getAttribute("data-url");
-            window.location.href = deleteUrl;
+            const url = rejectBtn.getAttribute("data-url");
+            window.location.href = url;
         }
     </script>
 </body>
