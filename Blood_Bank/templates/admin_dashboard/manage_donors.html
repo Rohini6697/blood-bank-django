@@ -60,10 +60,12 @@
                             <td>
                                 {% if r.status == 'donated' %}
                                     <span class="status-donated show">✔ Donated</span>
+
                                 {% elif r.status == 'approved' %}
                                     <button class="btn donated" type="button"
                                         data-url="{% url 'manage_donors_update' r.id %}"
                                         onclick="handleDonated(this)">Donated</button>
+
                                 {% else %}
                                     <button class="btn approve" type="button"
                                         data-url="{% url 'accept_donor' r.id %}"
@@ -89,34 +91,59 @@
         </main>
     </div>
 
-    <!-- ✅ Fade + Redirect Scripts -->
+    <!-- ✅ Accept / Reject / Donated Scripts -->
     <script>
-        // Handle the "Reject" button logic
+        /* ---------------------------
+            ✅ Accept Button Function
+        -----------------------------*/
+        function handleAccept(btn) {
+            const url = btn.getAttribute("data-url");
+
+            btn.innerText = "Processing...";
+            btn.style.opacity = "0.6";
+
+            setTimeout(() => {
+                window.location.href = url;
+            }, 300);
+        }
+
+        /* ---------------------------
+            ❌ Reject Button Function
+        -----------------------------*/
         function handleReject(rejectBtn) {
             const row = rejectBtn.closest("tr");
-            const donateBtns = row.querySelectorAll(".btn");
+            const buttons = row.querySelectorAll(".btn");
 
-            // Fade out all buttons
-            donateBtns.forEach(btn => {
+            buttons.forEach(btn => {
                 btn.style.opacity = "0";
-                setTimeout(() => btn.remove(), 600);  // Remove buttons after the fade-out
+                setTimeout(() => btn.remove(), 500);
             });
 
-            // Fade out the row itself after the buttons
-            row.style.transition = "opacity 0.6s ease";
-            row.style.opacity = "0";  // Fade out the row
+            row.style.transition = "opacity 0.5s ease";
+            row.style.opacity = "0";
 
-            // Delete the row after a brief delay to allow for the fade-out
-            setTimeout(() => {
-                row.remove();  // Completely remove the row from the DOM
-            }, 600);
+            const url = rejectBtn.getAttribute("data-url");
 
-            // Redirect to the server to delete the request from the database
-            const deleteUrl = rejectBtn.getAttribute("data-url");
             setTimeout(() => {
-                window.location.href = deleteUrl;  // Redirect to the backend view
-            }, 600);
+                row.remove();
+                window.location.href = url;
+            }, 500);
         }
-    </script> 
+
+        /* ---------------------------
+            🩸 Donated Button Function
+        -----------------------------*/
+        function handleDonated(btn) {
+            const url = btn.getAttribute("data-url");
+
+            btn.innerText = "Updating...";
+            btn.style.opacity = "0.6";
+
+            setTimeout(() => {
+                window.location.href = url;
+            }, 300);
+        }
+    </script>
+
 </body>
 </html>
